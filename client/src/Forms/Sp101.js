@@ -10,16 +10,26 @@ import {
   DialogType,
   DialogFooter,
   DatePicker,
-  initializeIcons
+  initializeIcons,
+  MessageBar , MessageBarType
 } from '@fluentui/react';
 
 initializeIcons();
-const stackTokens = { childrenGap: 50 };
+const stackTokens = { childrenGap: 20 };
 const stackStyles = { root: { width: "100%" } };
 const columnProps = {
   tokens: { childrenGap: 8 },
-  styles: { root: { width: "100%", padding: "20px" } },
+  styles: { root: { width: "700px", padding: "20px" } },
 };
+const column1 = {
+  tokens: { childrenGap: 10 },
+  styles: { root: { width: "30%", padding: "20px" } },
+};
+const column2 = {
+  tokens: { childrenGap: 8 },
+  styles: { root: { width: "40%", padding: "20px" } },
+};
+
 const modelProps = {
   isBlocking: false,
   styles: { main: { maxWidth: 450 } },
@@ -64,6 +74,7 @@ const Sp101 = () => {
     CSR: null,
     GRP: null,
     GEM: null,
+    GEMdetails: null,
     MOE: null,
     ROI: null,
     NOQ: null,
@@ -87,7 +98,7 @@ const Sp101 = () => {
       window.alert('Submitted', data);
     }
   };
-  
+
   const addItem = () => {
     let Description = document.getElementById("Description").value;
     let Quantity = document.getElementById("Quantity").value;
@@ -97,8 +108,8 @@ const Sp101 = () => {
   };
 
   const _columns = [{ key: 'column1', name: 'Description', fieldName: 'Description', minWidth: 100, maxWidth: 200, isResizable: true },
-  { key: 'column2', name: 'Quantity', fieldName: 'Quantity', minWidth: 100, maxWidth: 200, isResizable: true },
-  { key: 'column3', name: 'Rate', fieldName: 'Rate', minWidth: 100, maxWidth: 200, isResizable: true }];
+  { key: 'column2', name: 'Quantity', fieldName: 'Quantity', minWidth: 75, maxWidth: 150, isResizable: true },
+  { key: 'column3', name: 'Rate', fieldName: 'Rate', minWidth: 75, maxWidth: 150, isResizable: true }];
 
 
   const [selection, setSelection] = useState(new Selection());
@@ -146,64 +157,87 @@ const Sp101 = () => {
 
 
       <Stack horizontal tokens={stackTokens} styles={stackStyles}>
-        <Stack {...columnProps} style={{ 'backgroundColor': '#EFF6FC' }}>
+        <Stack {...column1} style={{ 'backgroundColor': '#EFF6FC' }}>
           <TextField label="Name" value={data.name}
             onChange={(e) => setData({ ...data, name: e.target.value })} />
           <TextField label="Department" value={data.department}
             onChange={(e) => setData({ ...data, department: e.target.value })} />
           <Stack horizontal tokens={stackTokens}>
-            <TextField label="Budget Head" value = {data.budgetHead}
+            <TextField label="Budget Head" value={data.budgetHead} styles={{root:{width:'50%'}}}
               onChange={(e) => setData({ ...data, budgetHead: e.target.value })} />
-            <TextField label="Sanctioned Budget" value={data.budgetSanction}
+            <TextField label="Sanctioned Budget" value={data.budgetSanction} styles={{root:{width:'50%'}}}
               onChange={(e) => setData({ ...data, budgetSanction: e.target.value })} />
           </Stack>
           <Stack horizontal tokens={stackTokens}>
-            <TextField label="Item Name" 
-              placeholder="write 'MANY' if > 1"
+            <TextField label="Item Name"
+              placeholder="write 'MANY' if > 1" styles={{root:{width:'50%'}}}
               onChange={(e) => setData({ ...data, itemName: e.target.value })} />
-            <TextField label="Approximate Cost"
-            onChange={(e) => setData({ ...data, approxCost: e.target.value })} />
+            <TextField label="Approximate Cost" styles={{root:{width:'50%'}}}
+              onChange={(e) => setData({ ...data, approxCost: e.target.value })} />
           </Stack>
-          <Label>Category</Label>
-          <Dropdown placeholder="Select an Option" options={option4} 
+
+          <Dropdown placeholder="Select an Option" options={option4} label="Category"
             onChange={(e, i) => setData({ ...data, category: i.text })} />
           <Dropdown placeholder="Select an Option" options={option1} label="Budgetary Approval Enclosed"
             onChange={(e, i) => setData({ ...data, BAE: i.text })} />
           <Dropdown placeholder="Select an Option" options={option2}
-            label="Certified that the space is ready for installation of the equipment on its arrival"
+            label="Certified that the space is ready for
+            installation of the equipment in
+            Department/Centre/Unit on its arrival"
             onChange={(e, i) => setData({ ...data, CSR: i.text })} />
-          <Dropdown placeholder="Select an Option" options={option1} label="Are the goods   for Research Purpose"
+          <Dropdown placeholder="Select an Option" options={option1}
+            label="Are the goods for Research Purpose "
             onChange={(e, i) => setData({ ...data, GRP: i.text })} />
-          <Dropdown placeholder="Select an Option" options={option1} label="GEM Purchase"
-            onChange={(e, i) => setData({ ...data, GEM: i.text })} />
-          <Dropdown placeholder="Select an Option" options={option3} label="Mode of Enquiry"
-            onChange={(e, i) => setData({ ...data, MOE: i.text })} />
+            <MessageBar >
+            If required for Research Purpose then Certificate for claiming concessional GST under notification no. 45/2017
+            & 47/2017: Certified that purchase of above goods for which concessional GST is claimed is required for research
+            purpose only
+            </MessageBar>
         </Stack>
 
 
-        <Stack {...columnProps} style={{ 'backgroundColor': '#EFF6FC' }}>
-          <TextField label="Recommendations of the Indenter " multiline rows={5}
+        <Stack {...column1} style={{ 'backgroundColor': '#EFF6FC' }}>
+          <Dropdown placeholder="Select an Option" options={option1} label="GEM Purchase"
+            onChange={(e, i) => setData({ ...data, GEM: i.text })} />
+          <div>
+          <Label >Details of the item if available in GEM ,
+            Else mention the GeMAR & PTS ID</Label>
+          <TextField multiline rows={2}
+            onChange={(e) => setData({ ...data, GEMdetails: e.target.value })} />
+          </div>
+          <TextField label="Recommendations of the Indenter " multiline rows={3}
             onChange={(e) => setData({ ...data, ROI: e.target.value })} />
+          <Dropdown placeholder="Select an Option" options={option3} label="Mode of Enquiry"
+            onChange={(e, i) => setData({ ...data, MOE: i.text })} />
           <TextField label="Number of Quotations Received"
             onChange={(e) => setData({ ...data, NOQ: e.target.value })} />
-          <TextField label="Purchased from M/s"
-            onChange={(e) => setData({ ...data, PurchasedFrom: e.target.value })} />
+          <Stack horizontal tokens={stackTokens}>
+            <TextField label="Purchased from M/s" styles={{root:{width:'50%'}}}
+              onChange={(e) => setData({ ...data, PurchasedFrom: e.target.value })} />
+            <TextField label="Quotation Number" styles={{root:{width:'50%'}}}
+              onChange={(e) => setData({ ...data, Qno: e.target.value })} />
+          </Stack>
           <DatePicker
             placeholder="Select a date"
             label="Date of purchase"
             onSelectDate={(e) => setData({ ...data, DOP: formatDate(e) })} />
-          <TextField label="Quotation Number"
-            onChange={(e) => setData({ ...data, Qno: e.target.value })} />
+
+        
+
+          <Stack horizontal tokens={stackTokens}>
           <TextField label="Required mode of payment"
+          styles={{root:{width:'50%'}}}
             onChange={(e) => setData({ ...data, RMP: e.target.value })} />
           <TextField label="Delivery Period"
+          styles={{root:{width:'50%'}}}
             onChange={(e) => setData({ ...data, DP: e.target.value })} />
+          </Stack>
         </Stack>
 
 
-        <Stack {...columnProps} style={{ 'backgroundColor': '#EFF6FC' }}>
+        <Stack {...column2} style={{ 'backgroundColor': '#EFF6FC' }}>
           <Label>Added Items</Label>
-          <div style={{ 'height': '400px', 'overflow': 'scroll' }}>
+          <div style={{ 'height': '300px', 'overflow': 'scroll' }}>
             <DetailsList
 
               items={data.items}
@@ -213,18 +247,20 @@ const Sp101 = () => {
             >
             </DetailsList>
           </div>
+          <MessageBar>I am personally satisfied that these goods purchased are of the requisite quality and specification and have
+been purchased from a reliable supplier at a reasonable price.</MessageBar>
           <Label />
           <Stack horizontal>
-            <PrimaryButton style={{ 'marginLeft': '2.5%', 'width': '45%', /*'backgroundColor':'#252423'*/ }} onClick={() => { setToggle(!toggle); }}
+            <PrimaryButton style={{ 'marginLeft': '2.5%', 'width': '45%', }} onClick={() => { setToggle(!toggle); }}
               text="Add Items  "> </PrimaryButton>
-            <DefaultButton style={{ 'marginLeft': '5%', 'width': '45%', }} text="Delete Selected" onClick={handleDelete} />
+            <DefaultButton style={{ 'marginLeft': '5%', 'width': '45%'}} text="Delete Selected" onClick={handleDelete} />
           </Stack>
           <Stack horizontal>
-            <PrimaryButton style={{ 'marginLeft': '2.5%', 'width': '45%', /*'backgroundColor':'#6264A7'*/ }} text="Submit" onClick={onSubmit} />
+            <PrimaryButton style={{ 'marginLeft': '2.5%', 'width': '45%', 'backgroundColor':'#0078d7' }} text="Submit" onClick={onSubmit} />
             <DefaultButton style={{ 'marginLeft': '5%', 'width': '45%' }} text="Reset" onClick={() => setData(init)} />
           </Stack>
 
-          
+
         </Stack>
       </Stack>
 
