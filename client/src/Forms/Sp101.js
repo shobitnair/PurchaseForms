@@ -15,6 +15,7 @@ import {
     Depths
 } from '@fluentui/react';
 import axios from 'axios';
+import { LoginCheck } from '../Login/LoginCheck';
 import { useSelector, useDispatch } from 'react-redux';
 
 initializeIcons();
@@ -180,7 +181,7 @@ const Sp101 = () => {
     }
 
     useEffect(() => {
-
+        LoginCheck(dispatch);
     }, []);
 
     const ItemPopUp = () => {
@@ -206,6 +207,7 @@ const Sp101 = () => {
         )
     }
 
+
     const SubmitPopUp = () => {
         return (
             <Dialog
@@ -225,130 +227,124 @@ const Sp101 = () => {
         )
     }
 
-    const Column1 = () => {
-        return (
-            <Stack {...column1} style={{ 'backgroundColor': '#faf9f8', boxShadow: Depths.depth8 }}>
-                <TextField label="Name" value={data.name}
-                    onChange={(e) => setData({ ...data, name: e.target.value })} />
-                <TextField label="Department" value={data.department}
-                    onChange={(e) => setData({ ...data, department: e.target.value })} />
-                <Stack horizontal tokens={stackTokens}>
-                    <TextField label="Budget Head" value={data.budgetHead} styles={{ root: { width: '50%' } }}
-                        onChange={(e) => setData({ ...data, budgetHead: e.target.value })} />
-                    <TextField label="Sanctioned Budget" value={data.budgetSanction} styles={{ root: { width: '50%' } }}
-                        onChange={(e) => setData({ ...data, budgetSanction: e.target.value })} />
-                </Stack>
-                <Stack horizontal tokens={stackTokens}>
-                    <TextField label="Item Name"
-                        placeholder="write 'MANY' if > 1" styles={{ root: { width: '50%' } }}
-                        onChange={(e) => setData({ ...data, itemName: e.target.value })} />
-                    <TextField label="Approximate Cost" styles={{ root: { width: '50%' } }}
-                        onChange={(e) => setData({ ...data, approxCost: e.target.value })} />
-                </Stack>
-                <Dropdown placeholder="Select an Option" options={option4} label="Category"
-                    onChange={(e, i) => setData({ ...data, category: i.text })} />
-                <Dropdown placeholder="Select an Option" options={option1} label="Budgetary Approval Enclosed"
-                    onChange={(e, i) => setData({ ...data, BAE: i.text })} />
-                <Dropdown placeholder="Select an Option" options={option2}
-                    label="Certified that the space is ready for installation of the equipment in Department/Centre/Unit on its arrival"
-                    onChange={(e, i) => setData({ ...data, CSR: i.text })} />
-                <Dropdown placeholder="Select an Option" options={option1}
-                    label="Are the goods for Research Purpose "
-                    onChange={(e, i) => setData({ ...data, GRP: i.text })} />
-                <div style={{ boxShadow: Depths.depth4 }}><MessageBar >
-                    If required for Research Purpose then Certificate for claiming concessional GST under notification no. 45/2017
-                    & 47/2017: Certified that purchase of above goods for which concessional GST is claimed is required for research
-                    purpose only
-                </MessageBar></div>
-            </Stack>
-        )
-    }
 
-    const Column2 = () => {
-        return (
-            <Stack {...column2} style={{ 'backgroundColor': '#faf9f8', boxShadow: Depths.depth8 }}>
-                <Dropdown placeholder="Select an Option" options={option1} label="GEM Purchase"
-                    onChange={(e, i) => setData({ ...data, GEM: i.text })} />
-                <div>
-                    <Label >Details of the item if available in GEM ,
-                        Else mention the GeMAR & PTS ID</Label>
-                    <TextField multiline rows={2}
-                        onChange={(e) => setData({ ...data, GEMdetails: e.target.value })} />
-                </div>
-                <TextField label="Recommendations of the Indenter " multiline rows={4}
-                    onChange={(e) => setData({ ...data, ROI: e.target.value })} />
-                <Dropdown placeholder="Select an Option" options={option3} label="Mode of Enquiry"
-                    onChange={(e, i) => setData({ ...data, MOE: i.text })} />
-                <TextField label="Number of Quotations Received"
-                    onChange={(e) => setData({ ...data, NOQ: e.target.value })} />
-                <Stack horizontal tokens={stackTokens}>
-                    <TextField label="Purchased from M/s" styles={{ root: { width: '50%' } }}
-                        onChange={(e) => setData({ ...data, PurchasedFrom: e.target.value })} />
-                    <TextField label="Quotation Number" styles={{ root: { width: '50%' } }}
-                        onChange={(e) => setData({ ...data, Qno: e.target.value })} />
-                </Stack>
-                <DatePicker
-                    placeholder="Select a date"
-                    label="Date of purchase"
-                    onSelectDate={(e) => setData({ ...data, DOP: formatDate(e) })} />
-                <Stack horizontal tokens={stackTokens} >
-                    <TextField label="Required mode of payment"
-                        styles={{ root: { width: '50%', } }}
-                        onChange={(e) => setData({ ...data, RMP: e.target.value })} />
-                    <TextField label="Delivery Period"
-                        styles={{ root: { width: '50%' } }}
-                        onChange={(e) => setData({ ...data, DP: e.target.value })} />
-                </Stack>
-            </Stack>
-        )
-    }
-
-    const Column3 = () => {
-        return (
-            <Stack {...column3} style={{ 'backgroundColor': '#faf9f8', boxShadow: Depths.depth8 }}>
-                <Label>Added Items</Label>
-                <div style={{
-                    'height': '300px',
-                    'overflow': 'scroll',
-                    'border': '8px solid #f3f2f1'
-                    , borderRadius: '2px', boxShadow: Depths.depth4
-                }}>
-                    <DetailsList
-                        items={data.items}
-                        columns={_columns}
-                        selection={selection}
-                        setKey={["key"]}
-                    >
-                    </DetailsList>
-                </div>
-                <div style={{ boxShadow: Depths.depth4 }}><MessageBar>I am personally satisfied that these goods purchased are of the requisite quality and specification and have
-                    been purchased from a reliable supplier at a reasonable price.</MessageBar></div>
-                <Label />
-                <Stack horizontal>
-                    <PrimaryButton style={{ 'marginLeft': '2.5%', 'width': '45%', 'backgroundColor': '#4C4A48', boxShadow: Depths.depth4 }}
-                        onClick={() => { setToggleItem(!toggleItem); }}
-                        text="Add Items  "> </PrimaryButton>
-                    <DefaultButton style={{ 'marginLeft': '5%', 'width': '45%', boxShadow: Depths.depth4 }} text="Delete Selected"
-                        onClick={handleDelete} />
-                </Stack>
-                <Stack horizontal>
-                    <PrimaryButton style={{ 'marginLeft': '2.5%', 'width': '45%', 'backgroundColor': '#4C4A48', boxShadow: Depths.depth4 }} text="Submit"
-                        onClick={() => setToggleSubmit(!toggleSubmit)} />
-                    <DefaultButton style={{ 'marginLeft': '5%', 'width': '45%', boxShadow: Depths.depth4 }} text="Preview"
-                        onClick={() => makePDF()} />
-                </Stack>
-            </Stack>
-        )
-    }
 
     return (
         <div >
             <ItemPopUp />
             <SubmitPopUp />
             <Stack horizontal tokens={stackTokens} styles={stackStyles}>
-                <Column1 />
-                <Column2 />
-                <Column3 />
+                {/**
+                 *  COlUMN1 of the form
+                 */}
+                <Stack {...column1} style={{ 'backgroundColor': '#faf9f8', boxShadow: Depths.depth8 }}>
+                    <TextField label="Name" value={data.name}
+                        onChange={(e) => setData({ ...data, name: e.target.value })} />
+                    <TextField label="Department" value={data.department}
+                        onChange={(e) => setData({ ...data, department: e.target.value })} />
+                    <Stack horizontal tokens={stackTokens}>
+                        <TextField label="Budget Head" value={data.budgetHead} styles={{ root: { width: '50%' } }}
+                            onChange={(e) => setData({ ...data, budgetHead: e.target.value })} />
+                        <TextField label="Sanctioned Budget" value={data.budgetSanction} styles={{ root: { width: '50%' } }}
+                            onChange={(e) => setData({ ...data, budgetSanction: e.target.value })} />
+                    </Stack>
+                    <Stack horizontal tokens={stackTokens}>
+                        <TextField label="Item Name"
+                            placeholder="write 'MANY' if > 1" styles={{ root: { width: '50%' } }}
+                            onChange={(e) => setData({ ...data, itemName: e.target.value })} />
+                        <TextField label="Approximate Cost" styles={{ root: { width: '50%' } }}
+                            onChange={(e) => setData({ ...data, approxCost: e.target.value })} />
+                    </Stack>
+                    <Dropdown placeholder="Select an Option" options={option4} label="Category"
+                        onChange={(e, i) => setData({ ...data, category: i.text })} />
+                    <Dropdown placeholder="Select an Option" options={option1} label="Budgetary Approval Enclosed"
+                        onChange={(e, i) => setData({ ...data, BAE: i.text })} />
+                    <Dropdown placeholder="Select an Option" options={option2}
+                        label="Certified that the space is ready for installation of the equipment in Department/Centre/Unit on its arrival"
+                        onChange={(e, i) => setData({ ...data, CSR: i.text })} />
+                    <Dropdown placeholder="Select an Option" options={option1}
+                        label="Are the goods for Research Purpose "
+                        onChange={(e, i) => setData({ ...data, GRP: i.text })} />
+                    <div style={{ boxShadow: Depths.depth4 }}><MessageBar >
+                        If required for Research Purpose then Certificate for claiming concessional GST under notification no. 45/2017
+                        & 47/2017: Certified that purchase of above goods for which concessional GST is claimed is required for research
+                        purpose only
+                    </MessageBar></div>
+                </Stack>
+
+                {/**
+                 *  COlUMN2 of the form
+                 */}
+                <Stack {...column2} style={{ 'backgroundColor': '#faf9f8', boxShadow: Depths.depth8 }}>
+                    <Dropdown placeholder="Select an Option" options={option1} label="GEM Purchase"
+                        onChange={(e, i) => setData({ ...data, GEM: i.text })} />
+                    <div>
+                        <Label >Details of the item if available in GEM ,
+                            Else mention the GeMAR & PTS ID</Label>
+                        <TextField multiline rows={2}
+                            onChange={(e) => setData({ ...data, GEMdetails: e.target.value })} />
+                    </div>
+                    <TextField label="Recommendations of the Indenter " multiline rows={4}
+                        onChange={(e) => setData({ ...data, ROI: e.target.value })} />
+                    <Dropdown placeholder="Select an Option" options={option3} label="Mode of Enquiry"
+                        onChange={(e, i) => setData({ ...data, MOE: i.text })} />
+                    <TextField label="Number of Quotations Received"
+                        onChange={(e) => setData({ ...data, NOQ: e.target.value })} />
+                    <Stack horizontal tokens={stackTokens}>
+                        <TextField label="Purchased from M/s" styles={{ root: { width: '50%' } }}
+                            onChange={(e) => setData({ ...data, PurchasedFrom: e.target.value })} />
+                        <TextField label="Quotation Number" styles={{ root: { width: '50%' } }}
+                            onChange={(e) => setData({ ...data, Qno: e.target.value })} />
+                    </Stack>
+                    <DatePicker
+                        placeholder="Select a date"
+                        label="Date of purchase"
+                        onSelectDate={(e) => setData({ ...data, DOP: formatDate(e) })} />
+                    <Stack horizontal tokens={stackTokens} >
+                        <TextField label="Required mode of payment"
+                            styles={{ root: { width: '50%', } }}
+                            onChange={(e) => setData({ ...data, RMP: e.target.value })} />
+                        <TextField label="Delivery Period"
+                            styles={{ root: { width: '50%' } }}
+                            onChange={(e) => setData({ ...data, DP: e.target.value })} />
+                    </Stack>
+                </Stack>
+                {/**
+                 *  COlUMN3 of the form
+                 */}
+                <Stack {...column3} style={{ 'backgroundColor': '#faf9f8', boxShadow: Depths.depth8 }}>
+                    <Label>Added Items</Label>
+                    <div style={{
+                        'height': '300px',
+                        'overflow': 'scroll',
+                        'border': '8px solid #f3f2f1'
+                        , borderRadius: '2px', boxShadow: Depths.depth4
+                    }}>
+                        <DetailsList
+                            items={data.items}
+                            columns={_columns}
+                            selection={selection}
+                            setKey={["key"]}
+                        >
+                        </DetailsList>
+                    </div>
+                    <div style={{ boxShadow: Depths.depth4 }}><MessageBar>I am personally satisfied that these goods purchased are of the requisite quality and specification and have
+                        been purchased from a reliable supplier at a reasonable price.</MessageBar></div>
+                    <Label />
+                    <Stack horizontal>
+                        <PrimaryButton style={{ 'marginLeft': '2.5%', 'width': '45%', 'backgroundColor': '#4C4A48', boxShadow: Depths.depth4 }}
+                            onClick={() => { setToggleItem(!toggleItem); }}
+                            text="Add Items  "> </PrimaryButton>
+                        <DefaultButton style={{ 'marginLeft': '5%', 'width': '45%', boxShadow: Depths.depth4 }} text="Delete Selected"
+                            onClick={handleDelete} />
+                    </Stack>
+                    <Stack horizontal>
+                        <PrimaryButton style={{ 'marginLeft': '2.5%', 'width': '45%', 'backgroundColor': '#4C4A48', boxShadow: Depths.depth4 }} text="Submit"
+                            onClick={() => setToggleSubmit(!toggleSubmit)} />
+                        <DefaultButton style={{ 'marginLeft': '5%', 'width': '45%', boxShadow: Depths.depth4 }} text="Preview"
+                            onClick={() => makePDF()} />
+                    </Stack>
+                </Stack>
             </Stack>
         </div>
     );
