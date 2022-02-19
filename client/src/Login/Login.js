@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { auth, provider } from "../FireBase";
 import { useNavigate } from "react-router-dom"
+import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUser, setLogin } from '../Store/actions';
 import Sp101 from '../Forms/Sp101';
@@ -38,13 +39,23 @@ const Login = () => {
         tertiaryText: 'Faculty',
     })
 
+    const postUser = async(data) =>{
+        try {
+            const res = await axios.post('http://localhost:8000/users', data);
+            console.log(res);
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+
     useEffect(() => {
 
         //auth.signOut();
 
-        auth.onAuthStateChanged((authUser) => {
+        auth.onAuthStateChanged(async (authUser) => {
             if (authUser) {
-                console.log(authUser);
+
                 dispatch(setUser({
                     uid: authUser.uid,
                     photo: authUser.photoURL,
@@ -57,14 +68,16 @@ const Login = () => {
                     text: authUser.displayName,
                     secondaryText: authUser.email
                 })
-                console.log(examplePersona);
+                const {email , displayName} = authUser
+                postUser({email , name:displayName});
 
             } else {
                 console.log(authUser);
                 dispatch(setUser(null));
                 dispatch(setLogin(false));
             }
-        });
+        })
+        ;
 
 
     }, [])

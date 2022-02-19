@@ -1,10 +1,10 @@
 const http = require('http');
+const {pg} = require('./pg')
 const {app} = require('./app')
 const{ pool} = require('./db')
 
 const PORT = process.env.PORT || 8000;
 const server = http.createServer(app);
-
 
 async function startServer(){
 
