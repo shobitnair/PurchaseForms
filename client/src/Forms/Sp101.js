@@ -18,6 +18,18 @@ import {
 
 
 initializeIcons();
+
+const formatDate = (date) => {
+  if (!date)
+    return '';
+  const month = date.getMonth() + 1; // + 1 because 0 indicates the first Month of the Year.
+  const day = date.getDate();
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+};
+
+
 const stackTokens = { childrenGap: 20 };
 const stackStyles = { root: { width: "100%" } };
 const columnProps = {
@@ -38,17 +50,20 @@ const column3 = {
 };
 
 
-
-
 const modelProps = {
 	isBlocking: false,
-	styles: { main: { maxWidth: 450  } },
+	styles: { main: { maxWidth: 400 } },
 };
+
 const dialogContentProps = {
 	type: DialogType.largeHeader,
-	title: 'Add Items to the List',
+	title: 'Enter the details'
   
 };
+
+/**
+ * Different option sets for dropdown boxes
+ */
 const option1 = [
 	{ key: 'A', text: 'Yes' },
 	{ key: 'B', text: 'No' },
@@ -70,8 +85,13 @@ const option4 = [
 	{ key: 'B', text: 'LTA' },
 	{ key: 'C', text: 'Non-Consumables' },
 ];
+
+
 const Sp101 = () => {
 
+  /**
+   * Initial state of the form data
+   */
 	const init = {
 		name: null,
 		department: null,
@@ -95,22 +115,38 @@ const Sp101 = () => {
 		RMP: null,
 		DP: null,
 	};
+  
+  // data which manages form variable states
 	const [data, setData] = useState(init);
 	const [flag, setFlag] = useState(0);
 
 
 	const onSubmit = () => {
-		const isEmpty = Object.values(data).some(x => x === [] || x === null || x === '');
+		/*const isEmpty = Object.values(data).some(x => x === [] || x === null || x === '');
 		if (isEmpty) {
 			window.alert('Fill in all the details');
 			console.log(data);
 		}
 		else {
 			window.alert('Submitted', data);
-		}
+		}*/
+    console.log(data);
 	};
 
-	const addItem = () => {
+  /**
+   * Add items section
+   * 
+   * selection : Manages the array of items that are selected
+   * toggle : Manages state of  pop up window for adding an item
+   */
+  const [selection, setSelection] = useState(new Selection());
+	const [toggle, setToggle] = useState(true);
+
+	const _columns = [{ key: 'column1', name: 'Description', fieldName: 'Description', minWidth: 100, maxWidth: 200, isResizable: true },
+	{ key: 'column2', name: 'Quantity', fieldName: 'Quantity', minWidth: 75, maxWidth: 150, isResizable: true },
+	{ key: 'column3', name: 'Rate', fieldName: 'Rate', minWidth: 75, maxWidth: 150, isResizable: true }];
+
+  const addItem = () => {
 		let Description = document.getElementById("Description").value;
 		let Quantity = document.getElementById("Quantity").value;
 		let Rate = document.getElementById("Rate").value;
@@ -118,26 +154,10 @@ const Sp101 = () => {
 		setToggle(true);
 	};
 
-	const _columns = [{ key: 'column1', name: 'Description', fieldName: 'Description', minWidth: 100, maxWidth: 200, isResizable: true },
-	{ key: 'column2', name: 'Quantity', fieldName: 'Quantity', minWidth: 75, maxWidth: 150, isResizable: true },
-	{ key: 'column3', name: 'Rate', fieldName: 'Rate', minWidth: 75, maxWidth: 150, isResizable: true }];
-
-
-	const [selection, setSelection] = useState(new Selection());
-	const [toggle, setToggle] = useState(true);
-
-	const handleDelete = () => {
+  const handleDelete = () => {
 		setData({ ...data, items: data.items.filter(x => !selection.getSelection().includes(x)) });
 	};
-	const formatDate = (date) => {
-		if (!date)
-			return '';
-		const month = date.getMonth() + 1; // + 1 because 0 indicates the first Month of the Year.
-		const day = date.getDate();
-		const year = date.getFullYear();
 
-		return `${day}/${month}/${year}`;
-	};
 
 	useEffect(() => {
 		if (flag === 0) {
@@ -246,7 +266,7 @@ const Sp101 = () => {
 				<Stack {...column3} style={{ 'backgroundColor': '#faf9f8', boxShadow: Depths.depth8 }}>
 					<Label>Added Items</Label>
 					<div style={{
-						'height': '250px',
+						'height': '300px',
 						'overflow': 'scroll',
 						'border': '8px solid #f3f2f1'
 						, borderRadius: '2px', boxShadow: Depths.depth4
