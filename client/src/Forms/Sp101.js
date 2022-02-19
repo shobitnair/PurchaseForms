@@ -217,7 +217,7 @@ const Sp101 = () => {
             <TextField multiline rows={2}
               onChange={(e) => setData({ ...data, GEMdetails: e.target.value })} />
           </div>
-          <TextField label="Recommendations of the Indenter " multiline rows={3}
+          <TextField label="Recommendations of the Indenter " multiline rows={4}
             onChange={(e) => setData({ ...data, ROI: e.target.value })} />
           <Dropdown placeholder="Select an Option" options={option3} label="Mode of Enquiry"
             onChange={(e, i) => setData({ ...data, MOE: i.text })} />
@@ -250,16 +250,16 @@ const Sp101 = () => {
         <Stack {...column3} style={{ 'backgroundColor': '#faf9f8', boxShadow: Depths.depth8 }}>
           <Label>Added Items</Label>
           <div style={{
-            'height': '300px',
+            'height': '250px',
             'overflow': 'scroll',
-            'border': '5px solid #DEECF9'
+            'border': '8px solid #f3f2f1'
             , borderRadius: '2px', boxShadow: Depths.depth4
           }}>
             <DetailsList
               items={data.items}
               columns={_columns}
               selection={selection}
-              setKey={["key"]}
+              setKey={["key"]}  
             >
             </DetailsList>
           </div>
@@ -267,13 +267,13 @@ const Sp101 = () => {
             been purchased from a reliable supplier at a reasonable price.</MessageBar></div>
           <Label />
           <Stack horizontal>
-            <PrimaryButton style={{ 'marginLeft': '2.5%', 'width': '45%', 'backgroundColor': '#4C4A48' }} onClick={() => { setToggle(!toggle); }}
+            <PrimaryButton style={{ 'marginLeft': '2.5%', 'width': '45%', 'backgroundColor': '#4C4A48' , boxShadow: Depths.depth4 }} onClick={() => { setToggle(!toggle); }}
               text="Add Items  "> </PrimaryButton>
-            <DefaultButton style={{ 'marginLeft': '5%', 'width': '45%' }} text="Delete Selected" onClick={handleDelete} />
+            <DefaultButton style={{ 'marginLeft': '5%', 'width': '45%'  , boxShadow: Depths.depth4}} text="Delete Selected" onClick={handleDelete} />
           </Stack>
           <Stack horizontal>
-            <PrimaryButton style={{ 'marginLeft': '2.5%', 'width': '45%', 'backgroundColor': '#4C4A48' }} text="Submit" onClick={onSubmit} />
-            <DefaultButton style={{ 'marginLeft': '5%', 'width': '45%' }} text="Reset" onClick={() => setData(init)} />
+            <PrimaryButton style={{ 'marginLeft': '2.5%', 'width': '45%', 'backgroundColor': '#4C4A48' , boxShadow: Depths.depth4 }} text="Submit" onClick={onSubmit} />
+            <DefaultButton style={{ 'marginLeft': '5%', 'width': '45%' , boxShadow: Depths.depth4 }} text="Reset" onClick={() => setData(init)} />
           </Stack>
 
 
