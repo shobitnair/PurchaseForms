@@ -12,7 +12,7 @@ import DBMS from './DBMS'
 
 const App = () => {
   return (
-    <div>
+    <div >
       <Provider store={store}>
         <Router>
           <Routes>

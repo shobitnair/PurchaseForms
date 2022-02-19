@@ -7,7 +7,6 @@ const { pool } = require('./db');
 const app = express();
 
 
-
 //middlewares
 app.use(cors({
     origin: 'http://localhost:3000'
@@ -28,6 +27,8 @@ app.post("/todos", async (req, res) => {
         return res.status(404).json(error);
     }
 })
+
+
 
 //get all
 app.get("/todos", async (req, res) => {

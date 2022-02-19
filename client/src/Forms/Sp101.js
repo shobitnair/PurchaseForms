@@ -11,24 +11,34 @@ import {
   DialogFooter,
   DatePicker,
   initializeIcons,
-  MessageBar , MessageBarType
+  MessageBar,
+  Depths
 } from '@fluentui/react';
+
+
 
 initializeIcons();
 const stackTokens = { childrenGap: 20 };
 const stackStyles = { root: { width: "100%" } };
 const columnProps = {
   tokens: { childrenGap: 8 },
-  styles: { root: { width: "700px", padding: "20px" } },
+  styles: { root: { width: "1000px", padding: "20px" } },
 };
 const column1 = {
   tokens: { childrenGap: 10 },
-  styles: { root: { width: "30%", padding: "20px" } },
+  styles: { root: { width: "33%", padding: "20px" } },
 };
 const column2 = {
   tokens: { childrenGap: 8 },
-  styles: { root: { width: "40%", padding: "20px" } },
+  styles: { root: { width: "33%", padding: "20px" } },
 };
+const column3 = {
+  tokens: { childrenGap: 8 },
+  styles: { root: { width: "34%", padding: "20px" } },
+};
+
+
+
 
 const modelProps = {
   isBlocking: false,
@@ -138,7 +148,7 @@ const Sp101 = () => {
   }, []);
 
   return (
-    <div>
+    <div >
 
       <Dialog
         hidden={toggle}
@@ -157,24 +167,25 @@ const Sp101 = () => {
 
 
       <Stack horizontal tokens={stackTokens} styles={stackStyles}>
-        <Stack {...column1} style={{ 'backgroundColor': '#EFF6FC' }}>
+        <Stack {...column1} style={{ 'backgroundColor': '#faf9f8', boxShadow: Depths.depth8 }}>
           <TextField label="Name" value={data.name}
             onChange={(e) => setData({ ...data, name: e.target.value })} />
           <TextField label="Department" value={data.department}
             onChange={(e) => setData({ ...data, department: e.target.value })} />
           <Stack horizontal tokens={stackTokens}>
-            <TextField label="Budget Head" value={data.budgetHead} styles={{root:{width:'50%'}}}
+            <TextField label="Budget Head" value={data.budgetHead} styles={{ root: { width: '50%' } }}
               onChange={(e) => setData({ ...data, budgetHead: e.target.value })} />
-            <TextField label="Sanctioned Budget" value={data.budgetSanction} styles={{root:{width:'50%'}}}
+            <TextField label="Sanctioned Budget" value={data.budgetSanction} styles={{ root: { width: '50%' } }}
               onChange={(e) => setData({ ...data, budgetSanction: e.target.value })} />
           </Stack>
           <Stack horizontal tokens={stackTokens}>
             <TextField label="Item Name"
-              placeholder="write 'MANY' if > 1" styles={{root:{width:'50%'}}}
+              placeholder="write 'MANY' if > 1" styles={{ root: { width: '50%' } }}
               onChange={(e) => setData({ ...data, itemName: e.target.value })} />
-            <TextField label="Approximate Cost" styles={{root:{width:'50%'}}}
+            <TextField label="Approximate Cost" styles={{ root: { width: '50%' } }}
               onChange={(e) => setData({ ...data, approxCost: e.target.value })} />
           </Stack>
+
 
           <Dropdown placeholder="Select an Option" options={option4} label="Category"
             onChange={(e, i) => setData({ ...data, category: i.text })} />
@@ -188,22 +199,23 @@ const Sp101 = () => {
           <Dropdown placeholder="Select an Option" options={option1}
             label="Are the goods for Research Purpose "
             onChange={(e, i) => setData({ ...data, GRP: i.text })} />
-            <MessageBar >
+          <div style={{ boxShadow: Depths.depth4 }}><MessageBar >
             If required for Research Purpose then Certificate for claiming concessional GST under notification no. 45/2017
             & 47/2017: Certified that purchase of above goods for which concessional GST is claimed is required for research
             purpose only
-            </MessageBar>
+          </MessageBar></div>
+
         </Stack>
 
 
-        <Stack {...column1} style={{ 'backgroundColor': '#EFF6FC' }}>
+        <Stack {...column2} style={{ 'backgroundColor': '#faf9f8', boxShadow: Depths.depth8 }}>
           <Dropdown placeholder="Select an Option" options={option1} label="GEM Purchase"
             onChange={(e, i) => setData({ ...data, GEM: i.text })} />
           <div>
-          <Label >Details of the item if available in GEM ,
-            Else mention the GeMAR & PTS ID</Label>
-          <TextField multiline rows={2}
-            onChange={(e) => setData({ ...data, GEMdetails: e.target.value })} />
+            <Label >Details of the item if available in GEM ,
+              Else mention the GeMAR & PTS ID</Label>
+            <TextField multiline rows={2}
+              onChange={(e) => setData({ ...data, GEMdetails: e.target.value })} />
           </div>
           <TextField label="Recommendations of the Indenter " multiline rows={3}
             onChange={(e) => setData({ ...data, ROI: e.target.value })} />
@@ -212,9 +224,9 @@ const Sp101 = () => {
           <TextField label="Number of Quotations Received"
             onChange={(e) => setData({ ...data, NOQ: e.target.value })} />
           <Stack horizontal tokens={stackTokens}>
-            <TextField label="Purchased from M/s" styles={{root:{width:'50%'}}}
+            <TextField label="Purchased from M/s" styles={{ root: { width: '50%' } }}
               onChange={(e) => setData({ ...data, PurchasedFrom: e.target.value })} />
-            <TextField label="Quotation Number" styles={{root:{width:'50%'}}}
+            <TextField label="Quotation Number" styles={{ root: { width: '50%' } }}
               onChange={(e) => setData({ ...data, Qno: e.target.value })} />
           </Stack>
           <DatePicker
@@ -222,24 +234,28 @@ const Sp101 = () => {
             label="Date of purchase"
             onSelectDate={(e) => setData({ ...data, DOP: formatDate(e) })} />
 
-        
 
-          <Stack horizontal tokens={stackTokens}>
-          <TextField label="Required mode of payment"
-          styles={{root:{width:'50%'}}}
-            onChange={(e) => setData({ ...data, RMP: e.target.value })} />
-          <TextField label="Delivery Period"
-          styles={{root:{width:'50%'}}}
-            onChange={(e) => setData({ ...data, DP: e.target.value })} />
+
+          <Stack horizontal tokens={stackTokens} >
+            <TextField label="Required mode of payment"
+              styles={{ root: { width: '50%', } }}
+              onChange={(e) => setData({ ...data, RMP: e.target.value })} />
+            <TextField label="Delivery Period"
+              styles={{ root: { width: '50%' } }}
+              onChange={(e) => setData({ ...data, DP: e.target.value })} />
           </Stack>
         </Stack>
 
 
-        <Stack {...column2} style={{ 'backgroundColor': '#EFF6FC' }}>
+        <Stack {...column3} style={{ 'backgroundColor': '#faf9f8', boxShadow: Depths.depth8 }}>
           <Label>Added Items</Label>
-          <div style={{ 'height': '300px', 'overflow': 'scroll' }}>
+          <div style={{
+            'height': '300px',
+            'overflow': 'scroll',
+            'border': '5px solid #DEECF9'
+            , borderRadius: '2px', boxShadow: Depths.depth4
+          }}>
             <DetailsList
-
               items={data.items}
               columns={_columns}
               selection={selection}
@@ -247,16 +263,16 @@ const Sp101 = () => {
             >
             </DetailsList>
           </div>
-          <MessageBar>I am personally satisfied that these goods purchased are of the requisite quality and specification and have
-been purchased from a reliable supplier at a reasonable price.</MessageBar>
+          <div style={{ boxShadow: Depths.depth4 }}><MessageBar>I am personally satisfied that these goods purchased are of the requisite quality and specification and have
+            been purchased from a reliable supplier at a reasonable price.</MessageBar></div>
           <Label />
           <Stack horizontal>
-            <PrimaryButton style={{ 'marginLeft': '2.5%', 'width': '45%', }} onClick={() => { setToggle(!toggle); }}
+            <PrimaryButton style={{ 'marginLeft': '2.5%', 'width': '45%', 'backgroundColor': '#4C4A48' }} onClick={() => { setToggle(!toggle); }}
               text="Add Items  "> </PrimaryButton>
-            <DefaultButton style={{ 'marginLeft': '5%', 'width': '45%'}} text="Delete Selected" onClick={handleDelete} />
+            <DefaultButton style={{ 'marginLeft': '5%', 'width': '45%' }} text="Delete Selected" onClick={handleDelete} />
           </Stack>
           <Stack horizontal>
-            <PrimaryButton style={{ 'marginLeft': '2.5%', 'width': '45%', 'backgroundColor':'#0078d7' }} text="Submit" onClick={onSubmit} />
+            <PrimaryButton style={{ 'marginLeft': '2.5%', 'width': '45%', 'backgroundColor': '#4C4A48' }} text="Submit" onClick={onSubmit} />
             <DefaultButton style={{ 'marginLeft': '5%', 'width': '45%' }} text="Reset" onClick={() => setData(init)} />
           </Stack>
 
