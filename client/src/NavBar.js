@@ -6,30 +6,50 @@ import { CommandBar  } from '@fluentui/react';
 
 const NavBar = () => {
     const nav = useNavigate();
-    const _farItems = []
     const itemStyles = {
         label: { fontSize: 18},
         icon: {fontSize : 24 , color:'black'},
-        root: {padding: 10}
+        root: {padding: 5 , marginLeft: 5}
     }
+
+    const _farItems = [
+        {
+            key:'aboutus',
+            text:'About Us',
+            iconProps: { iconName : 'UserOptional'},
+            buttonStyles: itemStyles,
+        },
+        {
+            key:'help',
+            text:'Help',
+            iconProps: { iconName : 'Error'},
+            buttonStyles: itemStyles,
+        },
+    ]
+    
     const _items = [
         { 
-            text: 'Login', 
-            iconProps: { iconName: 'UserFollowed' },
+            key:'dashboard',
+            text: 'DashBoard', 
+            iconProps: { iconName: 'ViewDashboard' },
             buttonStyles : itemStyles,
             onClick: ()=>nav('/')
         },
         {   
+            key:'newform',
             text: 'New Form', 
             iconProps: { iconName: 'AddToShoppingList' }, 
             buttonStyles : itemStyles,
             onClick: ()=>nav('/forms')
         },
         {
+            key:'subform',
             text:'Submitted Forms',
-            iconProps: { iconName : 'WorkFlow'},
+            iconProps: { iconName : 'AllApps'},
             buttonStyles: itemStyles,
-        }
+        },
+        
+
     ]
     
 

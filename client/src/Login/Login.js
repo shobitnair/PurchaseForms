@@ -36,7 +36,7 @@ const Login = () => {
         imageUrl: '',
         text: '',
         secondaryText: '',
-        tertiaryText: 'Faculty',
+        tertiaryText: '',
     })
 
     const postUser = async(data) =>{
@@ -56,20 +56,19 @@ const Login = () => {
         auth.onAuthStateChanged(async (authUser) => {
             if (authUser) {
 
-                dispatch(setUser({
+                await dispatch(setUser({
                     uid: authUser.uid,
                     photo: authUser.photoURL,
                     email: authUser.email,
                     displayName: authUser.displayName,
                 }));
 
-                setPersona({
+                await setPersona({
                     ...examplePersona,
                     imageUrl: authUser.photoURL,
                     text: authUser.displayName,
                     secondaryText: authUser.email
                 })
-                
                 const {email , displayName} = authUser
                 postUser({email , name:displayName});
 
@@ -95,11 +94,6 @@ const Login = () => {
                         <Persona
                             {...examplePersona}
                             size={PersonaSize.size72} />
-                        <Label/>
-                        <Label>Purchase Forms</Label>
-                        <DefaultButton 
-                        style={{'width':'150px'}}
-                        text="SP-101" onClick={() => navigate("/sp101")} />
                     </Stack>
                 </Stack>
             )}

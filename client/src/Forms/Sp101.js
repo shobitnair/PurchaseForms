@@ -17,6 +17,7 @@ import {
 import axios from 'axios';
 import { LoginCheck } from '../Login/LoginCheck';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router';
 
 initializeIcons();
 
@@ -82,6 +83,7 @@ const option4 = [
 const Sp101 = () => {
     const state = useSelector(state => state);
     const dispatch = useDispatch();
+    const nav = useNavigate();
     /**
     * Initial state of the form data
     */
@@ -135,12 +137,17 @@ const Sp101 = () => {
     *  Manages the pop up toggle states
     */
     const onSubmit = async () => {
-
-        // Form validation here.
-
-        await postForm();
-        setToggleSubmit(!toggleSubmit);
-        console.log(data);
+                // Form validation here.
+        if(state.user == null){
+            setToggleSubmit(!toggleSubmit);
+            window.alert("Login using google before submitting a form.")
+            nav('/');
+        }
+        else{
+            await postForm();
+            setToggleSubmit(!toggleSubmit);
+            console.log(data);
+        }
     };
 
     /**
@@ -208,7 +215,7 @@ const Sp101 = () => {
         )
     }
 
-    
+
 
 
     const SubmitPopUp = () => {
