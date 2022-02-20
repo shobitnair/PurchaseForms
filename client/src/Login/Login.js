@@ -62,12 +62,14 @@ const Login = () => {
                     email: authUser.email,
                     displayName: authUser.displayName,
                 }));
+
                 setPersona({
                     ...examplePersona,
                     imageUrl: authUser.photoURL,
                     text: authUser.displayName,
                     secondaryText: authUser.email
                 })
+                
                 const {email , displayName} = authUser
                 postUser({email , name:displayName});
 

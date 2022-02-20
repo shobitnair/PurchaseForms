@@ -120,7 +120,8 @@ const Sp101 = () => {
         try {
             const res = await axios.post('http://localhost:8000/sp101', {
                 email: state.user.email,
-                data: JSON.stringify(data)
+                data: JSON.stringify(data),
+                status:'pending'
             });
             console.log(res);
         }
@@ -206,6 +207,8 @@ const Sp101 = () => {
             </Dialog>
         )
     }
+
+    
 
 
     const SubmitPopUp = () => {
