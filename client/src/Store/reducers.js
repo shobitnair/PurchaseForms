@@ -3,6 +3,7 @@ const initialState = {
     log:false
 }
 
+
 export const reducer = (state = initialState , action) =>{
     switch(action.type){
         case 'SET_USER':
@@ -19,3 +20,4 @@ export const reducer = (state = initialState , action) =>{
             return state
     }
 }
+

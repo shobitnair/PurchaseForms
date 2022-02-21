@@ -1,11 +1,15 @@
-import React from 'react'
-import {useNavigate } from 'react-router'
+import React, { useEffect } from 'react'
+import {useNavigate  , useLocation} from 'react-router'
 import { CommandBar  } from '@fluentui/react';
-
-
+import { LoginCheck } from './Login/LoginCheck';
+import { useSelector , useDispatch } from 'react-redux';
 
 const NavBar = () => {
     const nav = useNavigate();
+    const state = useSelector(state=>state);
+    const dispatch = useDispatch();
+    const loc = useLocation();
+
     const itemStyles = {
         label: { fontSize: 18},
         icon: {fontSize : 24 , color:'black'},
@@ -27,6 +31,7 @@ const NavBar = () => {
         },
     ]
     
+    
     const _items = [
         { 
             key:'dashboard',
@@ -47,13 +52,17 @@ const NavBar = () => {
             text:'Submitted Forms',
             iconProps: { iconName : 'AllApps'},
             buttonStyles: itemStyles,
+            onClick: ()=>nav('/forms/submitted')
         },
-        
-
     ]
-    
+
+    useEffect(()=>{
+        LoginCheck(dispatch);
+    } , [])
+
 
     return( 
+        
         <div>
             <CommandBar
                 items={_items}

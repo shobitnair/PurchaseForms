@@ -15,18 +15,16 @@ app.use(express.json());
 app.post('/sp101' , async(req,res)=>{
     try {
         console.log(req.body);
-        const {email , data , status} = req.body;
+        const {email , data} = req.body;
         let query = await pool.query(
-            "insert into sp101 (email , data , status) VALUES ($1,$2,$3) returning *",
-            [email , data , status]
+            "insert into sp101 (email , data) VALUES ($1,$2) returning *",
+            [email , data]
         )
         res.json({comment:'form submitted'});
     } catch (err) {
         console.log(err);
     }
 })
-
-
 
 app.post('/users' , async(req,res)=>{
     try {

@@ -185,11 +185,12 @@ const Sp101 = () => {
     * A preview PDF for personal verification
     */
     const makePDF = () => {
+        
         //MAKE PDF using state 'data'
     }
 
     useEffect(() => {
-        LoginCheck(dispatch);
+        
     }, []);
 
     const ItemPopUp = () => {
