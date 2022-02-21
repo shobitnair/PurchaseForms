@@ -122,12 +122,10 @@ const Sp101 = () => {
     */
     const postForm = async () => {
         try {
-            const d = new Date();
             const res = await axios.post(URL+'/sp101', {
                 email: state.user.email,
                 data: JSON.stringify(data),
-                status:'pending',
-                date: new Date()
+                status:"pending"
             });
             console.log(res);
         }
