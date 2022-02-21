@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setUser, setLogin } from '../Store/actions';
 import Sp101 from '../Forms/Sp101';
 import { DefaultButton, Persona, PersonaSize, Stack , Label } from '@fluentui/react';
+import { URL } from '../cred';
 
 const stackTokens = { childrenGap: 50 };
 const stackStyles = { root: { width: "400px" } };
@@ -42,7 +43,7 @@ const Login = () => {
 
     const postUser = async(data) =>{
         try {
-            const res = await axios.post('http://localhost:8000/users', data);
+            const res = await axios.post(URL+'/users', data);
             console.log(res);
         }
         catch (err) {

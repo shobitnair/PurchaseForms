@@ -18,6 +18,7 @@ import axios from 'axios';
 import { LoginCheck } from '../Login/LoginCheck';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
+import {URL} from '../cred';
 
 initializeIcons();
 
@@ -122,7 +123,7 @@ const Sp101 = () => {
     const postForm = async () => {
         try {
             const d = new Date();
-            const res = await axios.post('http://localhost:8000/sp101', {
+            const res = await axios.post(URL+'/sp101', {
                 email: state.user.email,
                 data: JSON.stringify(data),
                 status:'pending',
