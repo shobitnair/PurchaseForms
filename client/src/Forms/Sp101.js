@@ -22,6 +22,7 @@ import { useNavigate } from 'react-router';
 initializeIcons();
 
 const formatDate = (date) => {
+    console.log(date);
     if (!date)
         return '';
     const month = date.getMonth() + 1; // + 1 because 0 indicates the first Month of the Year.
@@ -120,10 +121,12 @@ const Sp101 = () => {
     */
     const postForm = async () => {
         try {
+            const d = new Date();
             const res = await axios.post('http://localhost:8000/sp101', {
                 email: state.user.email,
                 data: JSON.stringify(data),
-                status:'pending'
+                status:'pending',
+                date: new Date()
             });
             console.log(res);
         }
