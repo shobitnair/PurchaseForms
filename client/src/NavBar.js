@@ -44,9 +44,11 @@ const NavBar = () => {
 
 
     const itemStyles = {
-        label: { fontSize: 16 },
-        icon: {fontSize : 22 , color:'black'},
-        root: {padding: 5 , marginLeft: 10 , boxShadow:Depths.depth4 , borderRadius:5 }
+        label: { fontSize: 14 , fontWeight:500 },
+        icon: {fontSize : 24 , color:'black'},
+        root: {padding: 5 , marginLeft: 5 , marginRight:5 , boxShadow:Depths.depth4 , borderRadius:5 },
+        iconHovered:{color:'#038387'},
+        labelHovered:{color:'#038387'}
     }
 
     const _farItems = [
@@ -66,8 +68,14 @@ const NavBar = () => {
             key:'log',
             text:(!state.user)?"Login":"Logout" , 
             iconProps: { iconName : (!state.user)?'UserFollowed':'UserRemove'},
-            buttonStyles: itemStyles,
-            onClick:(!state.user)? ()=>signin() : ()=>signOut()
+            buttonStyles: {
+                ...itemStyles , 
+                icon:{fontSize:22 , color:'white'} , 
+                iconHovered:{color:(!state.user)?'#004b1c':'#740912'},
+                labelHovered:{color:(!state.user)?'#004b1c':'#740912'}
+            },
+            style:{color:'white', backgroundColor:(!state.user)?'#4e9668':'#d83b01'},
+            onClick:(!state.user)? ()=>signin() : ()=>signOut(),
         }
     ]
     
@@ -122,9 +130,9 @@ const NavBar = () => {
                 items={_items}
                 farItems = {_farItems}
                 styles={{root:{
-                    backgroundColor:'#c8c6c4',
+                    backgroundColor:'#a19f9d',
                     padding:8,
-                    borderBottom:'5px solid #b3b0ad',
+                    borderBottom:'6px solid #8a8886',
                     borderRadius:5,
                     boxShadow:Depths.depth4
                 }}}
