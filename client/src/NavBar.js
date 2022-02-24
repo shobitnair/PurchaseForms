@@ -1,39 +1,14 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import {useNavigate  , useLocation} from 'react-router'
 import { CommandBar, Depths  } from '@fluentui/react';
-import { LoginCheck } from './Login/LoginCheck';
 import { useSelector , useDispatch } from 'react-redux';
-import {auth , provider} from './FireBase'
-import axios from 'axios';
-import { setUser } from './Store/actions';
-import { URL } from './cred';
+import {signin , signOut} from './Login/LoginContext'
+import { LoginContext } from './Login/LoginContext';
 
-/**
+/**     
  * signin , signout and Postuser are functions for google auth and database insertion 
  * of the corresponding user.
  */
-const signin = () => {
-    auth.signInWithPopup(provider)
-        .catch((error) => alert(error.message));
-};
-
-const signOut = () => {
-    auth.signOut(provider)
-        .catch((err) => {
-            alert(err.message);
-        });
-}
-
-const postUser = async(data) =>{
-    try {
-        const res = await axios.post(URL+'/users', data);
-        console.log(res);
-    }
-    catch (err) {
-        console.log(err);
-    }
-}
-
 
 
 const NavBar = () => {
@@ -41,7 +16,7 @@ const NavBar = () => {
     const state = useSelector(state=>state);
     const dispatch = useDispatch();
     const loc = useLocation();
-
+    const {user} = useContext(LoginContext);
 
     const itemStyles = {
         label: { fontSize: 14 , fontWeight:500 },
@@ -66,16 +41,16 @@ const NavBar = () => {
         },
         {
             key:'log',
-            text:(!state.user)?"Login":"Logout" , 
-            iconProps: { iconName : (!state.user)?'UserFollowed':'UserRemove'},
+            text:(!user)?"Login":"Logout" , 
+            iconProps: { iconName : (!user)?'UserFollowed':'UserRemove'},
             buttonStyles: {
                 ...itemStyles , 
                 icon:{fontSize:22 , color:'white'} , 
-                iconHovered:{color:(!state.user)?'#004b1c':'#740912'},
-                labelHovered:{color:(!state.user)?'#004b1c':'#740912'}
+                iconHovered:{color:(!user)?'#004b1c':'#740912'},
+                labelHovered:{color:(!user)?'#004b1c':'#740912'}
             },
-            style:{color:'white', backgroundColor:(!state.user)?'#4e9668':'#d83b01'},
-            onClick:(!state.user)? ()=>signin() : ()=>signOut(),
+            style:{color:'white', backgroundColor:(!user)?'#4e9668':'#d83b01'},
+            onClick:(!user)? ()=>signin() : ()=>signOut(),
         }
     ]
     
@@ -105,21 +80,7 @@ const NavBar = () => {
     ]
 
     useEffect(()=>{
-        auth.onAuthStateChanged(async(authUser)=>{
-            if(authUser){
-                dispatch(setUser({
-                    uid: authUser.uid,
-                    photo: authUser.photoURL,
-                    email: authUser.email,
-                    displayName: authUser.displayName,
-                }));
-                const {email , displayName} = authUser
-                postUser({email , name:displayName});
-            }
-            else{
-                dispatch(setUser(null));
-            }
-        })
+        
     } , [])
 
 

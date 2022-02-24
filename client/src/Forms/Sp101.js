@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState , useContext } from 'react';
 import {
     TextField,
     Stack,
@@ -15,10 +15,9 @@ import {
     Depths
 } from '@fluentui/react';
 import axios from 'axios';
-import { LoginCheck } from '../Login/LoginCheck';
-import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import {URL} from '../cred';
+import {LoginContext} from '../Login/LoginContext'
 
 initializeIcons();
 
@@ -83,8 +82,7 @@ const option4 = [
 
 
 const Sp101 = () => {
-    const state = useSelector(state => state);
-    const dispatch = useDispatch();
+    const {user} = useContext(LoginContext)
     const nav = useNavigate();
     /**
     * Initial state of the form data
@@ -123,7 +121,7 @@ const Sp101 = () => {
     const postForm = async () => {
         try {
             const res = await axios.post(URL+'/sp101', {
-                email: state.user.email,
+                email: user.email,
                 data: JSON.stringify(data),
                 status:"pending"
             });
@@ -140,7 +138,7 @@ const Sp101 = () => {
     */
     const onSubmit = async () => {
                 // Form validation here.
-        if(state.user == null){
+        if(user == null){
             setToggleSubmit(!toggleSubmit);
             window.alert("Login using google before submitting a form.")
             nav('/');

@@ -14,10 +14,12 @@ import NavBar from './NavBar';
 import Forms from './Forms/Forms';
 import Dashboard from './Login/Dashboard'
 
+import { LoginProvider } from './Login/LoginContext';
 
 const App = () => {
   return (
     <div >
+      <LoginProvider>
       <Provider store={store}>
         <Router>
         <NavBar/>
@@ -28,6 +30,7 @@ const App = () => {
           </Routes>
         </Router>
       </Provider>
+      </LoginProvider>
     </div>
   )
 }

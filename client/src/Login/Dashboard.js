@@ -1,21 +1,17 @@
 
-import React, { useEffect, useState } from 'react'
-import { auth, provider } from "../FireBase";
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom"
-import axios from 'axios';
-import { useSelector, useDispatch } from 'react-redux';
-import { setUser, setLogin } from '../Store/actions';
-import Sp101 from '../Forms/Sp101';
 import { DefaultButton, Persona, PersonaSize, Stack , Label  , Depths} from '@fluentui/react';
-import { URL } from '../cred';
 import './login.css'
+import { LoginContext } from './LoginContext';
 
 const stackTokens = { childrenGap: 50 };
 const stackStyles = { root: { 
     width: "370px" , 
     margin:10, 
     boxShadow:Depths.depth4 ,
-    backgroundColor:'#faf9f8'
+    backgroundColor:'#e1dfdd',
+    borderRadius:5
 } };
 const columnProps = {
   tokens: { childrenGap: 15 },
@@ -24,35 +20,49 @@ const columnProps = {
 
 const Dashboard = () => {
     const navigate = useNavigate();
-    const state = useSelector(state => state);
-    const dispatch = useDispatch();
-    const [examplePersona, setPersona] = useState({text:'Please Login'})
+    const {user} = useContext(LoginContext)
+    const [examplePersona, setPersona] = useState(null)
+    
+    const PersonDetails = () =>{
+        return(<Persona
+            {...examplePersona}
+            showUnknownPersonaCoin={!user}
+            size={PersonaSize.size72}
+            styles ={{
+                primaryText:{
+                    fontWeight:600 , 
+                    fontFamily:'monospace'
+                } , 
+                secondaryText:{
+                    fontWeight:600 , 
+                    fontFamily:'monospace'
+                } ,
+                root:{
+                    backgroundColor:'#edebe9'
+                }
+            }} 
+            />)
+    }
 
     useEffect(() => {
-        auth.onAuthStateChanged(async (authUser) => {
-            if (authUser) {
-                setPersona({
-                    ...examplePersona,
-                    imageUrl: authUser.photoURL,
-                    text: authUser.displayName,
-                    secondaryText: authUser.email
-                })
-            } else {
-                console.log(authUser);
-                setPersona({text:'Please Login'});
-            }
-        })
-    }, [])
+        if(user){
+            setPersona({
+                ...examplePersona,
+                imageUrl: user.photo,
+                primaryText: user.name,
+                secondaryText: user.email,
+            })
+        }
+        else{
+            setPersona({})
+        }
+    }, [user])
     
     return (
         <div>
             <Stack horizontal tokens={stackTokens} styles={stackStyles}>
                 <Stack {...columnProps} >
-                    <Persona
-                        {...examplePersona}
-                        showUnknownPersonaCoin={!state.user}
-                        size={PersonaSize.size72} 
-                        />
+                    <PersonDetails/>
                 </Stack>
             </Stack>
         </div>
