@@ -2,16 +2,15 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom"
 import { DefaultButton, Persona, PersonaSize, Stack , Label  , Depths} from '@fluentui/react';
-import './login.css'
 import { LoginContext } from './LoginContext';
 
 const stackTokens = { childrenGap: 50 };
 const stackStyles = { root: { 
     width: "370px" , 
     margin:10, 
-    boxShadow:Depths.depth4 ,
-    backgroundColor:'#e1dfdd',
-    borderRadius:5
+    boxShadow:Depths.depth8 ,
+    backgroundColor:'#f3f2f1',
+    borderRadius:3 
 } };
 const columnProps = {
   tokens: { childrenGap: 15 },
@@ -30,15 +29,13 @@ const Dashboard = () => {
             size={PersonaSize.size72}
             styles ={{
                 primaryText:{
-                    fontWeight:600 , 
-                    fontFamily:'monospace'
+                    fontSize:22
                 } , 
-                secondaryText:{
-                    fontWeight:600 , 
-                    fontFamily:'monospace'
+                secondaryText:{ 
+                    fontFamily:'jetbrains mono'
                 } ,
                 root:{
-                    backgroundColor:'#edebe9'
+                    backgroundColor:'#f3f2f1',
                 }
             }} 
             />)
@@ -54,7 +51,7 @@ const Dashboard = () => {
             })
         }
         else{
-            setPersona({})
+            setPersona({primaryText: 'Please Login',})
         }
     }, [user])
     

@@ -22,8 +22,8 @@ const NavBar = () => {
         label: { fontSize: 14 , fontWeight:500 },
         icon: {fontSize : 24 , color:'black'},
         root: {padding: 5 , marginLeft: 5 , marginRight:5 , boxShadow:Depths.depth4 , borderRadius:5 },
-        iconHovered:{color:'#038387'},
-        labelHovered:{color:'#038387'}
+        iconHovered:{color:'#0078d4'},
+        labelHovered:{color:'#0078d4'}
     }
 
     const _farItems = [
