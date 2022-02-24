@@ -1,8 +1,40 @@
 import React, { useEffect } from 'react'
 import {useNavigate  , useLocation} from 'react-router'
-import { CommandBar  } from '@fluentui/react';
+import { CommandBar, Depths  } from '@fluentui/react';
 import { LoginCheck } from './Login/LoginCheck';
 import { useSelector , useDispatch } from 'react-redux';
+import {auth , provider} from './FireBase'
+import axios from 'axios';
+import { setUser } from './Store/actions';
+import { URL } from './cred';
+
+/**
+ * signin , signout and Postuser are functions for google auth and database insertion 
+ * of the corresponding user.
+ */
+const signin = () => {
+    auth.signInWithPopup(provider)
+        .catch((error) => alert(error.message));
+};
+
+const signOut = () => {
+    auth.signOut(provider)
+        .catch((err) => {
+            alert(err.message);
+        });
+}
+
+const postUser = async(data) =>{
+    try {
+        const res = await axios.post(URL+'/users', data);
+        console.log(res);
+    }
+    catch (err) {
+        console.log(err);
+    }
+}
+
+
 
 const NavBar = () => {
     const nav = useNavigate();
@@ -10,10 +42,11 @@ const NavBar = () => {
     const dispatch = useDispatch();
     const loc = useLocation();
 
+
     const itemStyles = {
-        label: { fontSize: 18},
-        icon: {fontSize : 24 , color:'black'},
-        root: {padding: 5 , marginLeft: 5}
+        label: { fontSize: 16 },
+        icon: {fontSize : 22 , color:'black'},
+        root: {padding: 5 , marginLeft: 10 , boxShadow:Depths.depth4 , borderRadius:5 }
     }
 
     const _farItems = [
@@ -29,6 +62,13 @@ const NavBar = () => {
             iconProps: { iconName : 'Error'},
             buttonStyles: itemStyles,
         },
+        {
+            key:'log',
+            text:(!state.user)?"Login":"Logout" , 
+            iconProps: { iconName : (!state.user)?'UserFollowed':'UserRemove'},
+            buttonStyles: itemStyles,
+            onClick:(!state.user)? ()=>signin() : ()=>signOut()
+        }
     ]
     
     
@@ -57,7 +97,21 @@ const NavBar = () => {
     ]
 
     useEffect(()=>{
-        LoginCheck(dispatch);
+        auth.onAuthStateChanged(async(authUser)=>{
+            if(authUser){
+                dispatch(setUser({
+                    uid: authUser.uid,
+                    photo: authUser.photoURL,
+                    email: authUser.email,
+                    displayName: authUser.displayName,
+                }));
+                const {email , displayName} = authUser
+                postUser({email , name:displayName});
+            }
+            else{
+                dispatch(setUser(null));
+            }
+        })
     } , [])
 
 
@@ -67,6 +121,13 @@ const NavBar = () => {
             <CommandBar
                 items={_items}
                 farItems = {_farItems}
+                styles={{root:{
+                    backgroundColor:'#c8c6c4',
+                    padding:8,
+                    borderBottom:'5px solid #b3b0ad',
+                    borderRadius:5,
+                    boxShadow:Depths.depth4
+                }}}
             />
         </div>
     )
