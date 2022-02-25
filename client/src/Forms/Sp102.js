@@ -232,7 +232,7 @@ const Sp102 = () => {
   };
 
   const postForm = async () => {
-    const res = await axios.post(URL+'/forms_submitted', {
+    const res = await axios.post(URL+'/forms', {
         type:'sp102',
         email: user.email,
         data: JSON.stringify(data),

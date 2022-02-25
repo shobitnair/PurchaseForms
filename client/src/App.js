@@ -15,6 +15,7 @@ import Forms from './Forms/Forms';
 import Dashboard from './Login/Dashboard'
 
 import { LoginProvider } from './Login/LoginContext';
+import SubmittedForms from './Forms/SubmittedForms';
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
             <Route exact path="/forms/sp101" element={<Sp101/>} />
             <Route exact path='/forms' element = {<Forms/>} />
             <Route exact path="/forms/sp102" element={<Sp102/>} />
+            <Route exact path="/forms/submitted" element={<SubmittedForms/>} />
           </Routes>
         </Router>
       </Provider>

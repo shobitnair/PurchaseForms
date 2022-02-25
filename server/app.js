@@ -12,11 +12,20 @@ app.use(cors({
 }))
 app.use(express.json());
 
-app.post('/forms_submitted' , async(req,res)=>{
+app.get('/forms/:email' , async(req,res) =>{
+    try {
+        let query = await pool.query('select * from forms where email = $1 order by id desc'  , [req.params.email])
+        res.json(query.rows);
+    } catch (error) {
+        res.status(404).json(error)
+    }
+})
+
+app.post('/forms' , async(req,res)=>{
     try {
         const {type , email , data , status} = req.body;
         let query = await pool.query(
-            `insert into forms_submitted (type,email , data , status) VALUES ($1,$2,$3,$4) returning *`,
+            `insert into forms (type,email , data , status) VALUES ($1,$2,$3,$4) returning *`,
             [type,email , data , status]
         )
         res.json({comment:'form submitted with id as '+ query.rows[0].id});
