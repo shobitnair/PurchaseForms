@@ -69,7 +69,7 @@ const NavBar = () => {
         },
         {
             key:'subform',
-            text:'My Forms',
+            text:'Submitted Forms',
             iconProps: { iconName : 'AllApps'},
             buttonStyles: itemStyles,
             onClick: ()=>nav('/forms/submitted')
@@ -88,10 +88,10 @@ const NavBar = () => {
                 items={_items}
                 farItems = {_farItems}
                 styles={{root:{
-                    backgroundColor:'#a19f9d',
+                    backgroundColor:'#484644',
                     padding:8,
-                    borderBottom:'6px solid #8a8886',
-                    borderRadius:5,
+                    borderBottom:'6px solid #605e5c',
+                    height:70,
                     boxShadow:Depths.depth4
                 }}}
             />

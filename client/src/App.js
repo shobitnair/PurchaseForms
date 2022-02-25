@@ -13,13 +13,14 @@ import Sp102 from './Forms/Sp102';
 import NavBar from './NavBar';
 import Forms from './Forms/Forms';
 import Dashboard from './Login/Dashboard'
-
 import { LoginProvider } from './Login/LoginContext';
 import SubmittedForms from './Forms/SubmittedForms';
+import { ChakraProvider } from '@chakra-ui/react'
 
 const App = () => {
   return (
     <div >
+      <ChakraProvider>
       <LoginProvider>
       <Provider store={store}>
         <Router>
@@ -34,6 +35,7 @@ const App = () => {
         </Router>
       </Provider>
       </LoginProvider>
+      </ChakraProvider>
     </div>
   )
 }

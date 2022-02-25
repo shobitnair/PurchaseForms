@@ -1,10 +1,10 @@
 
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom"
-import { DefaultButton, Persona, PersonaSize, Stack , Label  , Depths} from '@fluentui/react';
+import { DefaultButton, Persona, PersonaSize, Stack , Label  , Depths, Separator} from '@fluentui/react';
 import { LoginContext } from './LoginContext';
 
-const stackTokens = { childrenGap: 50 };
+const stackTokens = { childrenGap: 20 };
 const stackStyles = { root: { 
     width: "370px" , 
     margin:10, 
@@ -35,7 +35,7 @@ const Dashboard = () => {
                     fontFamily:'jetbrains mono'
                 } ,
                 root:{
-                    backgroundColor:'#f3f2f1',
+                    backgroundColor:'#faf9f8',
                 }
             }} 
             />)
@@ -56,13 +56,13 @@ const Dashboard = () => {
     }, [user])
     
     return (
-        <div>
+        <Stack vertical>
             <Stack horizontal tokens={stackTokens} styles={stackStyles}>
-                <Stack {...columnProps} >
+                <Stack vertical {...columnProps} >
                     <PersonDetails/>
                 </Stack>
             </Stack>
-        </div>
+        </Stack>
     )
 }
 

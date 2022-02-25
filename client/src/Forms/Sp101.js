@@ -250,7 +250,7 @@ const Sp101 = () => {
                 {/**
                  *  COlUMN1 of the form
                  */}
-                <Stack {...column1} style={{ 'backgroundColor': '#faf9f8', boxShadow: Depths.depth64 }}>
+                <Stack {...column1} style={{ 'backgroundColor': '#faf9f8', boxShadow: Depths.depth16 }}>
                     <TextField label="Name" value={data.name}
                         onChange={(e) => setData({ ...data, name: e.target.value })} />
                     <TextField label="Department" value={data.department}
@@ -288,7 +288,7 @@ const Sp101 = () => {
                 {/**
                  *  COlUMN2 of the form
                  */}
-                <Stack {...column2} style={{ 'backgroundColor': '#faf9f8', boxShadow: Depths.depth64 }}>
+                <Stack {...column2} style={{ 'backgroundColor': '#faf9f8', boxShadow: Depths.depth16 }}>
                     <Dropdown placeholder="Select an Option" options={option1} label="GEM Purchase"
                         onChange={(e, i) => setData({ ...data, GEM: i.text })} />
                     <div>
@@ -325,7 +325,7 @@ const Sp101 = () => {
                 {/**
                  *  COlUMN3 of the form
                  */}
-                <Stack {...column3} style={{ 'backgroundColor': '#faf9f8', boxShadow: Depths.depth64 }}>
+                <Stack {...column3} style={{ 'backgroundColor': '#faf9f8', boxShadow: Depths.depth16 }}>
                     <Label>Added Items</Label>
                     <div style={{
                         'height': '300px',
