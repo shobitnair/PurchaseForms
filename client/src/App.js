@@ -10,6 +10,7 @@ import {
   useNavigate
 } from "react-router";
 import Sp101 from './Forms/Sp101';
+import Sp102 from './Forms/Sp102';
 import NavBar from './NavBar';
 import Forms from './Forms/Forms';
 import Dashboard from './Login/Dashboard'
@@ -27,6 +28,7 @@ const App = () => {
             <Route exact path="/" element={<Dashboard/>} />
             <Route exact path="/forms/sp101" element={<Sp101/>} />
             <Route exact path='/forms' element = {<Forms/>} />
+            <Route exact path="/forms/sp102" element={<Sp102/>} />
           </Routes>
         </Router>
       </Provider>

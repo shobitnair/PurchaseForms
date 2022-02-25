@@ -26,6 +26,21 @@ app.post('/sp101' , async(req,res)=>{
     }
 })
 
+app.post('/sp102',async(req,res)=>{
+    try{
+        console.log(req.body);
+        const {email,data} = req.body;
+        let query = await pool.query(
+            "insert into sp102 (email , data, status) VALUES ($1,$2,'pending') returning *",
+            [email , data]
+        )
+        res.json({comment: 'Form submitted'});
+    }catch(err){
+        console.log(err);
+        //res.status(404).json(err);
+    }
+})
+
 app.post('/users' , async(req,res)=>{
     try {
         console.log(req.body);

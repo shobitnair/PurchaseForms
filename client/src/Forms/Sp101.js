@@ -332,7 +332,7 @@ const Sp101 = () => {
                         , borderRadius: '2px', boxShadow: Depths.depth4
                     }}>
                         <DetailsList
-                            items={data.items}
+                            items={data.items}  
                             columns={_columns}
                             selection={selection}
                             setKey={["key"]}
