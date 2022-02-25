@@ -240,6 +240,7 @@ const Sp102 = () => {
     });
   };
 
+
   const onSubmitClicked = async () => {
     if (user === null) {
       setHideSubmitDialog(true);

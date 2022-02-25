@@ -133,6 +133,7 @@ const Sp101 = () => {
         }
     }
 
+
     /**
     *  Manages validation of the form data
     *  Manages the pop up toggle states
@@ -245,11 +246,11 @@ const Sp101 = () => {
         <div >
             <ItemPopUp />
             <SubmitPopUp />
-            <Stack horizontal tokens={stackTokens} styles={stackStyles}>
+            <Stack horizontal tokens={stackTokens} styles={stackStyles} style={{marginTop:10}}>
                 {/**
                  *  COlUMN1 of the form
                  */}
-                <Stack {...column1} style={{ 'backgroundColor': '#faf9f8', boxShadow: Depths.depth8 }}>
+                <Stack {...column1} style={{ 'backgroundColor': '#faf9f8', boxShadow: Depths.depth64 }}>
                     <TextField label="Name" value={data.name}
                         onChange={(e) => setData({ ...data, name: e.target.value })} />
                     <TextField label="Department" value={data.department}
@@ -287,7 +288,7 @@ const Sp101 = () => {
                 {/**
                  *  COlUMN2 of the form
                  */}
-                <Stack {...column2} style={{ 'backgroundColor': '#faf9f8', boxShadow: Depths.depth8 }}>
+                <Stack {...column2} style={{ 'backgroundColor': '#faf9f8', boxShadow: Depths.depth64 }}>
                     <Dropdown placeholder="Select an Option" options={option1} label="GEM Purchase"
                         onChange={(e, i) => setData({ ...data, GEM: i.text })} />
                     <div>
@@ -324,7 +325,7 @@ const Sp101 = () => {
                 {/**
                  *  COlUMN3 of the form
                  */}
-                <Stack {...column3} style={{ 'backgroundColor': '#faf9f8', boxShadow: Depths.depth8 }}>
+                <Stack {...column3} style={{ 'backgroundColor': '#faf9f8', boxShadow: Depths.depth64 }}>
                     <Label>Added Items</Label>
                     <div style={{
                         'height': '300px',
@@ -350,12 +351,14 @@ const Sp101 = () => {
                         <DefaultButton style={{ 'marginLeft': '5%', 'width': '45%', boxShadow: Depths.depth4 }} text="Delete Selected"
                             onClick={handleDelete} />
                     </Stack>
+                    <Label/>
                     <Stack horizontal>
                         <PrimaryButton style={{ 'marginLeft': '2.5%', 'width': '45%', 'backgroundColor': '#4C4A48', boxShadow: Depths.depth4 }} text="Submit"
                             onClick={() => setToggleSubmit(!toggleSubmit)} />
                         <DefaultButton style={{ 'marginLeft': '5%', 'width': '45%', boxShadow: Depths.depth4 }} text="Preview"
                             onClick={() => makePDF()} />
                     </Stack>
+
                 </Stack>
             </Stack>
         </div>

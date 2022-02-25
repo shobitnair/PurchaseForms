@@ -69,7 +69,7 @@ const NavBar = () => {
         },
         {
             key:'subform',
-            text:'Submitted Forms',
+            text:'My Forms',
             iconProps: { iconName : 'AllApps'},
             buttonStyles: itemStyles,
             onClick: ()=>nav('/forms/submitted')

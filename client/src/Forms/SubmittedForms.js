@@ -9,7 +9,9 @@ import {
     StackItem,
     DefaultButton,
     PrimaryButton,
-    Separator
+    Separator,
+    Icon,
+    IconButton
 } from '@fluentui/react';
 
 
@@ -40,11 +42,14 @@ const SubmittedForms = () => {
 
     const { user } = useContext(LoginContext)
     const [forms, setForms] = useState([]);
+    const [approved , setApproved] = useState([]);
     const getSubmittedForms = async () => {
         try {
             const res = await axios.get(URL + '/forms/' + user.email);
-            setForms(res.data);
-            console.log(res.data);
+            for(let i  = 0  ; i<res.data.length ; i++){
+                if(res.data[i].status == 'pending')setForms(forms => [...forms, res.data[i]]);
+                else setApproved(approved => [...approved, res.data[i]])
+            }
         }
         catch (err) {
             console.log(err);
@@ -57,6 +62,7 @@ const SubmittedForms = () => {
         }
         else {
             setForms([]);
+            setApproved([]);
         }
     }, [user])
 
@@ -74,6 +80,7 @@ const SubmittedForms = () => {
                         <Label>Form Type : {x.type}</Label>
                         <Label>Budget Head : {data.budgetHead}</Label>
                         <Label>Number of Items : {data.items.length}</Label>
+                        <Label>status : {x.status} </Label>
                     </Stack>
                     <Separator column vertical />
                     <Stack column styles={{root:{margin:20 }}} tokens={{childrenGap:15}}>
@@ -89,17 +96,20 @@ const SubmittedForms = () => {
     return (
         <Stack horizontal tokens={stackTokens} styles={stackStyles}>
             <Stack {...column1} >
-                <Label style={{ fontSize: 26, marginLeft: 15 }}>Submitted forms</Label>
+                <Label style={{ fontSize: 20, marginLeft: 10 }}>Submitted</Label>
                 <Stack tokens={{childrenGap:10}} style={{overflow:'scroll'}}>
                         {forms.map(x => {
                             return formItem(x);
                         })}
                 </Stack>
-            </Stack>
+            </Stack>  
+
             <Stack {...column2} >
-                <Label style={{ fontSize: 26, marginLeft: 15 }}>Drafts</Label>
+                <Stack horizontal tokens={{childrenGap:25}}>
+                <Label style={{ fontSize: 20, marginLeft: 10 }}>Approved</Label>
+                </Stack>
                 <Stack tokens={{childrenGap:10}} style={{overflow:'scroll'}}>
-                        {forms.map(x => {
+                        {approved.map(x => {
                             return formItem(x);
                         })}
                 </Stack>
