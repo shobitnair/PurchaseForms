@@ -4,8 +4,7 @@ import {store} from './Store/store'
 import { 
   BrowserRouter as Router,
   Routes,
-  Route,
-  Link } from "react-router-dom";
+  Route,} from "react-router-dom";
 import {
   useNavigate
 } from "react-router";

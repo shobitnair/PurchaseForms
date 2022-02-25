@@ -120,7 +120,8 @@ const Sp101 = () => {
     */
     const postForm = async () => {
         try {
-            const res = await axios.post(URL+'/sp101', {
+            const res = await axios.post(URL+'/forms_submitted', {
+                type:"sp101",
                 email: user.email,
                 data: JSON.stringify(data),
                 status:"pending"

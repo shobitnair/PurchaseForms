@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef , useContext } from "react";
 import {
   Depths,
   Dropdown,
@@ -16,9 +16,9 @@ import {
   DatePicker,
 } from "@fluentui/react";
 import axios from "axios";
-import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
-
+import { LoginContext } from "../Login/LoginContext";
+import { URL } from "../cred";
 /**
  * Styles for the stack and the columns
  */
@@ -146,8 +146,7 @@ const modelProps = {
 };
 
 const Sp102 = () => {
-  const state = useSelector((state) => state);
-  const dispatch = useDispatch();
+  const {user} = useContext(LoginContext);
   const nav = useNavigate();
 
   const init = {
@@ -233,20 +232,16 @@ const Sp102 = () => {
   };
 
   const postForm = async () => {
-    try {
-      const res = await axios.post("http://localhost:8000/sp102", {
-        email: state.user.email,
+    const res = await axios.post(URL+'/forms_submitted', {
+        type:'sp102',
+        email: user.email,
         data: JSON.stringify(data),
-        status: "pending",
-      });
-      console.log(res);
-    } catch (err) {
-      console.log(err);
-    }
+        status:"pending"
+    });
   };
 
   const onSubmitClicked = async () => {
-    if (state.user === null) {
+    if (user === null) {
       setHideSubmitDialog(true);
       window.alert("Login using google before submitting a form.");
       nav("/");

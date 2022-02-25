@@ -1,7 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 import {useNavigate  , useLocation} from 'react-router'
 import { CommandBar, Depths  } from '@fluentui/react';
-import { useSelector , useDispatch } from 'react-redux';
 import {signin , signOut} from './Login/LoginContext'
 import { LoginContext } from './Login/LoginContext';
 
@@ -13,8 +12,6 @@ import { LoginContext } from './Login/LoginContext';
 
 const NavBar = () => {
     const nav = useNavigate();
-    const state = useSelector(state=>state);
-    const dispatch = useDispatch();
     const loc = useLocation();
     const {user} = useContext(LoginContext);
 

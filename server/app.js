@@ -12,15 +12,14 @@ app.use(cors({
 }))
 app.use(express.json());
 
-app.post('/sp101' , async(req,res)=>{
+app.post('/forms_submitted' , async(req,res)=>{
     try {
-        console.log(req.body);
-        const {email , data , status} = req.body;
+        const {type , email , data , status} = req.body;
         let query = await pool.query(
-            "insert into sp101 (email , data , status) VALUES ($1,$2,$3) returning *",
-            [email , data , status]
+            `insert into forms_submitted (type,email , data , status) VALUES ($1,$2,$3,$4) returning *`,
+            [type,email , data , status]
         )
-        res.json({comment:'form submitted'});
+        res.json({comment:'form submitted with id as '+ query.rows[0].id});
     } catch (err) {
         console.log(err);
     }
