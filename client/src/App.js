@@ -11,6 +11,7 @@ import {
   useNavigate
 } from "react-router";
 import Sp101 from './Forms/Sp101';
+import Sp103 from './Forms/Sp103';
 import NavBar from './NavBar';
 import Forms from './Forms/Forms';
 
@@ -25,6 +26,7 @@ const App = () => {
           <Routes>
             <Route exact path="/" element={<Login/>} />
             <Route exact path="/forms/sp101" element={<Sp101/>} />
+            <Route exact path="/forms/sp103" element={<Sp103/>} />
             <Route exact path='/forms' element = {<Forms/>} />
           </Routes>
         </Router>
