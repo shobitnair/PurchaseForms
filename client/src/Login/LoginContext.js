@@ -40,7 +40,7 @@ export const LoginProvider = ({children}) =>{
                     email: authUser.email,
                     name: authUser.displayName,
                 })
-                postUser({name:authUser.name , email:authUser.email})
+                postUser({name:authUser.displayName , email:authUser.email})
             }
             else{
                 setUser(null)

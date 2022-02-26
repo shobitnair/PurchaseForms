@@ -60,18 +60,12 @@ const NavBar = () => {
             buttonStyles : itemStyles,
             onClick: ()=>nav('/')
         },
-        {   
-            key:'newform',
-            text: 'New Form', 
-            iconProps: { iconName: 'AddToShoppingList' }, 
-            buttonStyles : itemStyles,
-            onClick: ()=>nav('/forms')
-        },
         {
             key:'subform',
             text:'Submitted Forms',
             iconProps: { iconName : 'AllApps'},
             buttonStyles: itemStyles,
+            disabled:(user == null),
             onClick: ()=>nav('/forms/submitted')
         },
     ]

@@ -23,12 +23,11 @@ const App = () => {
       <ChakraProvider>
       <LoginProvider>
       <Provider store={store}>
-        <Router>
+        <Router>  
         <NavBar/>
           <Routes>
             <Route exact path="/" element={<Dashboard/>} />
             <Route exact path="/forms/sp101" element={<Sp101/>} />
-            <Route exact path='/forms' element = {<Forms/>} />
             <Route exact path="/forms/sp102" element={<Sp102/>} />
             <Route exact path="/forms/submitted" element={<SubmittedForms/>} />
           </Routes>

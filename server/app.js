@@ -12,13 +12,6 @@ app.use(cors({
 }))
 app.use(express.json());
 
-app.get('/temp/:idx' , async(req,res) => {
-    try {
-        return res.json({mila:req.params.idx})
-    } catch (error) {
-        res.status(404).json(error)
-    }
-})
 
 
 app.get('/forms/:email' , async(req,res) =>{
@@ -37,7 +30,7 @@ app.post('/forms' , async(req,res)=>{
             `insert into forms (type,email , data , status) VALUES ($1,$2,$3,$4) returning *`,
             [type,email , data , status]
         )
-        res.json({comment:'form submitted with id as '+ query.rows[0].id});
+        res.json({comment:'form submitted with PurchaseForm ID '+ query.rows[0].id});
     } catch (err) {
         console.log(err);
     }

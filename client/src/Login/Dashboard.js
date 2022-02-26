@@ -63,7 +63,7 @@ const Dashboard = () => {
                     <PersonDetails/>
                 </Stack>
             </Stack>
-            <Forms/>
+            {user && <Forms/>}
         </Stack>
     )
 }
