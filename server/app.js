@@ -12,6 +12,15 @@ app.use(cors({
 }))
 app.use(express.json());
 
+app.get('/temp/:idx' , async(req,res) => {
+    try {
+        return res.json({mila:req.params.idx})
+    } catch (error) {
+        res.status(404).json(error)
+    }
+})
+
+
 app.get('/forms/:email' , async(req,res) =>{
     try {
         let query = await pool.query('select * from forms where email = $1 order by id desc'  , [req.params.email])
@@ -51,6 +60,7 @@ app.post('/users' , async(req,res)=>{
         res.status(404).json(error);
     }
 })
+
 
 
 module.exports = {app};

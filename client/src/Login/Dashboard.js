@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom"
 import { DefaultButton, Persona, PersonaSize, Stack , Label  , Depths, Separator} from '@fluentui/react';
 import { LoginContext } from './LoginContext';
+import Forms from '../Forms/Forms';
 
 const stackTokens = { childrenGap: 20 };
 const stackStyles = { root: { 
@@ -62,6 +63,7 @@ const Dashboard = () => {
                     <PersonDetails/>
                 </Stack>
             </Stack>
+            <Forms/>
         </Stack>
     )
 }
