@@ -19,7 +19,7 @@ import { ChakraProvider } from '@chakra-ui/react'
 
 const App = () => {
   return (
-    <div >
+    <div style={{fontFamily:'Open Sans'}}>
       <ChakraProvider>
       <LoginProvider>
       <Provider store={store}>

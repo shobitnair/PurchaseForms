@@ -33,7 +33,7 @@ const Dashboard = () => {
                     fontSize:22
                 } , 
                 secondaryText:{ 
-                    fontFamily:'jetbrains mono'
+                    fontFamily:'Open Sans'
                 } ,
                 root:{
                     backgroundColor:'#faf9f8',

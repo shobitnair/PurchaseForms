@@ -13,7 +13,7 @@ import {
     Icon,
     IconButton
 } from '@fluentui/react';
-
+import { Grid, GridItem , Button , Badge  } from '@chakra-ui/react'
 
 const column1 = {
     tokens: { childrenGap: 10 },
@@ -43,12 +43,17 @@ const SubmittedForms = () => {
     const { user } = useContext(LoginContext)
     const [forms, setForms] = useState([]);
     const [approved , setApproved] = useState([]);
+    const [denied , setDenied] = useState([])
     const getSubmittedForms = async () => {
+        setForms([]);
+        setApproved([]);
+        setDenied([]);
         try {
             const res = await axios.get(URL + '/forms/' + user.email);
             for(let i  = 0  ; i<res.data.length ; i++){
                 if(res.data[i].status == 'pending')setForms(forms => [...forms, res.data[i]]);
-                else setApproved(approved => [...approved, res.data[i]])
+                else if(res.data[i].status == 'approved')setApproved(approved => [...approved, res.data[i]])
+                else if(res.data[i].status == 'denied')setDenied(denied => [...denied, res.data[i]])
             }
         }
         catch (err) {
@@ -70,22 +75,26 @@ const SubmittedForms = () => {
         const data = JSON.parse(x.data);
         return (
             <div>
-                <Stack horizontal tokens={{childrenGap:20}} styles={{root:{
+                <Stack horizontal tokens={{childrenGap:10}} styles={{root:{
                         backgroundColor: '#faf9f8',
                         padding: 5,
+                        borderRadius:5,
                         boxShadow:Depths.depth4
                 }}}>
-                    <Stack column style={{margin:20 , width:'50%'}}>
-                        <Label>PurchaseForm ID : {x.id} </Label>
-                        <Label>Form Type : {x.type}</Label>
-                        <Label>Budget Head : {data.budgetHead}</Label>
-                        <Label>Number of Items : {data.items.length}</Label>
-                        <Label>status : {x.status} </Label>
+                    <Stack column style={{margin:20 , width:'50%'}} tokens={{childrenGap:5}}>
+                        <Badge variant='outline' colorScheme='gray' fontSize={17} >Form ID : {x.id} </Badge>
+                        <Badge >Form Type : {x.type}</Badge>
+                        <Badge >Budget Head : {data.budgetHead}</Badge>
+                        <Badge >Number of Items : {data.items.length}</Badge>
+                        {x.status=='pending' && <Badge fontSize={17} colorScheme={'blue'}>{x.status} </Badge>}
+                        {x.status=='approved' && <Badge fontSize={17} colorScheme={'green'}>{x.status} </Badge>}
+                        {x.status=='denied' && <Badge fontSize={17} colorScheme={'red'}>{x.status} </Badge>}
                     </Stack>
                     <Separator column vertical />
-                    <Stack column styles={{root:{margin:20 }}} tokens={{childrenGap:15}}>
-                        <DefaultButton text="Edit" style={{ width:'130px' ,boxShadow: Depths.depth4 }} />
-                        <PrimaryButton text="Delete" style={{ 'backgroundColor': '#4C4A48', boxShadow: Depths.depth4}} />
+                    <Stack column styles={{root:{margin:20 }}} tokens={{childrenGap:5}}>
+                        <Button boxShadow='lg' colorScheme={'blackAlpha'} w='100px' color='white'>Edit</Button>
+                        <Button boxShadow='lg' colorScheme={'teal'} w='100px' color='white'>View</Button>
+                        <Button boxShadow='lg' bg='#d13438' colorScheme={'red'} w='100px' color='white'>Delete</Button>
                     </Stack>
                 </Stack>
 
@@ -93,29 +102,44 @@ const SubmittedForms = () => {
         )
     }
 
-    return (
-        <Stack horizontal tokens={stackTokens} styles={stackStyles}>
-            <Stack {...column1} >
-                <Label style={{ fontSize: 20, marginLeft: 10 }}>Submitted</Label>
-                <Stack tokens={{childrenGap:10}} style={{overflow:'scroll'}}>
+    return (<>
+        <Grid mt = '10px' ml='1%' w='96%' h='650px' 
+            templateRows='repeat(12,1fr)' templateColumns='repeat(6,1fr)' 
+            gap={4}
+        >
+            <GridItem align='center' rowSpan={1} colSpan={2} bg='#edebe9'  style={{borderRadius:5 , boxShadow:Depths.depth4}}>
+                <Label style={{ fontSize: 24 }}>Pending</Label>
+            </GridItem>
+            <GridItem align='center' rowSpan={1} colSpan={2} bg='#edebe9'  style={{borderRadius:5 , boxShadow:Depths.depth4}}>
+                <Label style={{ fontSize: 24 }}>Approved</Label>
+            </GridItem>
+            <GridItem align='center' rowSpan={1} colSpan={2} bg='#edebe9'  style={{borderRadius:5 , boxShadow:Depths.depth4}}>
+                <Label style={{ fontSize: 24 }}>Denied</Label>
+            </GridItem>
+            <GridItem rowSpan={10} colSpan={2} bg='#edebe9' p={2} style={{overflow:'scroll',borderRadius:5 , boxShadow:Depths.depth4}}>
+                <Stack tokens={{childrenGap:10}}>
                         {forms.map(x => {
                             return formItem(x);
                         })}
                 </Stack>
-            </Stack>  
-
-            <Stack {...column2} >
-                <Stack horizontal tokens={{childrenGap:25}}>
-                <Label style={{ fontSize: 20, marginLeft: 10 }}>Approved</Label>
-                </Stack>
-                <Stack tokens={{childrenGap:10}} style={{overflow:'scroll'}}>
+            </GridItem>
+            <GridItem rowSpan={10} colSpan={2} bg='#edebe9' p={2} style={{overflow:'scroll',borderRadius:5 , boxShadow:Depths.depth4}}>
+                <Stack tokens={{childrenGap:10}}>
                         {approved.map(x => {
                             return formItem(x);
                         })}
                 </Stack>
-            </Stack>
-        </Stack>
-    )
+            </GridItem>
+            <GridItem rowSpan={10} colSpan={2} bg='#edebe9' p={2} style={{overflow:'scroll',borderRadius:5 , boxShadow:Depths.depth4}}>
+                <Stack tokens={{childrenGap:10}}>
+                        {denied.map(x => {
+                            return formItem(x);
+                        })}
+                </Stack>
+            </GridItem>
+
+        </Grid>
+        </>)
 }
 
 export default SubmittedForms
