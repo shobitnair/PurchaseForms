@@ -12,7 +12,7 @@ const postUser = async(data) =>{
     catch (err) {
         console.log(err);
     }
-}
+} 
 
 export const signin = () => {
     auth.signInWithPopup(provider)

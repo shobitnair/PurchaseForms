@@ -92,7 +92,7 @@ const SubmittedForms = () => {
                     </Stack>
                     <Separator column vertical />
                     <Stack column styles={{root:{margin:20 }}} tokens={{childrenGap:5}}>
-                        <Button boxShadow='lg' colorScheme={'blackAlpha'} w='100px' color='white'>Edit</Button>
+                        <Button disabled={x.status != 'pending'} boxShadow='lg' colorScheme={'blackAlpha'} w='100px' color='white'>Edit</Button>
                         <Button boxShadow='lg' colorScheme={'teal'} w='100px' color='white'>View</Button>
                         <Button boxShadow='lg' bg='#d13438' colorScheme={'red'} w='100px' color='white'>Delete</Button>
                     </Stack>
