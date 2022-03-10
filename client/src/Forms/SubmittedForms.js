@@ -75,29 +75,31 @@ const SubmittedForms = () => {
         const data = JSON.parse(x.data);
         return (
             <div>
-                <Stack horizontal tokens={{childrenGap:10}} styles={{root:{
-                        backgroundColor: '#faf9f8',
-                        padding: 5,
-                        borderRadius:5,
-                        boxShadow:Depths.depth4
-                }}}>
-                    <Stack column style={{margin:20 , width:'50%'}} tokens={{childrenGap:5}}>
-                        <Badge variant='outline' colorScheme='gray' fontSize={17} >Form ID : {x.id} </Badge>
-                        <Badge >Form Type : {x.type}</Badge>
-                        <Badge >Budget Head : {data.budgetHead}</Badge>
-                        <Badge >Number of Items : {data.items.length}</Badge>
-                        {x.status=='pending' && <Badge fontSize={17} colorScheme={'blue'}>{x.status} </Badge>}
-                        {x.status=='approved' && <Badge fontSize={17} colorScheme={'green'}>{x.status} </Badge>}
-                        {x.status=='denied' && <Badge fontSize={17} colorScheme={'red'}>{x.status} </Badge>}
-                    </Stack>
-                    <Separator column vertical />
-                    <Stack column styles={{root:{margin:20 }}} tokens={{childrenGap:5}}>
-                        <Button disabled={x.status != 'pending'} boxShadow='lg' colorScheme={'blackAlpha'} w='100px' color='white'>Edit</Button>
-                        <Button boxShadow='lg' colorScheme={'teal'} w='100px' color='white'>View</Button>
-                        <Button boxShadow='lg' bg='#d13438' colorScheme={'red'} w='100px' color='white'>Delete</Button>
-                    </Stack>
-                </Stack>
-
+                <Grid   w='100%' h='170px'
+                    templateRows='repeat(4,1fr)' templateColumns='repeat(3,1fr)' 
+                    gap={4}
+                    bg='#faf9f8'
+                    style={{padding: 5, borderRadius:5 , boxShadow:Depths.depth4}}
+                >
+                    <GridItem rowSpan={4} colSpan={2} >
+                        <Stack style={{margin:10}}  tokens={{childrenGap:5}}>
+                            <Badge variant='outline' colorScheme='gray' fontSize={17} >Form ID : {x.id} </Badge>
+                            <Badge >Form Type : {x.type}</Badge>
+                            <Badge >Budget Head : {data.budgetHead}</Badge>
+                            <Badge >Number of Items : {data.items.length}</Badge>
+                            {x.status=='pending' && <Badge fontSize={17} colorScheme={'blue'}>{x.status} </Badge>}
+                            {x.status=='approved' && <Badge fontSize={17} colorScheme={'green'}>{x.status} </Badge>}
+                            {x.status=='denied' && <Badge fontSize={17} colorScheme={'red'}>{x.status} </Badge>}
+                        </Stack>
+                    </GridItem>
+                    <GridItem style={{margin:10}}  rowSpan={4} colSpan={1}>
+                        <Stack tokens={{childrenGap:5}}>
+                        <Button disabled={x.status != 'pending'} boxShadow='lg' colorScheme={'blackAlpha'} h='35px' w='100px' color='white'>Edit</Button>
+                        <Button boxShadow='lg' colorScheme={'teal'} h='35px' w='100px' color='white'>View</Button>
+                        <Button boxShadow='lg' bg='#d13438' colorScheme={'red'} h='35px' w='100px' color='white'>Delete</Button>
+                        </Stack>
+                    </GridItem>
+                </Grid>
             </div>
         )
     }
