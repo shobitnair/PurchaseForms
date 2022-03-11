@@ -24,7 +24,7 @@ create table forms
         constraint email_fk
             references users,
     status varchar                                                     not null,
-    data   json                                                        not null
+    data   text                                                        not null
 );
 
 alter table forms
