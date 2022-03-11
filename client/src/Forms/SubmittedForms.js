@@ -6,37 +6,9 @@ import {
     Label,
     Stack,
     Depths,
-    StackItem,
-    DefaultButton,
-    PrimaryButton,
-    Separator,
-    Icon,
-    IconButton
 } from '@fluentui/react';
 import { Grid, GridItem , Button , Badge  } from '@chakra-ui/react'
 
-const column1 = {
-    tokens: { childrenGap: 10 },
-    styles: { root: { width: "50%", padding: "20px" , height:'600px' } },
-};
-const column2 = {
-    tokens: { childrenGap: 10 },
-    styles: { root: { width: "50%", padding: "20px"  , height:'600px'} },
-};
-const stackTokens = { childrenGap: 30 };
-const stackStyles = {
-    root: {
-        width: "80%",
-        margin: 10,
-        boxShadow: Depths.depth8,
-        backgroundColor: '#edebe9',
-        borderRadius: 20
-    }
-};
-const columnProps = {
-    tokens: { childrenGap: 15 },
-    styles: { root: { width: "100%", padding: 5 } },
-};
 
 const SubmittedForms = () => {
 
@@ -44,6 +16,7 @@ const SubmittedForms = () => {
     const [forms, setForms] = useState([]);
     const [approved , setApproved] = useState([]);
     const [denied , setDenied] = useState([])
+    
     const getSubmittedForms = async () => {
         setForms([]);
         setApproved([]);
@@ -72,7 +45,6 @@ const SubmittedForms = () => {
     }, [user])
 
     const formItem = (x) => {
-        const data = JSON.parse(x.data);
         return (
             <div>
                 <Grid   w='100%' h='170px'
@@ -85,8 +57,8 @@ const SubmittedForms = () => {
                         <Stack style={{margin:10}}  tokens={{childrenGap:5}}>
                             <Badge variant='outline' colorScheme='gray' fontSize={17} >Form ID : {x.id} </Badge>
                             <Badge >Form Type : {x.type}</Badge>
-                            <Badge >Budget Head : {data.budgetHead}</Badge>
-                            <Badge >Number of Items : {data.items.length}</Badge>
+                            <Badge >Budget Head : {x.data.budgetHead}</Badge>
+                            <Badge >Number of Items : {x.data.items.length}</Badge>
                             {x.status=='pending' && <Badge fontSize={17} colorScheme={'blue'}>{x.status} </Badge>}
                             {x.status=='approved' && <Badge fontSize={17} colorScheme={'green'}>{x.status} </Badge>}
                             {x.status=='denied' && <Badge fontSize={17} colorScheme={'red'}>{x.status} </Badge>}
