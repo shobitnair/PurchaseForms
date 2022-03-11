@@ -7,7 +7,7 @@ import { Grid, GridItem , Button , Avatar , Badge , Text} from '@chakra-ui/react
 
 
 const Dashboard = () => {
-    const navigate = useNavigate();
+    const nav = useNavigate();
     const { user } = useContext(LoginContext)
     const [examplePersona, setPersona] = useState(null)
 

@@ -67,6 +67,8 @@ const listStyles = {
   border: "8px solid #f3f2f1",
   borderRadius: "2px",
   boxShadow: Depths.depth4,
+  marginTop:"20px" , 
+  marginBottom:"20px"
 };
 
 /**
@@ -356,13 +358,13 @@ const Sp102 = () => {
             label="Budget Head"
             value={data.budgetHead}
             onChange={(e) => setData({ ...data, budgetHead: e.target.value })}
-            style={{ width: "50%" }}
+            styles={{root:{ width: "50%" }}}
           />
           <TextField
             label="Sanctioned Head"
             value={data.sanctionHead}
             onChange={(e) => setData({ ...data, sanctionHead: e.target.value })}
-            style={{ width: "50%" }}
+            styles={{root:{ width: "50%" }}}
           />
         </Stack>
         <Stack horizontal tokens={{ childrenGap: 20 }}>
@@ -371,13 +373,13 @@ const Sp102 = () => {
             value={data.itemName}
             onChange={(e) => setData({ ...data, itemName: e.target.value })}
             placeholder="write 'MANY' if > 1"
-            style={{ width: "50%" }}
+            styles={{root:{ width: "50%" }}}
           />
           <TextField
             label="Approximate Cost"
             value={data.cost}
             onChange={(e) => setData({ ...data, cost: e.target.value })}
-            style={{ width: "50%" }}
+            styles={{root:{ width: "50%" }}}
           />
         </Stack>
         <Dropdown
@@ -501,43 +503,49 @@ const Sp102 = () => {
           options={optionsEnquiry}
           onChange={(e, item) => setData({ ...data, enquiryMode: item.text })}
         />
-        <TextField
-          label="Number of Quotations Received"
-          value={data.numQuotations}
-          onChange={(e) => setData({ ...data, numQuotations: e.target.value })}
-        />
-        <Stack horizontal tokens={{ childrenGap: 20 }}>
+        <Stack horizontal tokens={{ childrenGap: 10 }}>
+          <TextField
+            label="Number of Quotations Received"
+            value={data.numQuotations}
+            onChange={(e) => setData({ ...data, numQuotations: e.target.value })}
+            styles={{root:{ width: "50%" }}}
+          />
           <TextField
             label="Purchased from M/s"
             value={data.purchasedFrom}
             onChange={(e) =>setData({ ...data, purchasedFrom: e.target.value })}
-            style={{ width: "50%" }}
-          />
-          <TextField
-            label="Quotation Number"
-            value={data.quotation}
-            onChange={(e) => setData({ ...data, quotation: e.target.value })}
-            style={{ width: "50%" }}
+            styles={{root:{ width: "50%" }}}
           />
         </Stack>
-        <DatePicker
-          label="Date of Purchase"
-          placeholder="Select a Date"
-          onSelectDate={(e) => setData({ ...data, purchaseDate: e })}
-        />
-        <TextField
-          label="Recommended mode of Payment"
-          value={data.paymentMode}
-          onChange={(e) => setData({ ...data, paymentMode: e.target.value })}
-          style={{ width: "50%" }}
-        />
-        <TextField
-          label="Delivery Period"
-          value={data.deliveryPeriod}
-          onChange={(e) => setData({ ...data, deliveryPeriod: e.target.value })}
-          style={{ width: "50%" }}
-        />
-
+        <Stack horizontal tokens={{ childrenGap:10}}>
+          <TextField
+              label="Quotation Number"
+              value={data.quotation}
+              onChange={(e) => setData({ ...data, quotation: e.target.value })}
+              styles={{root:{ width: "50%" }}}
+            />
+          <DatePicker
+            label="Date of Purchase"
+            placeholder="Select a Date"
+            onSelectDate={(e) => setData({ ...data, purchaseDate: e })}
+            styles={{root:{ width: "50%" }}}
+          />
+        </Stack>
+        <Stack horizontal tokens={{ childrenGap:10}}>
+          <TextField
+            label="Recommended mode of Payment"
+            value={data.paymentMode}
+            onChange={(e) => setData({ ...data, paymentMode: e.target.value })}
+            styles={{root:{ width: "50%" }}}
+          />
+          <TextField
+            label="Delivery Period"
+            value={data.deliveryPeriod}
+            onChange={(e) => setData({ ...data, deliveryPeriod: e.target.value })}
+            styles={{root:{ width: "50%" }}}
+          />
+        </Stack>
+        
         <div style={listStyles}>
           <Label style={{ "text-align": "center" }}>Items</Label>
           <DetailsList
