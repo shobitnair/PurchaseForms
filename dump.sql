@@ -1,30 +1,16 @@
-create table users
+create table "formMETA"
 (
-    name  varchar not null,
-    email varchar not null
-        primary key
-        unique
+    name varchar not null
+        constraint forms_pkey
+            primary key
 );
 
-alter table users
+alter table "formMETA"
     owner to postgres;
 
-INSERT INTO public.users (name, email) VALUES ('Shobit Nair', 'shobitnair10@gmail.com');
-INSERT INTO public.users (name, email) VALUES ('SHOBIT PRASHANT NAIR', '2019csb1121@iitrpr.ac.in');
-INSERT INTO public.users (name, email) VALUES ('Sujaya prashant', 'sujaprasha1995@gmail.com');
+INSERT INTO public."formMETA" (name) VALUES ('sp101');
+INSERT INTO public."formMETA" (name) VALUES ('sp102');
 
-create table sp101
-(
-    email  varchar not null
-        references users,
-    data   varchar not null,
-    status varchar not null
-);
-
-alter table sp101
-    owner to postgres;
-
-INSERT INTO public.sp101 (email, data, status) VALUES ('shobitnair10@gmail.com', '{"name":null,"department":null,"items":[],"budgetHead":null,"budgetSanction":null,"itemName":null,"approxCost":null,"category":null,"BAE":null,"CSR":null,"GRP":null,"GEM":null,"GEMdetails":null,"MOE":null,"ROI":null,"NOQ":null,"PurchasedFrom":null,"DOP":null,"Qno":null,"RMP":null,"DP":null}', 'pending');
 
 create table forms
 (
@@ -38,7 +24,7 @@ create table forms
         constraint email_fk
             references users,
     status varchar                                                     not null,
-    data   varchar                                                     not null
+    data   json                                                        not null
 );
 
 alter table forms
@@ -72,15 +58,18 @@ INSERT INTO public.forms (id, type, email, status, data) VALUES (31, 'sp101', 's
 INSERT INTO public.forms (id, type, email, status, data) VALUES (8, 'sp101', 'shobitnair10@gmail.com', 'denied', '{"name":null,"department":null,"items":[],"budgetHead":null,"budgetSanction":null,"itemName":null,"approxCost":null,"category":null,"BAE":null,"CSR":"Yes","GRP":null,"GEM":null,"GEMdetails":null,"MOE":null,"ROI":null,"NOQ":null,"PurchasedFrom":null,"DOP":null,"Qno":null,"RMP":null,"DP":null}');
 
 
-create table "formMETA"
+create table users
 (
-    name varchar not null
-        constraint forms_pkey
-            primary key
+    name  varchar not null,
+    email varchar not null
+        primary key
+        unique,
+    role  varchar
 );
 
-alter table "formMETA"
+alter table users
     owner to postgres;
 
-INSERT INTO public."formMETA" (name) VALUES ('sp101');
-INSERT INTO public."formMETA" (name) VALUES ('sp102');
+INSERT INTO public.users (name, email, role) VALUES ('Shobit Nair', 'shobitnair10@gmail.com', null);
+INSERT INTO public.users (name, email, role) VALUES ('Sujaya prashant', 'sujaprasha1995@gmail.com', null);
+INSERT INTO public.users (name, email, role) VALUES ('SHOBIT PRASHANT NAIR', '2019csb1121@iitrpr.ac.in', 'ADMIN');
