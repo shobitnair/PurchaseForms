@@ -2,7 +2,7 @@ import { Label, PrimaryButton, Depths} from '@fluentui/react';
 import React from 'react'
 import { useNavigate } from 'react-router'
 
-import { Grid, GridItem , Button  } from '@chakra-ui/react'
+import { Grid, GridItem , Button , Avatar  } from '@chakra-ui/react'
 
 const Forms = () => {
     const nav = useNavigate();
