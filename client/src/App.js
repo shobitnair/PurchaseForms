@@ -20,19 +20,19 @@ const App = () => {
   return (
     <div style={{fontFamily:'Open Sans'}}>
       <ChakraProvider>
-      <LoginProvider>
-      <Provider store={store}>
-        <Router>  
-        <NavBar/>
-          <Routes>
-            <Route exact path="/" element={<Dashboard/>} />
-            <Route exact path="/forms/sp101" element={<Sp101/>} />
-            <Route exact path="/forms/sp102" element={<Sp102/>} />
-            <Route exact path="/forms/submitted" element={<SubmittedForms/>} />
-          </Routes>
-        </Router>
-      </Provider>
-      </LoginProvider>
+        <LoginProvider>
+        <Provider store={store}>
+          <Router>  
+          <NavBar/>
+            <Routes>
+              <Route exact path="/" element={<Dashboard/>} />
+              <Route exact path="/forms/sp101" element={<Sp101/>} />
+              <Route exact path="/forms/sp102" element={<Sp102/>} />
+              <Route exact path="/forms/submitted" element={<SubmittedForms/>} />
+            </Routes>
+          </Router>
+        </Provider>
+        </LoginProvider>
       </ChakraProvider>
     </div>
   )

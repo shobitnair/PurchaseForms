@@ -24,9 +24,9 @@ const SubmittedForms = () => {
         try {
             const res = await axios.get(URL + '/forms/' + user.email);
             for(let i  = 0  ; i<res.data.length ; i++){
-                if(res.data[i].status == 'pending')setForms(forms => [...forms, res.data[i]]);
-                else if(res.data[i].status == 'approved')setApproved(approved => [...approved, res.data[i]])
-                else if(res.data[i].status == 'denied')setDenied(denied => [...denied, res.data[i]])
+                if(res.data[i].status === 'pending')setForms(forms => [...forms, res.data[i]]);
+                else if(res.data[i].status === 'approved')setApproved(approved => [...approved, res.data[i]])
+                else if(res.data[i].status === 'denied')setDenied(denied => [...denied, res.data[i]])
             }
         }
         catch (err) {
@@ -60,18 +60,19 @@ const SubmittedForms = () => {
                             <Badge >Form Type : {x.type}</Badge>
                             <Badge >Budget Head : {data.budgetHead}</Badge>
                             <Badge >Number of Items : {data.items.length}</Badge>
-                            {x.status=='pending' && <Badge fontSize={17} colorScheme={'blue'}>{x.status} </Badge>}
-                            {x.status=='approved' && <Badge fontSize={17} colorScheme={'green'}>{x.status} </Badge>}
-                            {x.status=='denied' && <Badge fontSize={17} colorScheme={'red'}>{x.status} </Badge>}
+                            {x.status==='pending' && <Badge fontSize={17} colorScheme={'blue'}>{x.status} </Badge>}
+                            {x.status==='approved' && <Badge fontSize={17} colorScheme={'green'}>{x.status} </Badge>}
+                            {x.status==='denied' && <Badge fontSize={17} colorScheme={'red'}>{x.status} </Badge>}
                         </Stack>
                     </GridItem>
                     <GridItem style={{margin:10}}  rowSpan={4} colSpan={1}>
                         <Stack tokens={{childrenGap:5}}>
-                        <Button disabled={x.status != 'pending'} boxShadow='lg' colorScheme={'blackAlpha'} h='35px' w='100px' color='white'>Edit</Button>
                         <Button boxShadow='lg' colorScheme={'teal'} h='35px' w='100px' color='white'>View</Button>
                         <Button boxShadow='lg' bg='#d13438' colorScheme={'red'} h='35px' w='100px' color='white'>Delete</Button>
                         </Stack>
                     </GridItem>
+
+
                 </Grid>
             </div>
         )

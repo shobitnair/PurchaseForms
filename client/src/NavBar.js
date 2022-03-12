@@ -3,6 +3,7 @@ import {useNavigate  , useLocation} from 'react-router'
 import { CommandBar, Depths  } from '@fluentui/react';
 import {signin , signOut} from './Login/LoginContext'
 import { LoginContext } from './Login/LoginContext';
+import axios from 'axios';
 
 /**     
  * signin , signout and Postuser are functions for google auth and database insertion 
@@ -71,7 +72,6 @@ const NavBar = () => {
     ]
 
     useEffect(()=>{
-        
     } , [])
 
 

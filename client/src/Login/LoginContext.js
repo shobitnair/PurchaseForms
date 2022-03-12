@@ -14,13 +14,24 @@ const postUser = async(data) =>{
     }
 } 
 
+const getRole = async(email) =>{
+    try {
+        const res = await axios.get(URL+'/users/'+email)
+        console.log(res);
+        return res;
+    }
+    catch (err) {
+        console.log(err);
+    }
+}
+
 export const signin = () => {
     auth.signInWithPopup(provider)
         .catch((error) => alert(error.message));
 };
 
 export const signOut = () => {
-    auth.signOut(provider)
+    auth.signOut()
         .catch((err) => {
             alert(err.message);
         });
@@ -30,6 +41,7 @@ export const signOut = () => {
 export const LoginProvider = ({children}) =>{
 
     const [user , setUser] = useState(null);
+    const [role , setRole] = useState(null);
     
     useEffect(()=>{
         auth.onAuthStateChanged(async(authUser)=>{
@@ -40,7 +52,8 @@ export const LoginProvider = ({children}) =>{
                     email: authUser.email,
                     name: authUser.displayName,
                 })
-                postUser({name:authUser.displayName , email:authUser.email})
+                await postUser({name: authUser.displayName, email: authUser.email})
+                setRole(() => getRole(authUser.email))
             }
             else{
                 setUser(null)

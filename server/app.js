@@ -18,11 +18,21 @@ app.get('/forms/:email' , async(req,res) =>{
     try {
         let query = await pool.query('select * from forms where email = $1 order by id desc'  , [req.params.email])
         res.json(query.rows);
-        console.log(query.rows[0]);
     } catch (error) {
         res.status(404).json(error)
     }
 })
+
+
+app.get('/users/:email' , async(req,res) =>{
+    try{
+        let query = await pool.query('select * from users where email = $1' , [req.params.email]);
+        res.json(query.rows);
+    } catch (error) {
+        res.status(404).json(error)
+    }
+})
+
 
 app.post('/forms' , async(req,res)=>{
     try {
