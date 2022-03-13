@@ -19,7 +19,7 @@ import { useNavigate } from 'react-router';
 import {URL} from '../cred';
 import {LoginContext} from '../Login/LoginContext'
 import { useToast } from '@chakra-ui/react'
-import { PDFsp101 } from './PDFsp101';
+import {PDFHandler} from "./PDFHandler";
 
 initializeIcons();
 
@@ -194,10 +194,6 @@ const Sp101 = () => {
     };
 
 
-    /**
-    * A preview PDF for personal verification
-    */
-
     useEffect(() => {
         
     }, []);
@@ -363,7 +359,7 @@ const Sp101 = () => {
                         <PrimaryButton style={{ 'marginLeft': '2.5%', 'width': '45%', 'backgroundColor': '#4C4A48', boxShadow: Depths.depth4 }} text="Submit"
                             onClick={() => setToggleSubmit(!toggleSubmit)} />
                         <DefaultButton style={{ 'marginLeft': '5%', 'width': '45%', boxShadow: Depths.depth4 }} text="Preview"
-                            onClick={() => PDFsp101(data)} />
+                            onClick={() => PDFHandler('sp101' , data)} />
                     </Stack>
 
                 </Stack>

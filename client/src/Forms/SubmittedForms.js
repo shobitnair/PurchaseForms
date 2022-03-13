@@ -34,11 +34,10 @@ const SubmittedForms = () => {
         }
     }
 
-    useEffect(() => {
+    useEffect(async () => {
         if (user) {
-            getSubmittedForms();
-        }
-        else {
+            await getSubmittedForms();
+        } else {
             setForms([]);
             setApproved([]);
         }
@@ -47,7 +46,7 @@ const SubmittedForms = () => {
     const formItem = (x) => {
         const data = JSON.parse(x.data);
         return (
-            <div>
+            <div key = {x.id}>
                 <Grid   w='100%' h='170px'
                     templateRows='repeat(4,1fr)' templateColumns='repeat(3,1fr)' 
                     gap={4}

@@ -7,7 +7,6 @@ export const LoginContext = React.createContext();
 const postUser = async(data) =>{
     try {
         const res = await axios.post(URL+'/users', data);
-        console.log(res);
     }
     catch (err) {
         console.log(err);
@@ -16,16 +15,15 @@ const postUser = async(data) =>{
 
 const getRole = async(email) =>{
     try {
-        const res = await axios.get(URL+'/users/'+email)
-        console.log(res);
-        return res;
+        const res = await axios.get(URL+'/users/'+email);
+        return res.data[0].role;
     }
     catch (err) {
         console.log(err);
     }
 }
 
-export const signin = () => {
+export const signIn = () => {
     auth.signInWithPopup(provider)
         .catch((error) => alert(error.message));
 };
@@ -53,16 +51,20 @@ export const LoginProvider = ({children}) =>{
                     name: authUser.displayName,
                 })
                 await postUser({name: authUser.displayName, email: authUser.email})
-                setRole(() => getRole(authUser.email))
+                const res = await getRole(authUser.email)
+                setRole(res);
             }
             else{
                 setUser(null)
+                setRole(null)
             }
         })
+
+
     } , [])
 
     return(
-        <LoginContext.Provider value={{user}}>
+        <LoginContext.Provider value={{user , role}}>
             {children}
         </LoginContext.Provider>
     )

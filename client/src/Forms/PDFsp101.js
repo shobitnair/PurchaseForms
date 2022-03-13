@@ -140,6 +140,10 @@ export const PDFsp101 = (data) => {
     })
 
     // doc.text(data.items,20,183,{align:'left'})
-
-    doc.save("SPS101.pdf");
+    const string = doc.output('datauristring');
+    const embed = "<embed width='100%' height='100%' src='" + string + "'/>";
+    const x = window.open();
+    x.document.open();
+    x.document.write(embed);
+    x.document.close();
 }

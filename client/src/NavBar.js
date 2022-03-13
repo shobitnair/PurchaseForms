@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import {useNavigate  , useLocation} from 'react-router'
 import { CommandBar, Depths  } from '@fluentui/react';
-import {signin , signOut} from './Login/LoginContext'
+import {signIn,  signOut} from './Login/LoginContext'
 import { LoginContext } from './Login/LoginContext';
 import axios from 'axios';
 
@@ -14,7 +14,7 @@ import axios from 'axios';
 const NavBar = () => {
     const nav = useNavigate();
     const loc = useLocation();
-    const {user} = useContext(LoginContext);
+    const {user , role} = useContext(LoginContext);
 
     const itemStyles = {
         label: { fontSize: 14 , fontWeight:500 },
@@ -48,7 +48,7 @@ const NavBar = () => {
                 labelHovered:{color:(!user)?'#004b1c':'#740912'}
             },
             style:{color:'white', backgroundColor:(!user)?'#4e9668':'#d83b01'},
-            onClick:(!user)? ()=>signin() : ()=>signOut(),
+            onClick:(!user)? ()=>signIn() : ()=>signOut(),
         }
     ]
     
@@ -63,11 +63,11 @@ const NavBar = () => {
         },
         {
             key:'subform',
-            text:'Submitted Forms',
+            text:(role)?'All forms':'Submitted Forms',
             iconProps: { iconName : 'AllApps'},
             buttonStyles: itemStyles,
             disabled:(user == null),
-            onClick: ()=>nav('/forms/submitted')
+            onClick: (role)?()=>nav('/admin/forms'):()=>nav('/forms/submitted')
         },
     ]
 

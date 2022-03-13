@@ -14,6 +14,24 @@ app.use(express.json());
 
 
 
+app.get('/admin/forms' , async(req, res) =>{
+    try {
+        let query = await pool.query('select * from forms');
+        res.json(query.rows);
+    } catch (error) {
+        res.status(404).json(error);
+    }
+})
+
+app.post('/admin/forms/deny' , async(req,res) =>{
+    try{
+        const {id , message} = req.body;
+        let query = await pool.query('update forms set status = $1 where id = $2' , ['denied',id])
+    } catch (e) {
+        res.status(404).json(e);
+    }
+})
+
 app.get('/forms/:email' , async(req,res) =>{
     try {
         let query = await pool.query('select * from forms where email = $1 order by id desc'  , [req.params.email])

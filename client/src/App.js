@@ -4,10 +4,9 @@ import {store} from './Store/store'
 import { 
   BrowserRouter as Router,
   Routes,
-  Route,} from "react-router-dom";
-import {
-  useNavigate
-} from "react-router";
+  Route,
+} from "react-router-dom";
+
 import Sp101 from './Forms/Sp101';
 import Sp102 from './Forms/Sp102';
 import NavBar from './NavBar';
@@ -15,6 +14,7 @@ import Dashboard from './Login/Dashboard'
 import { LoginProvider } from './Login/LoginContext';
 import SubmittedForms from './Forms/SubmittedForms';
 import { ChakraProvider } from '@chakra-ui/react'
+import AdminForms from "./Admin/AdminForms";
 
 const App = () => {
   return (
@@ -29,7 +29,8 @@ const App = () => {
               <Route exact path="/forms/sp101" element={<Sp101/>} />
               <Route exact path="/forms/sp102" element={<Sp102/>} />
               <Route exact path="/forms/submitted" element={<SubmittedForms/>} />
-            </Routes>
+              <Route exact path={"/admin/forms"} element={<AdminForms/>} />
+             </Routes>
           </Router>
         </Provider>
         </LoginProvider>

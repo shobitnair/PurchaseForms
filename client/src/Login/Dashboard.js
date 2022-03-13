@@ -8,7 +8,7 @@ import { Grid, GridItem , Button , Avatar , Badge , Text} from '@chakra-ui/react
 
 const Dashboard = () => {
     const nav = useNavigate();
-    const { user } = useContext(LoginContext)
+    const { user  , role} = useContext(LoginContext)
     const [examplePersona, setPersona] = useState(null)
 
     const PersonDetails = () => {
@@ -17,7 +17,7 @@ const Dashboard = () => {
             showUnknownPersonaCoin = {!user}
             size={PersonaSize.size100}
             styles={{
-                primaryText: {
+                text: {
                     fontSize: 22 , 
                     fontFamily: 'Open Sans'
                 },
@@ -52,12 +52,13 @@ const Dashboard = () => {
             setPersona({
                 ...examplePersona,
                 imageUrl: user.photo,
-                primaryText: user.name,
+                text: user.name,
                 secondaryText: user.email,
+                tertiaryText : role
             })
         }
         else {
-            setPersona({ primaryText: 'Please Login', })
+            setPersona({ text: 'Please Login', })
         }
     }, [user])
 
