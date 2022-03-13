@@ -8,6 +8,7 @@ import {
     Depths,
 } from '@fluentui/react';
 import { Grid, GridItem , Button , Badge  } from '@chakra-ui/react'
+import {PDFHandler} from "./PDFHandler";
 
 
 const SubmittedForms = () => {
@@ -66,8 +67,14 @@ const SubmittedForms = () => {
                     </GridItem>
                     <GridItem style={{margin:10}}  rowSpan={4} colSpan={1}>
                         <Stack tokens={{childrenGap:5}}>
-                        <Button boxShadow='lg' colorScheme={'teal'} h='35px' w='100px' color='white'>View</Button>
+                        <Button boxShadow='lg' colorScheme={'teal'} h='35px' w='100px' color='white'
+                            onClick = {PDFHandler(x.type , data)}>
+                            View</Button>
                         <Button boxShadow='lg' bg='#d13438' colorScheme={'red'} h='35px' w='100px' color='white'>Delete</Button>
+                            {x.status === 'denied' &&
+                                <Button boxShadow='lg' colorScheme={'blackAlpha'} h='35px' w='100px' color='white'>
+                                    Resubmit
+                                </Button>}
                         </Stack>
                     </GridItem>
 
