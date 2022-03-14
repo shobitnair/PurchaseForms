@@ -24,7 +24,7 @@ const AdminForms = () => {
     const [done , setDone] = useState([]);
     const [needed , setNeeded] = useState([]);
     const [flag , setFlag] = useState(0);
-    const [toggleItem , setToggleItem] = useState(true);
+    const [toggleItem , setToggleItem] = useState({flag:true , id:null});
 
     const getForms = async () =>{
         setPending([])
@@ -38,16 +38,19 @@ const AdminForms = () => {
         }
     }
 
-    const handleDeny = async(id) =>{
+    const handleDeny = async(id , message) =>{
+        console.log(id , message)
         const response = await axios.post(URL+'/admin/forms/deny' , {
-            id:id , message:'Insuffient Funds'
+            id:id,
+            message:message 
         })
+        setToggleItem({flag:true , id:null})
     }
 
-    const ItemPopUp = (id) => {
+    const ItemPopUp = () => {
         return (
             <Dialog
-                hidden={toggleItem}
+                hidden={toggleItem.flag}
                 onDismiss={() => setToggleItem(false)}
                 modalProps={modelProps}
                 dialogContentProps={{
@@ -58,8 +61,8 @@ const AdminForms = () => {
             >
                 <TextField id="admin_msg" label="Message" />
                 <DialogFooter>
-                    <Button onClick={async() => handleDeny(id , document.getElementById('admin_msg').value)}>Confirm</Button>
-                    <Button onClick={() => setToggleItem(true)}>Cancel</Button>
+                    <Button onClick={async() => handleDeny(toggleItem.id , document.getElementById('admin_msg').value)}>Confirm</Button>
+                    <Button onClick={() => setToggleItem({flag:true , id:null})}>Cancel</Button>
                 </DialogFooter>
             </Dialog>
         )
@@ -90,7 +93,7 @@ const AdminForms = () => {
                             >View</Button>
                             <Button boxShadow='lg' colorScheme={'teal'} h='35px' w='100px' color='white'>Proceed</Button>
                             <Button boxShadow='lg' bg='#d13438' colorScheme={'red'} h='35px' w='100px' color='white'
-                                onClick = {() => setToggleItem(!toggleItem)}
+                                onClick = {() => setToggleItem({id:x.id , flag:false})}
                             >Deny</Button>
                         </Stack>
                     </GridItem>
