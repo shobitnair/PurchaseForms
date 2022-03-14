@@ -40,11 +40,11 @@ const AdminForms = () => {
 
     const handleDeny = async(id , message) =>{
         console.log(id , message)
-        const response = await axios.post(URL+'/admin/forms/deny' , {
-            id:id,
-            message:message 
-        })
         setToggleItem({flag:true , id:null})
+
+        const found = pending.findIndex(x => x.id === id)
+        setNeeded(needed => [...needed , pending[found]])
+        setPending(pending => pending.filter(x => x.id !== id))
     }
 
     const ItemPopUp = () => {
@@ -61,7 +61,7 @@ const AdminForms = () => {
             >
                 <TextField id="admin_msg" label="Message" />
                 <DialogFooter>
-                    <Button onClick={async() => handleDeny(toggleItem.id , document.getElementById('admin_msg').value)}>Confirm</Button>
+                    <Button onClick={() => handleDeny(toggleItem.id , document.getElementById('admin_msg').value)}>Confirm</Button>
                     <Button onClick={() => setToggleItem({flag:true , id:null})}>Cancel</Button>
                 </DialogFooter>
             </Dialog>
