@@ -60,7 +60,7 @@ const Dashboard = () => {
         else {
             setPersona({ text: 'Please Login', })
         }
-    }, [user])
+    }, [user , role])
 
     return (
             <Grid mt = '10px' ml='2%' w='96%' h='650px' 

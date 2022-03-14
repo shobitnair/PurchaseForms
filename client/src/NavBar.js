@@ -63,7 +63,7 @@ const NavBar = () => {
         },
         {
             key:'subform',
-            text:(role)?'All forms':'Submitted Forms',
+            text:(role==='JOA')?'All forms':'Submitted Forms',
             iconProps: { iconName : 'AllApps'},
             buttonStyles: itemStyles,
             disabled:(user == null),

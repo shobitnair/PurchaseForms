@@ -26,7 +26,8 @@ app.get('/admin/forms' , async(req, res) =>{
 app.post('/admin/forms/deny' , async(req,res) =>{
     try{
         const {id , message} = req.body;
-        let query = await pool.query('update forms set status = $1 where id = $2' , ['denied',id])
+        let query = await pool.query('update forms set status = $1 , admin_msg = $2 where id = $3' , ['denied',message,id])
+        console.log(query)
     } catch (e) {
         res.status(404).json(e);
     }
