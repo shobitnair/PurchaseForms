@@ -14,6 +14,7 @@ import Dashboard from './Login/Dashboard'
 import { LoginProvider } from './Login/LoginContext';
 import SubmittedForms from './Forms/SubmittedForms';
 import { ChakraProvider } from '@chakra-ui/react'
+import AdminFormstemp from "./Admin/AdminFormstemp";
 import AdminForms from "./Admin/AdminForms";
 
 const App = () => {

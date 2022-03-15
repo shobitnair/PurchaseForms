@@ -1,151 +1,186 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { LoginContext } from '../Login/LoginContext'
-import axios from 'axios';
-import { URL } from '../cred';
+import React, {useEffect, useState} from 'react';
 import {
-    Label,
-    Stack,
-    Depths,Dialog,
-    DialogType,
-    DialogFooter,TextField
-} from '@fluentui/react';
-import { Grid, GridItem , Button , Badge  } from '@chakra-ui/react'
-import {PDFHandler} from "../Forms/PDFHandler";
+    ConstrainMode,
+    Depths,
+    DetailsList, DetailsListLayoutMode, Label, PrimaryButton, Selection, SelectionMode, TextField
+} from '@fluentui/react'
+import {URL} from '../cred'
+import axios from "axios";
+import {Badge, Button, Grid, GridItem} from "@chakra-ui/react";
 
-const modelProps = {
-    isBlocking: false,
-    styles: { main: { maxWidth: 400 } },
+
+const gridStyle = {
+    root: {
+        overflowX: 'scroll',
+        selectors: {
+            '& [role=grid]': {
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'start',
+                height: '500px',
+                marginLeft:'20px'
+            },
+        },
+    },
+    headerWrapper: {
+        flex: '0 0 auto',
+    },
+    contentWrapper: {
+        flex: '1 1 auto',
+        overflowY: 'auto',
+        overflowX: 'hidden',
+    },
 };
 
+const _columns = [
+    {
+        key: 'Id',
+        name: 'Id',
+        minWidth: 75,
+        maxWidth: 75,
+        isResizable: true,
+        onRender: (props) =>{
+            return <div>{props.id}</div>
+        }
+    },
+    {
+        key: 'Date Submitted',
+        name: 'Date Submitted',
+        minWidth: 125,
+        maxWidth: 125,
+        isResizable: true,
+        onRender: (props) =>{
+            return <div>{props.date}</div>
+        }
+    },
+    {
+        key: 'Type',
+        name: 'Type',
+        minWidth: 125,
+        maxWidth: 125,
+        isResizable: true,
+        onRender: (props) =>{
+            return <div >{props.type}</div>
+        }
+    },
+    {
+        key: 'Email',
+        name: 'Email',
+        minWidth: 175,
+        maxWidth: 175,
+        isResizable: true,
+        onRender: (props) =>{
+            return <div>{props.email}</div>
+        }
+    },
+    {
+        key: 'Name',
+        name: 'Name',
+        minWidth: 175,
+        maxWidth: 175,
+        isResizable: true,
+        onRender: (props) =>{
+            return <div>{props.name}</div>
+        }
+    },
+    {
+        key: 'Budget Head',
+        name: 'Budget Head',
+        minWidth: 175,
+        maxWidth: 175,
+        isResizable: true,
+        onRender: (props) =>{
+            return <div>{props.budgetHead}</div>
+        }
+    },
+    {
+        key: 'Status',
+        name: 'Status',
+        minWidth: 175,
+        maxWidth: 175,
+        isResizable: true,
+        onRender: (props) =>{
+            return <Badge>{props.status}</Badge>
+        }
+    },
+];
 
 const AdminForms = () => {
-    const { user } = useContext(LoginContext)
-    const [pending , setPending] = useState([]);
-    const [done , setDone] = useState([]);
-    const [needed , setNeeded] = useState([]);
-    const [flag , setFlag] = useState(0);
-    const [toggleItem , setToggleItem] = useState({flag:true , id:null});
+    const [items , setItems] = useState([])
+    const [forms , setForms] = useState([])
+    const [temp , setTemp] = useState([])
+    const [search , setSearch] = useState('')
 
-    const getForms = async () =>{
-        setPending([])
-        setDone([])
-        setNeeded([])
-        const res = await axios.get(URL+'/admin/forms');
-        for(let i  = 0  ; i<res.data.length ; i++){
-            if(res.data[i].status === 'pending')setPending(pending => [...pending, res.data[i]]);
-            else if(res.data[i].status === 'approved')setDone(done => [...done, res.data[i]])
-            else setNeeded(needed => [...needed , res.data[i]])
-        }
+
+    const getForms = async() =>{
+        const response = await axios.get(URL+'/admin/forms')
+        setForms( response.data )
+        setItems( response.data.map(x => {
+            const data = JSON.parse(x.data)
+            return {
+                id: x.id ,
+                type:x.type ,
+                email:x.email ,
+                name:data.name,
+                budgetHead:data.budgetHead,
+                status:x.status,
+                date:data.DOP
+            }
+        }))
+        setTemp( response.data.map(x => {
+            const data = JSON.parse(x.data)
+            return {
+                id: x.id ,
+                type:x.type ,
+                email:x.email ,
+                name:data.name,
+                budgetHead:data.budgetHead,
+                status:x.status,
+                date:data.DOP
+            }
+        }))
+
     }
 
-    const handleDeny = async(id , message) =>{
-        console.log(id , message)
-        setToggleItem({flag:true , id:null})
-
-        const found = pending.findIndex(x => x.id === id)
-        setNeeded(needed => [...needed , pending[found]])
-        setPending(pending => pending.filter(x => x.id !== id))
-    }
-
-    const ItemPopUp = () => {
-        return (
-            <Dialog
-                hidden={toggleItem.flag}
-                onDismiss={() => setToggleItem(false)}
-                modalProps={modelProps}
-                dialogContentProps={{
-                    type: DialogType.largeHeader,
-                    title: 'Deny the Form'
-
-                }}
-            >
-                <TextField id="admin_msg" label="Message" />
-                <DialogFooter>
-                    <Button onClick={() => handleDeny(toggleItem.id , document.getElementById('admin_msg').value)}>Confirm</Button>
-                    <Button onClick={() => setToggleItem({flag:true , id:null})}>Cancel</Button>
-                </DialogFooter>
-            </Dialog>
-        )
-    }
-
-    const formItem = (x) => {
-        const data = JSON.parse(x.data);
-        return (
-            <div key = {x.id}>
-                <Grid   w='100%' h='170px'
-                        templateRows='repeat(4,1fr)' templateColumns='repeat(3,1fr)'
-                        gap={4}
-                        bg='#faf9f8'
-                        style={{padding: 5, borderRadius:5 , boxShadow:Depths.depth4}}
-                >
-                    <GridItem rowSpan={4} colSpan={2} >
-                        <Stack style={{margin:10}}  tokens={{childrenGap:5}}>
-                            <Badge variant='outline' colorScheme='gray' fontSize={17} >Form ID : {x.id} </Badge>
-                            <Badge >Form Type : {x.type}</Badge>
-                            <Badge >Budget Head : {data.budgetHead}</Badge>
-                            <Badge >Name : {data.name}</Badge>
-                        </Stack>
-                    </GridItem>
-                    <GridItem style={{margin :10}}  rowSpan={4} colSpan={1}>
-                        <Stack tokens={{childrenGap:5}}>
-                            <Button boxShadow='lg' colorScheme={'blackAlpha'} h='35px' w='100px' color='white'
-                                onClick = {PDFHandler(x.type , data)}
-                            >View</Button>
-                            <Button boxShadow='lg' colorScheme={'teal'} h='35px' w='100px' color='white'>Proceed</Button>
-                            <Button boxShadow='lg' bg='#d13438' colorScheme={'red'} h='35px' w='100px' color='white'
-                                onClick = {() => setToggleItem({id:x.id , flag:false})}
-                            >Deny</Button>
-                        </Stack>
-                    </GridItem>
-                </Grid>
-            </div>
-        )
+    const handleSearch = (search) =>{
+        setItems(temp.filter(x =>{
+            if(x.email.toString().toLowerCase().indexOf(search.toLowerCase()) > -1)return 1
+            if(x.id.toString().toLowerCase().indexOf(search.toLowerCase()) > -1)return 1
+            if(x.status.toString().toLowerCase().indexOf(search.toLowerCase()) > -1)return 1
+            if(x.type.toString().toLowerCase().indexOf(search.toLowerCase()) > -1)return 1
+        }))
+        setSearch(search)
     }
 
     useEffect(async () => {
-        await getForms();
-    }, [flag])
+        await getForms()
+    } , [])
 
-    return (
-        <div>
-            <ItemPopUp />
-            <Grid mt = '10px' ml='1%' w='96%' h='650px'
-                  templateRows='repeat(12,1fr)' templateColumns='repeat(6,1fr)'
-                  gap={4}
-            >
-                <GridItem align='center' rowSpan={1} colSpan={2} bg='#edebe9'  style={{borderRadius:5 , boxShadow:Depths.depth4}}>
-                    <Label style={{ fontSize: 24 }}>Pending</Label>
-                </GridItem>
-                <GridItem align='center' rowSpan={1} colSpan={2} bg='#edebe9'  style={{borderRadius:5 , boxShadow:Depths.depth4}}>
-                    <Label style={{ fontSize: 24 }}>Approved</Label>
-                </GridItem>
-                <GridItem align='center' rowSpan={1} colSpan={2} bg='#edebe9'  style={{borderRadius:5 , boxShadow:Depths.depth4}}>
-                    <Label style={{ fontSize: 24 }}>Denied / Action Needed</Label>
-                </GridItem>
-                <GridItem rowSpan={10} colSpan={2} bg='#edebe9' p={2} style={{overflow:'scroll',borderRadius:5 , boxShadow:Depths.depth4}}>
-                    <Stack tokens={{childrenGap:10}}>
-                        {pending.map(x => {
-                            return formItem(x);
-                        })}
-                    </Stack>
-                </GridItem>
-                <GridItem rowSpan={10} colSpan={2} bg='#edebe9' p={2} style={{overflow:'scroll',borderRadius:5 , boxShadow:Depths.depth4}}>
-                    <Stack tokens={{childrenGap:10}}>
-                        {done.map(x => {
-                            return formItem(x);
-                        })}
-                    </Stack>
-                </GridItem>
-                <GridItem rowSpan={10} colSpan={2} bg='#edebe9' p={2} style={{overflow:'scroll',borderRadius:5 , boxShadow:Depths.depth4}}>
-                    <Stack tokens={{childrenGap:10}}>
-                        {needed.map(x => {
-                            return formItem(x);
-                        })}
-                    </Stack>
-                </GridItem>
+    const [selection, setSelection] = useState(new Selection());
+    return (<>
+        <Grid templateColumns='repeat(12,1fr)' templateRows='repeat(12,1fr)' w='100%'  h='600px' gap={1} m={4}>
+            <GridItem rowSpan={1} colSpan={2}>
+                <TextField
+                    label = "Search"
+                    onChange={(e)=>handleSearch(e.target.value)}
+                    placeholder={'Enter any keyword'}></TextField>
+            </GridItem>
 
-            </Grid>
-        </div>
+            <GridItem rowStart={3} colSpan={12} m={8}>
+                <div style={{'border': '8px solid #f3f2f1' , borderRadius: '2px', boxShadow: Depths.depth4 }}>
+                    <DetailsList
+                        items={items}
+                        columns={_columns}
+                        setKey="set"
+                        selectionMode={SelectionMode.none}
+                        styles = {gridStyle}
+                        layoutMode={DetailsListLayoutMode.fixedColumns}
+                        constrainMode={ConstrainMode.unconstrained}
+                    />
+                </div>
+            </GridItem>
+        </Grid>
+        </>
     );
 };
 
