@@ -7,6 +7,7 @@ import {
 import {URL} from '../cred'
 import axios from "axios";
 import {Badge, Button, ButtonGroup, Grid, GridItem, Text} from "@chakra-ui/react";
+import {PDFbyID, PDFHandler} from "../Forms/PDFHandler";
 
 
 const gridStyle = {
@@ -17,7 +18,7 @@ const gridStyle = {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'start',
-                height: '500px',
+                height: '400px',
                 marginLeft:'20px'
             },
         },
@@ -32,95 +33,6 @@ const gridStyle = {
     },
 };
 
-const _columns = [
-    {
-        key: 'Actions',
-        name: 'Actions',
-        minWidth: 175,
-        maxWidth: 175,
-        isResizable: true,
-        onRender: (props) =>{
-            return <div>
-                <ButtonGroup  spacing='2'>
-                    <Button colorScheme={'blackAlpha'}>View</Button>
-                    <Button colorScheme={'blackAlpha'}>Delete</Button>
-
-                </ButtonGroup>
-            </div>
-        }
-    },
-    {
-        key: 'Id',
-        name: 'Id',
-        minWidth: 75,
-        maxWidth: 75,
-        isResizable: true,
-        onRender: (props) =>{
-            return <Text style={{fontSize:15}}>{props.id}</Text>
-        }
-    },
-    {
-        key: 'Date Submitted',
-        name: 'Date Submitted',
-        minWidth: 100,
-        maxWidth: 100,
-        isResizable: true,
-        onRender: (props) =>{
-            return <Text style={{fontSize:15}}>{props.date}</Text>
-        }
-    },
-    {
-        key: 'Type',
-        name: 'Type',
-        minWidth: 75,
-        maxWidth: 75,
-        isResizable: true,
-        onRender: (props) =>{
-            return <Text style={{fontSize:15}}>{props.type}</Text>
-        }
-    },
-    {
-        key: 'Email',
-        name: 'Email',
-        minWidth: 200,
-        maxWidth: 200,
-        isResizable: true,
-        onRender: (props) =>{
-            return <Text style={{fontSize:15}}>{props.email}</Text>
-        }
-    },
-    {
-        key: 'Name',
-        name: 'Name',
-        minWidth: 175,
-        maxWidth: 175,
-        isResizable: true,
-        onRender: (props) =>{
-            return <Text style={{fontSize:15}}>{props.name}</Text>
-        }
-    },
-    {
-        key: 'Budget Head',
-        name: 'Budget Head',
-        minWidth: 175,
-        maxWidth: 175,
-        isResizable: true,
-        onRender: (props) =>{
-            return <div>{props.budgetHead}</div>
-        }
-    },
-    {
-        key: 'Status',
-        name: 'Status',
-        minWidth: 175,
-        maxWidth: 175,
-        isResizable: true,
-        onRender: (props) =>{
-            return <Badge>{props.status}</Badge>
-        }
-    },
-
-];
 
 const formOptions = [
     { key: 'A', text: 'All'},
@@ -147,6 +59,96 @@ const AdminForms = () => {
         status:'All',
     })
 
+
+    const _columns = [
+        {
+            key: 'Actions',
+            name: 'Actions',
+            minWidth: 175,
+            maxWidth: 175,
+            isResizable: true,
+            onRender: (props) =>{
+                return <div>
+                    <ButtonGroup  spacing='2'>
+                        <Button onClick={()=>PDFbyID(props.id)}
+                                h={'30px'} colorScheme={'blackAlpha'}>View</Button>
+                        <Button h={'30px'} colorScheme={'teal'}>Proceed</Button>
+                    </ButtonGroup>
+                </div>
+            }
+        },
+        {
+            key: 'Id',
+            name: 'Id',
+            minWidth: 75,
+            maxWidth: 75,
+            isResizable: true,
+            onRender: (props) =>{
+                return <Text style={{fontSize:15}}>{props.id}</Text>
+            }
+        },
+        {
+            key: 'Date Submitted',
+            name: 'Date Submitted',
+            minWidth: 100,
+            maxWidth: 100,
+            isResizable: true,
+            onRender: (props) =>{
+                return <Text style={{fontSize:15}}>{props.date}</Text>
+            }
+        },
+        {
+            key: 'Type',
+            name: 'Type',
+            minWidth: 75,
+            maxWidth: 75,
+            isResizable: true,
+            onRender: (props) =>{
+                return <Text style={{fontSize:15}}>{props.type}</Text>
+            }
+        },
+        {
+            key: 'Email',
+            name: 'Email',
+            minWidth: 200,
+            maxWidth: 200,
+            isResizable: true,
+            onRender: (props) =>{
+                return <Text style={{fontSize:15}}>{props.email}</Text>
+            }
+        },
+        {
+            key: 'Name',
+            name: 'Name',
+            minWidth: 175,
+            maxWidth: 175,
+            isResizable: true,
+            onRender: (props) =>{
+                return <Text style={{fontSize:15}}>{props.name}</Text>
+            }
+        },
+        {
+            key: 'Budget Head',
+            name: 'Budget Head',
+            minWidth: 175,
+            maxWidth: 175,
+            isResizable: true,
+            onRender: (props) =>{
+                return <div>{props.budgetHead}</div>
+            }
+        },
+        {
+            key: 'Status',
+            name: 'Status',
+            minWidth: 175,
+            maxWidth: 175,
+            isResizable: true,
+            onRender: (props) =>{
+                return <Badge>{props.status}</Badge>
+            }
+        },
+
+    ];
 
     const getForms = async() =>{
         const response = await axios.get(URL+'/admin/forms')

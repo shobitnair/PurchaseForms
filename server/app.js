@@ -12,7 +12,14 @@ app.use(cors({
 }))
 app.use(express.json());
 
-
+app.get('/forms/:id' , async(req,res) =>{
+    try{
+        let query = await pool.query('select * from forms where id = $1',[req.params.id])
+        res.json(query.rows[0])
+    } catch (error) {
+        res.status(404).json(error);
+    }
+})
 
 app.get('/admin/forms' , async(req, res) =>{
     try {
