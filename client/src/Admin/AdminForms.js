@@ -2,11 +2,11 @@ import React, {useEffect, useState} from 'react';
 import {
     ConstrainMode,
     Depths,
-    DetailsList, DetailsListLayoutMode, Dropdown, Label, PrimaryButton, Selection, SelectionMode, TextField
+    DetailsList, DetailsListLayoutMode, Dropdown, Icon, Label, PrimaryButton, Selection, SelectionMode, TextField
 } from '@fluentui/react'
 import {URL} from '../cred'
 import axios from "axios";
-import {Badge, Button, Grid, GridItem} from "@chakra-ui/react";
+import {Badge, Button, ButtonGroup, Grid, GridItem, Text} from "@chakra-ui/react";
 
 
 const gridStyle = {
@@ -34,43 +34,59 @@ const gridStyle = {
 
 const _columns = [
     {
+        key: 'Actions',
+        name: 'Actions',
+        minWidth: 175,
+        maxWidth: 175,
+        isResizable: true,
+        onRender: (props) =>{
+            return <div>
+                <ButtonGroup  spacing='2'>
+                    <Button colorScheme={'blackAlpha'}>View</Button>
+                    <Button colorScheme={'blackAlpha'}>Delete</Button>
+
+                </ButtonGroup>
+            </div>
+        }
+    },
+    {
         key: 'Id',
         name: 'Id',
         minWidth: 75,
         maxWidth: 75,
         isResizable: true,
         onRender: (props) =>{
-            return <div>{props.id}</div>
+            return <Text style={{fontSize:15}}>{props.id}</Text>
         }
     },
     {
         key: 'Date Submitted',
         name: 'Date Submitted',
-        minWidth: 125,
-        maxWidth: 125,
+        minWidth: 100,
+        maxWidth: 100,
         isResizable: true,
         onRender: (props) =>{
-            return <div>{props.date}</div>
+            return <Text style={{fontSize:15}}>{props.date}</Text>
         }
     },
     {
         key: 'Type',
         name: 'Type',
-        minWidth: 125,
-        maxWidth: 125,
+        minWidth: 75,
+        maxWidth: 75,
         isResizable: true,
         onRender: (props) =>{
-            return <div >{props.type}</div>
+            return <Text style={{fontSize:15}}>{props.type}</Text>
         }
     },
     {
         key: 'Email',
         name: 'Email',
-        minWidth: 175,
-        maxWidth: 175,
+        minWidth: 200,
+        maxWidth: 200,
         isResizable: true,
         onRender: (props) =>{
-            return <div>{props.email}</div>
+            return <Text style={{fontSize:15}}>{props.email}</Text>
         }
     },
     {
@@ -80,7 +96,7 @@ const _columns = [
         maxWidth: 175,
         isResizable: true,
         onRender: (props) =>{
-            return <div>{props.name}</div>
+            return <Text style={{fontSize:15}}>{props.name}</Text>
         }
     },
     {
@@ -103,6 +119,7 @@ const _columns = [
             return <Badge>{props.status}</Badge>
         }
     },
+
 ];
 
 const formOptions = [
@@ -126,8 +143,8 @@ const AdminForms = () => {
     const [filter , setFilter] = useState({
         id:'',
         email:'',
-        type:'' ,
-        status:'',
+        type:'All' ,
+        status:'All',
     })
 
 
@@ -202,12 +219,18 @@ const AdminForms = () => {
                     placeholder={'Enter any keyword'}></TextField>
             </GridItem>
             <GridItem rowSpan={1} colSpan={2} ml={4}>
-                <Dropdown placeholder="Select an Option" options={formOptions} label="Form type"
-                          onChange={(e, i) => setFilter({ ...filter, type: i.text })} />
+                <Dropdown
+                    defaultSelectedKey={'A'}
+                    options={formOptions} label="Form type"
+                    onChange={(e, i) => setFilter({ ...filter, type: i.text })}
+                />
             </GridItem>
             <GridItem  rowStart={2} rowSpan={1} colSpan={2} ml={4}>
-                <Dropdown placeholder="Select an Option" options={statusOptions} label="Status type"
-                          onChange={(e, i) => setFilter({ ...filter, status: i.text })} />
+                <Dropdown
+                    defaultSelectedKey={'A'}
+                    options={statusOptions} label="Status type"
+                    onChange={(e, i) => setFilter({ ...filter, status: i.text })}
+                />
             </GridItem>
 
             <GridItem rowStart={3} rowSpan={10} colSpan={12} m={8}>
