@@ -78,15 +78,35 @@ app.post('/users' , async(req,res)=>{
     try {
         console.log(req.body);
         const { email , name } = req.body;
+
+        // find the user from the database.
         let query = await pool.query(
             "Select email from users where email = $1" , [email]
         )
-        if(query.rowCount == 0) query = await pool.query(
-            "INSERT into users (name , email) VALUES ($1 , $2 ) returning *",
-            [name , email]
-        );
-        res.json({comment:'user data updated / added'});
+
+        // If user does not exist in database then create user and draft tables.
+        if(query.rowCount == 0) {
+            query = await pool.query(
+                "INSERT into users (name , email) VALUES ($1 , $2 ) returning *",
+                [name , email]
+            );
+
+            const table_suffix = email.split('@')[0]
+
+            console.log("create table draft_" + table_suffix +
+                "(\n" +
+                "    id   serial,\n" +
+                "    type varchar not null,\n" +
+                "    data text    not null\n" +
+                ");\n" +
+                "\n" +
+                "alter table draft_" + table_suffix +
+                "    owner to postgres;")
+        }
+
+        res.json({comment:'user data updated / added'})
     } catch (error) {
+        console.log(error)
         res.status(404).json(error);
     }
 })
