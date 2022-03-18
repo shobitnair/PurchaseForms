@@ -12,16 +12,13 @@ app.use(cors({
 }))
 app.use(express.json());
 
-app.get('/forms/:id' , async(req,res) =>{
-    try{
-        let query = await pool.query('select * from forms where id = $1',[req.params.id])
-        res.json(query.rows[0])
-    } catch (error) {
-        res.status(404).json(error);
-    }
-})
 
-app.get('/admin/forms' , async(req, res) =>{
+//Build 
+app.use(express.static("../client/build"));
+
+
+
+app.get('/api/admin/forms' , async(req, res) =>{
     try {
         let query = await pool.query('select * from forms');
         res.json(query.rows);
@@ -30,7 +27,7 @@ app.get('/admin/forms' , async(req, res) =>{
     }
 })
 
-app.post('/admin/forms/deny' , async(req,res) =>{
+app.post('/api/admin/forms/deny' , async(req,res) =>{
     try{
         const {id , message} = req.body;
         let query = await pool.query('update forms set status = $1 , admin_msg = $2 where id = $3' , ['denied',message,id])
@@ -40,7 +37,16 @@ app.post('/admin/forms/deny' , async(req,res) =>{
     }
 })
 
-app.get('/forms/:email' , async(req,res) =>{
+app.get('/api/form/:id' , async(req,res) =>{
+    try{
+        let query = await pool.query('select * from forms where id = $1',[req.params.id])
+        res.json(query.rows[0])
+    } catch (error) {
+        res.status(404).json(error);
+    }
+})
+
+app.get('/api/forms/:email' , async(req,res) =>{
     try {
         let query = await pool.query('select * from forms where email = $1 order by id desc'  , [req.params.email])
         res.json(query.rows);
@@ -50,7 +56,7 @@ app.get('/forms/:email' , async(req,res) =>{
 })
 
 
-app.get('/users/:email' , async(req,res) =>{
+app.get('/api/users/:email' , async(req,res) =>{
     try{
         let query = await pool.query('select * from users where email = $1' , [req.params.email]);
         res.json(query.rows);
@@ -60,7 +66,7 @@ app.get('/users/:email' , async(req,res) =>{
 })
 
 
-app.post('/forms' , async(req,res)=>{
+app.post('/api/forms' , async(req,res)=>{
     try {
         const {type , email , data , status} = req.body;
         let query = await pool.query(
@@ -74,7 +80,7 @@ app.post('/forms' , async(req,res)=>{
 })
 
 
-app.post('/users' , async(req,res)=>{
+app.post('/api/users' , async(req,res)=>{
     try {
         console.log(req.body);
         const { email , name } = req.body;
@@ -87,8 +93,8 @@ app.post('/users' , async(req,res)=>{
         // If user does not exist in database then create user and draft tables.
         if(query.rowCount == 0) {
             query = await pool.query(
-                "INSERT into users (name , email) VALUES ($1 , $2 ) returning *",
-                [name , email]
+                "INSERT into users (name , email , role) VALUES ($1 , $2  , $3) returning *",
+                [name , email , 'FACULTY']
             );
 
             const table_suffix = email.split('@')[0]

@@ -8,6 +8,6 @@ export const PDFHandler = (form , data) =>{
 }
 
 export const PDFbyID = async (id) => {
-    const response = await axios.get(URL + '/forms/' + id)
+    const response = await axios.get(URL + '/form/' + id)
     PDFHandler(response.data.type , JSON.parse(response.data.data))
 }

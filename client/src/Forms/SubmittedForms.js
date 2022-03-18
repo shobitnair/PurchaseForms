@@ -68,7 +68,8 @@ const SubmittedForms = () => {
                     <GridItem style={{margin:10}}  rowSpan={4} colSpan={1}>
                         <Stack tokens={{childrenGap:5}}>
                         <Button boxShadow='lg' colorScheme={'teal'} h='35px' w='100px' color='white'
-                            onClick = {PDFHandler(x.type , data)}>
+                            //onClick = {PDFHandler(x.type , data)}
+                            >
                             View</Button>
                         <Button boxShadow='lg' bg='#d13438' colorScheme={'red'} h='35px' w='100px' color='white'>Delete</Button>
                             {x.status === 'denied' &&
