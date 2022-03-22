@@ -3,7 +3,6 @@ const path = require('path');
 const cors = require('cors');
 const morgan = require('morgan');
 const { pool } = require('./db');
-
 const app = express();
 
 //middlewares
@@ -15,8 +14,9 @@ app.use(express.json());
 
 //Build 
 app.use(express.static("../client/build"));
-
-
+app.get('/site/' , (req,res)=>{
+    res.sendFile(path.join(__dirname ,'..' , 'client' , 'build' , 'index.html'))
+})
 
 app.get('/api/admin/forms' , async(req, res) =>{
     try {

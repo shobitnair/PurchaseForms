@@ -9,6 +9,17 @@ import axios from "axios";
 import {Badge, Button, ButtonGroup, Grid, GridItem, Text} from "@chakra-ui/react";
 import {PDFbyID, PDFHandler} from "../Forms/PDFHandler";
 
+const formatDate = (date) => {
+    console.log(date);
+    if (!date)
+        return '';
+    const month = date.getMonth() + 1; // + 1 because 0 indicates the first Month of the Year.
+    const day = date.getDate();
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+};
+
 
 const gridStyle = {
     root: {

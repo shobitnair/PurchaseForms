@@ -18,18 +18,18 @@ import AdminForms from "./Admin/AdminForms";
 
 const App = () => {
   return (
-    <div style={{fontFamily:'Open Sans'}}>
+    <div style={{fontFamily:'Droid Sans Mono'}}>
       <ChakraProvider>
         <LoginProvider>
         <Provider store={store}>
           <Router>  
           <NavBar/>
             <Routes>
-              <Route exact path="/" element={<Dashboard/>} />
-              <Route exact path="/forms/sp101" element={<Sp101/>} />
-              <Route exact path="/forms/sp102" element={<Sp102/>} />
-              <Route exact path="/forms/submitted" element={<SubmittedForms/>} />
-              <Route exact path={"/admin/forms"} element={<AdminForms/>} />
+              <Route exact path="/site/" element={<Dashboard/>} />
+              <Route exact path="/site/forms/sp101" element={<Sp101/>} />
+              <Route exact path="/site/forms/sp102" element={<Sp102/>} />
+              <Route exact path="/site/forms/submitted" element={<SubmittedForms/>} />
+              <Route exact path={"/site/admin/forms"} element={<AdminForms/>} />
              </Routes>
           </Router>
         </Provider>

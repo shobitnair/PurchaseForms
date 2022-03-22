@@ -59,7 +59,7 @@ const NavBar = () => {
             text: 'DashBoard', 
             iconProps: { iconName: 'ViewDashboard' },
             buttonStyles : itemStyles,
-            onClick: ()=>nav('/')
+            onClick: ()=>nav('/site')
         },
         {
             key:'subform',
@@ -67,7 +67,7 @@ const NavBar = () => {
             iconProps: { iconName : 'AllApps'},
             buttonStyles: itemStyles,
             disabled:(user == null),
-            onClick: (role==='JAO')?()=>nav('/admin/forms'):()=>nav('/forms/submitted')
+            onClick: (role==='JAO')?()=>nav('site/admin/forms'):()=>nav('site/forms/submitted')
         },
     ]
 

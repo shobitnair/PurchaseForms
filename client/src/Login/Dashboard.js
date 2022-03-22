@@ -31,7 +31,7 @@ const Dashboard = () => {
 
     const FormItem = ({form,body}) =>{
         return(
-            <GridItem rowSpan={2} colSpan={2} bg='#edebe9' p={2} style={{borderRadius:5 , boxShadow:Depths.depth4}}>
+            <GridItem w='100%' h='100%' rowSpan={2} colSpan={2} bg='#edebe9' p={2} style={{borderRadius:5 , boxShadow:Depths.depth4}}>
                 <Grid w='100%' h='100%' templateRows='repeat(4,1fr)' templateColumns='repeat(2,1fr)'>
                     <GridItem rowSpan={1} colSpan={2}>
                         <Badge variant = 'outline' style={{fontSize:24}}>{form}</Badge>
@@ -40,7 +40,7 @@ const Dashboard = () => {
                         <Text as='i'>{body}</Text>
                     </GridItem>
                     <GridItem rowSpan={1} colSpan={1} colStart={2}>
-                        <Button colorScheme={'blackAlpha'} onClick={()=>nav('/forms/'+form)} color='white'>Fill Out a Form</Button>
+                        <Button colorScheme={'blackAlpha'} onClick={()=>nav('forms/'+form)} color='white'>Fill Out a Form</Button>
                     </GridItem>
                 </Grid>
             </GridItem>
@@ -63,10 +63,10 @@ const Dashboard = () => {
     }, [user , role])
 
     return (
-            <Grid mt = '10px' ml='2%' w='96%' h='650px' 
+            <Grid mt = '10px' ml='2%' w='96%' h='700px' 
             templateRows='repeat(8,1fr)' templateColumns='repeat(8,1fr)' 
             gap={4}>    
-                <GridItem rowSpan={2} colSpan={2} bg='#edebe9' p={2} style={{borderRadius:5 , boxShadow:Depths.depth4}}>
+                <GridItem w='100%' rowSpan={2} colSpan={2} bg='#edebe9' p={2} style={{borderRadius:5 , boxShadow:Depths.depth4}}>
                     <PersonDetails />
                 </GridItem>
                 {user && <>
