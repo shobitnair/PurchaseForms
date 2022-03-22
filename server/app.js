@@ -3,6 +3,8 @@ const path = require('path');
 const cors = require('cors');
 const morgan = require('morgan');
 const { pool } = require('./db');
+const {sq}  = require('./sqlite')
+
 const app = express();
 
 //middlewares
@@ -18,7 +20,15 @@ app.get('/site/' , (req,res)=>{
     res.sendFile(path.join(__dirname ,'..' , 'client' , 'build' , 'index.html'))
 })
 
+
+
 app.get('/api/admin/forms' , async(req, res) =>{
+    /*
+    sq.all('select * from forms' , [] , (err,row)=>{
+        if(err)return res.status(404).json(err);
+        return res.json(row);
+    })
+    */
     try {
         let query = await pool.query('select * from forms');
         res.json(query.rows);
