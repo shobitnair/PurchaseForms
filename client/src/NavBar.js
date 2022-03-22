@@ -67,7 +67,7 @@ const NavBar = () => {
             iconProps: { iconName : 'AllApps'},
             buttonStyles: itemStyles,
             disabled:(user == null),
-            onClick: (role==='JAO')?()=>nav('site/admin/forms'):()=>nav('site/forms/submitted')
+            onClick: (role==='JAO')?()=>nav('/site/admin/forms'):()=>nav('/site/forms/submitted')
         },
     ]
 

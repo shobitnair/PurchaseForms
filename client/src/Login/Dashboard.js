@@ -19,10 +19,10 @@ const Dashboard = () => {
             styles={{
                 text: {
                     fontSize: 22 , 
-                    fontFamily: 'Open Sans'
+                    fontFamily: 'Droid sans mono'
                 },
                 secondaryText: {
-                    fontFamily: 'Open Sans'
+                    fontFamily: 'Droid sans mono'
                 },
                 root:{margin:'10px'}
             }}
@@ -40,7 +40,13 @@ const Dashboard = () => {
                         <Text as='i'>{body}</Text>
                     </GridItem>
                     <GridItem rowSpan={1} colSpan={1} colStart={2}>
-                        <Button colorScheme={'blackAlpha'} onClick={()=>nav('forms/'+form)} color='white'>Fill Out a Form</Button>
+                        <Button colorScheme={'blackAlpha'} 
+                        onClick={()=>nav('/site/forms/'+form)} 
+                        color='white'
+                        disabled={form > 'sp102'}>
+                            {form<='sp102'&&'Fill Out a Form'}
+                            {form>'sp102'&&'Under Work'}
+                        </Button>
                     </GridItem>
                 </Grid>
             </GridItem>

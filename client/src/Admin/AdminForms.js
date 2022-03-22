@@ -2,12 +2,15 @@ import React, {useEffect, useState} from 'react';
 import {
     ConstrainMode,
     Depths,
-    DetailsList, DetailsListLayoutMode, Dropdown, Icon, Label, PrimaryButton, Selection, SelectionMode, TextField
+    DetailsList, DetailsListLayoutMode, Dropdown, Icon, Label, PrimaryButton, Selection, SelectionMode, TextField,
+    DatePicker
 } from '@fluentui/react'
 import {URL} from '../cred'
 import axios from "axios";
 import {Badge, Button, ButtonGroup, Grid, GridItem, Text} from "@chakra-ui/react";
 import {PDFbyID, PDFHandler} from "../Forms/PDFHandler";
+import { DefaultButton } from '@fluentui/react';
+
 
 const formatDate = (date) => {
     console.log(date);
@@ -19,7 +22,13 @@ const formatDate = (date) => {
 
     return `${day}/${month}/${year}`;
 };
-
+const revformatDate = (date) =>{
+    var parts = date.split("/");
+    var dt = new Date(parseInt(parts[2], 10),
+                  parseInt(parts[1], 10) - 1,
+                  parseInt(parts[0], 10));
+    return dt;
+}
 
 const gridStyle = {
     root: {
@@ -28,9 +37,9 @@ const gridStyle = {
             '& [role=grid]': {
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: 'start',
-                height: '400px',
-                marginLeft:'20px'
+                alignItems: 'center',
+                height: '450px',
+                backgroundColor:'#f3f2f1'
             },
         },
     },
@@ -38,8 +47,6 @@ const gridStyle = {
         flex: '0 0 auto',
     },
     contentWrapper: {
-        flex: '1 1 auto',
-        overflowY: 'auto',
         overflowX: 'hidden',
     },
 };
@@ -68,6 +75,10 @@ const AdminForms = () => {
         email:'',
         type:'All' ,
         status:'All',
+        startDate: new Date("Jan 01 1900"), 
+        endDate :  new Date(Date.now()),
+        budgetGreater:'',
+        budgetLesser:''
     })
 
 
@@ -86,7 +97,8 @@ const AdminForms = () => {
                         <Button h={'30px'} colorScheme={'teal'}>Proceed</Button>
                     </ButtonGroup>
                 </div>
-            }
+            },
+            
         },
         {
             key: 'Id',
@@ -145,7 +157,7 @@ const AdminForms = () => {
             maxWidth: 175,
             isResizable: true,
             onRender: (props) =>{
-                return <div>{props.budgetHead}</div>
+                return <Badge fontSize={15}>{props.budgetHead}</Badge>
             }
         },
         {
@@ -155,7 +167,11 @@ const AdminForms = () => {
             maxWidth: 175,
             isResizable: true,
             onRender: (props) =>{
-                return <Badge>{props.status}</Badge>
+                return <div >
+                {props.status === 'approved' && <Badge fontSize={15} colorScheme={'green'}>{props.status}</Badge>}
+                {props.status === 'denied' && <Badge fontSize={15} colorScheme={'red'}>{props.status}</Badge>}
+                {props.status === 'pending' && <Badge fontSize={15} colorScheme={'purple'}>{props.status}</Badge>}
+                </div>
             }
         },
 
@@ -196,12 +212,15 @@ const AdminForms = () => {
     }
 
     const updateForms = () =>{
+
         setItems(temp.filter(x =>{
             if(
                 exists(x.email , filter.email) &&
                 exists(x.id , filter.id) &&
                 (filter.type === 'All' || exists(x.type , filter.type)) &&
-                (filter.status === 'All' || exists(x.status , filter.status))
+                (filter.status === 'All' || exists(x.status , filter.status))&&
+                filter.startDate <= revformatDate(x.date) &&
+                revformatDate(x.date) <= filter.endDate 
             ) return 1
             else return 0
         }))
@@ -213,10 +232,15 @@ const AdminForms = () => {
             setFirst(false)
         } else {
             updateForms()
+
         }
     } , [first , filter])
 
     const [selection, setSelection] = useState(new Selection());
+    const [range , setRange] = useState({
+        endDate: new Date("Mar 28 2022") ,
+        startDate: new Date("Jan 01 1900")
+    })
     return (<>
         <Grid templateColumns='repeat(12,1fr)' templateRows='repeat(12,1fr)' w='100%'  h='600px' gap={4} >
             <GridItem rowSpan={1} colSpan={2} ml={4}>
@@ -243,6 +267,23 @@ const AdminForms = () => {
                     defaultSelectedKey={'A'}
                     options={statusOptions} label="Status type"
                     onChange={(e, i) => setFilter({ ...filter, status: i.text })}
+                />
+            </GridItem>
+            <GridItem rowSpan={1} colSpan={2} ml={4} > 
+                <DatePicker
+                placeholder="Select Date"
+                label="Start Date"
+                onSelectDate={(e) => setFilter({ ...filter, startDate: e })} 
+                maxDate = {filter.endDate}
+                />
+            </GridItem>
+            <GridItem  rowStart={2} rowSpan={1} colSpan={2} ml={4}>
+                <DatePicker
+                    placeholder="Select Date"
+                    label="End Date"
+                    onSelectDate={(e) => setFilter({ ...filter, endDate: e })} 
+                    minDate = {filter.startDate}
+                    maxDate = {new Date(Date.now())}
                 />
             </GridItem>
 

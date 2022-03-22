@@ -25,11 +25,12 @@ const App = () => {
           <Router>  
           <NavBar/>
             <Routes>
+              <Route index element={<Dashboard/>}/>
               <Route exact path="/site/" element={<Dashboard/>} />
               <Route exact path="/site/forms/sp101" element={<Sp101/>} />
               <Route exact path="/site/forms/sp102" element={<Sp102/>} />
               <Route exact path="/site/forms/submitted" element={<SubmittedForms/>} />
-              <Route exact path={"/site/admin/forms"} element={<AdminForms/>} />
+              <Route exact path="/site/admin/forms" element={<AdminForms/>} />
              </Routes>
           </Router>
         </Provider>
