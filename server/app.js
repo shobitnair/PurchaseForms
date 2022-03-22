@@ -16,7 +16,7 @@ app.use(express.json());
 
 //Build 
 app.use(express.static("../client/build"));
-app.get('/site/' , (req,res)=>{
+app.get('/site*' , (req,res)=>{
     res.sendFile(path.join(__dirname ,'..' , 'client' , 'build' , 'index.html'))
 })
 
