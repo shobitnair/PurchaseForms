@@ -4,14 +4,23 @@ import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAlq-C0DvAQHIBcSGXW5VdYvj0iF_2-yhs",
-  authDomain: "depx13-15317.firebaseapp.com",
-  projectId: "depx13-15317",
-  storageBucket: "depx13-15317.appspot.com",
-  messagingSenderId: "901350628759",
-  appId: "1:901350628759:web:7758f692ecde14052cf8d2",
-  measurementId: "G-HTYY6R1LYG"
+
+  apiKey: "AIzaSyCMcfINTYmB3dePEFL1oyyYbcwbdNd3TJo",
+
+  authDomain: "purchase-forms-c2052.firebaseapp.com",
+
+  projectId: "purchase-forms-c2052",
+
+  storageBucket: "purchase-forms-c2052.appspot.com",
+
+  messagingSenderId: "171116287567",
+
+  appId: "1:171116287567:web:9f484fa95c8cd62a1efc3a",
+
+  measurementId: "G-2XXFKHBW6M"
+
 };
+
   
 // Initialize Firebase
 const firebaseApp = firebase.initializeApp(firebaseConfig);
