@@ -3,7 +3,7 @@ const path = require('path');
 const cors = require('cors');
 const morgan = require('morgan');
 const { pool } = require('./db');
-const {sq}  = require('./sqlite')
+//const {sq}  = require('./sqlite')
 
 const app = express();
 
