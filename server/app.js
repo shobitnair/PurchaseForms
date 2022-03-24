@@ -14,6 +14,7 @@ app.use(cors({
 app.use(express.json());
 
 
+
 //Build 
 app.use(express.static("../client/build"));
 app.get('/site*' , (req,res)=>{

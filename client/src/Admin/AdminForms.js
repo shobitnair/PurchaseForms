@@ -2,14 +2,20 @@ import React, {useEffect, useState} from 'react';
 import {
     ConstrainMode,
     Depths,
-    DetailsList, DetailsListLayoutMode, Dropdown, Icon, Label, PrimaryButton, Selection, SelectionMode, TextField,
-    DatePicker
+    DetailsList, 
+    DetailsListLayoutMode, 
+    Dropdown, 
+    Selection, 
+    SelectionMode, 
+    TextField,
+    DatePicker,
+    IconButton
 } from '@fluentui/react'
 import {URL} from '../cred'
 import axios from "axios";
 import {Badge, Button, ButtonGroup, Grid, GridItem, Text} from "@chakra-ui/react";
 import {PDFbyID, PDFHandler} from "../Forms/PDFHandler";
-import { DefaultButton } from '@fluentui/react';
+import { useNavigate } from 'react-router';
 
 
 const formatDate = (date) => {
@@ -37,16 +43,20 @@ const gridStyle = {
             '& [role=grid]': {
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: 'center',
+                alignItems: 'left',
                 height: '450px',
-                backgroundColor:'#f3f2f1'
+                backgroundColor:'#f3f2f1',
             },
+            
         },
     },
     headerWrapper: {
-        flex: '0 0 auto',
+        flex: '1 1 auto',
+        
     },
     contentWrapper: {
+        flex: '1 1 auto',
+        overflowY: 'auto',
         overflowX: 'hidden',
     },
 };
@@ -66,6 +76,7 @@ const statusOptions = [
 ]
 
 const AdminForms = () => {
+    const nav = useNavigate();
     const [items , setItems] = useState([])
     const [forms , setForms] = useState([])
     const [temp , setTemp] = useState([])
@@ -81,96 +92,131 @@ const AdminForms = () => {
         budgetLesser:''
     })
 
+    const menuProps = (props) =>{
+        return {
+            items: [
+                {
+                  key: 'View',
+                  text: 'View the form',
+                  iconProps: { iconName: 'View' },
+                  onClick: ()=> PDFbyID(props.id),
+                },
+                {
+                  key: 'Proceed',
+                  text: 'Proceed to Budget Section',
+                  iconProps: { iconName: 'PlanView' },
+                  onClick: ()=> nav('budget/'+props.id),
+                  hidden: (props.status !== 'pending')
+                },
+              ],
+        }
+    }
+
+    const ColumnHeader = (text) =>{
+        return <Text style={{fontFamily:'roboto'}}>{text}</Text>
+    }
 
     const _columns = [
         {
             key: 'Actions',
-            name: 'Actions',
-            minWidth: 175,
-            maxWidth: 175,
+            minWidth: 35,
+            maxWidth: 35,
             isResizable: true,
             onRender: (props) =>{
-                return <div>
-                    <ButtonGroup  spacing='2'>
-                        <Button onClick={()=>PDFbyID(props.id)}
-                                h={'30px'} colorScheme={'blackAlpha'}>View</Button>
-                        <Button h={'30px'} colorScheme={'teal'}>Proceed</Button>
-                    </ButtonGroup>
+                return <div >
+                    <IconButton
+                    menuProps = {menuProps(props)}
+                    title="Actions"
+                    ariaLabel="Actions"
+                    styles={{icon:{color:'black'}}}
+                    />
                 </div>
             },
             
         },
         {
             key: 'Id',
-            name: 'Id',
+            name: ColumnHeader('ID')  , 
             minWidth: 75,
             maxWidth: 75,
             isResizable: true,
             onRender: (props) =>{
-                return <Text style={{fontSize:15}}>{props.id}</Text>
+                return <Text className='rowLabel'>{props.id}</Text>
             }
         },
         {
             key: 'Date Submitted',
-            name: 'Date Submitted',
-            minWidth: 100,
-            maxWidth: 100,
+            name: ColumnHeader('DATE SUBMITTED'),
+            minWidth: 125,
+            maxWidth: 125,
             isResizable: true,
             onRender: (props) =>{
-                return <Text style={{fontSize:15}}>{props.date}</Text>
+                return <Text className='rowLabel'>{props.date}</Text>
             }
         },
         {
             key: 'Type',
-            name: 'Type',
+            name: ColumnHeader('TYPE'),
             minWidth: 75,
             maxWidth: 75,
             isResizable: true,
             onRender: (props) =>{
-                return <Text style={{fontSize:15}}>{props.type}</Text>
+                return <Text as='b' className='rowLabel'>{props.type}</Text>
             }
         },
         {
             key: 'Email',
-            name: 'Email',
+            name: ColumnHeader('E-MAIL'),
             minWidth: 200,
             maxWidth: 200,
             isResizable: true,
             onRender: (props) =>{
-                return <Text style={{fontSize:15}}>{props.email}</Text>
+                return <Text className='rowLabel'>{props.email}</Text>
             }
         },
         {
             key: 'Name',
-            name: 'Name',
+            name: ColumnHeader('NAME'),
             minWidth: 175,
             maxWidth: 175,
             isResizable: true,
             onRender: (props) =>{
-                return <Text style={{fontSize:15}}>{props.name}</Text>
+                return <Text className='rowLabel'>{props.name}</Text>
             }
         },
         {
             key: 'Budget Head',
-            name: 'Budget Head',
+            name: ColumnHeader('BUDGET HEAD'),
             minWidth: 175,
             maxWidth: 175,
             isResizable: true,
             onRender: (props) =>{
-                return <Badge fontSize={15}>{props.budgetHead}</Badge>
+                return <Badge className='rowLabel'>{props.budgetHead}</Badge>
             }
         },
         {
             key: 'Status',
-            name: 'Status',
+            name: ColumnHeader('STATUS'),
             minWidth: 175,
             maxWidth: 175,
             isResizable: true,
             onRender: (props) =>{
                 return <div >
-                {props.status === 'approved' && <Badge fontSize={15} colorScheme={'green'}>{props.status}</Badge>}
-                {props.status === 'denied' && <Badge fontSize={15} colorScheme={'red'}>{props.status}</Badge>}
-                {props.status === 'pending' && <Badge fontSize={15} colorScheme={'purple'}>{props.status}</Badge>}
+                {props.status === 'approved' && 
+                    <Badge fontFamily={'roboto'} fontSize={15} align='center' w='100px' colorScheme={'green'}>
+                        {props.status}
+                    </Badge>
+                }
+                {props.status === 'pending' && 
+                    <Badge fontFamily={'roboto'} fontSize={15} align='center' w='100px' colorScheme={'purple'}>
+                        {props.status}
+                    </Badge>
+                }
+                {props.status === 'denied' && 
+                    <Badge fontFamily={'roboto'} fontSize={15} align='center' w='100px' colorScheme={'red'}>
+                        {props.status}
+                    </Badge>
+                }
                 </div>
             }
         },

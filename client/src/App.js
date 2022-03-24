@@ -15,10 +15,11 @@ import { LoginProvider } from './Login/LoginContext';
 import SubmittedForms from './Forms/SubmittedForms';
 import { ChakraProvider } from '@chakra-ui/react'
 import AdminForms from "./Admin/AdminForms";
+import './Styles/main.css'
 
 const App = () => {
   return (
-    <div style={{fontFamily:'Droid Sans Mono'}}>
+    <div className='mainApp'>
       <ChakraProvider>
         <LoginProvider>
         <Provider store={store}>

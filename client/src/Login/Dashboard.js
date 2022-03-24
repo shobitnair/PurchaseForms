@@ -31,7 +31,7 @@ const Dashboard = () => {
 
     const FormItem = ({form,body}) =>{
         return(
-            <GridItem w='100%' h='100%' rowSpan={2} colSpan={2} bg='#edebe9' p={2} style={{borderRadius:5 , boxShadow:Depths.depth4}}>
+            <GridItem  w='100%' h='100%' rowSpan={2} colSpan={2} bg='#edebe9' p={2} style={{borderRadius:5 , boxShadow:Depths.depth4}}>
                 <Grid w='100%' h='100%' templateRows='repeat(4,1fr)' templateColumns='repeat(2,1fr)'>
                     <GridItem rowSpan={1} colSpan={2}>
                         <Badge variant = 'outline' style={{fontSize:24}}>{form}</Badge>
