@@ -332,7 +332,7 @@ const AdminForms = () => {
             </GridItem>
 
             <GridItem rowStart={3}  rowSpan={10} colSpan={12} m={4}>
-                <div style={{'border': '8px solid #f3f2f1' ,padding:'10px' , backgroundColor:'#f3f2f1', width:'85%', borderRadius: '2px', boxShadow: Depths.depth4 }}>
+                <div style={{marginLeft:'5%','border': '8px solid #f3f2f1' ,padding:'10px' , backgroundColor:'#f3f2f1', width:1275, borderRadius: '2px', boxShadow: Depths.depth4 }}>
                     <DetailsList
                         items={items}
                         columns={_columns}
