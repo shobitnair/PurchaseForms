@@ -107,10 +107,9 @@ app.post('/api/users' , async(req,res)=>{
                 "INSERT into users (name , email , role) VALUES ($1 , $2  , $3) returning *",
                 [name , email , 'FACULTY']
             );
-
-            const table_suffix = email.split('@')[0]
-
-            console.log("create table draft_" + table_suffix +
+        }
+        const table_suffix = email.split('@')[0]
+            query = await pool.query("create table draft_" + table_suffix +
                 "(\n" +
                 "    id   serial,\n" +
                 "    type varchar not null,\n" +
@@ -119,7 +118,6 @@ app.post('/api/users' , async(req,res)=>{
                 "\n" +
                 "alter table draft_" + table_suffix +
                 "    owner to postgres;")
-        }
 
         res.json({comment:'user data updated / added'})
     } catch (error) {
