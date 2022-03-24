@@ -332,7 +332,8 @@ const AdminForms = () => {
             </GridItem>
 
             <GridItem rowStart={3}  rowSpan={10} colSpan={12} m={4}>
-                <div style={{'border': '8px solid #f3f2f1' ,padding:'10px' , backgroundColor:'#f3f2f1', width:1275, borderRadius: '2px', boxShadow: Depths.depth4 }}>
+                <div style={{'border': '8px solid #f3f2f1' ,padding:'10px' , backgroundColor:'#f3f2f1', maxWidth:'100%',width:'fit-content', borderRadius: '2px', boxShadow: Depths.depth4 }}>
+                    <div >
                     <DetailsList
                         items={items}
                         columns={_columns}
@@ -342,6 +343,7 @@ const AdminForms = () => {
                         layoutMode={DetailsListLayoutMode.fixedColumns}
                         constrainMode={ConstrainMode.unconstrained}
                     />
+                    </div>
                 </div>
             </GridItem>
         </Grid>
