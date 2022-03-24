@@ -38,26 +38,24 @@ const revformatDate = (date) =>{
 
 const gridStyle = {
     root: {
-        overflowX: 'scroll',
+        overflowX:'scroll',
         selectors: {
             '& [role=grid]': {
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: 'left',
-                height: '450px',
-                backgroundColor:'#f3f2f1',
+                alignItems: 'start',
+                height: '55vh',
+                width:'100%',
             },
-            
         },
     },
     headerWrapper: {
-        flex: '1 1 auto',
-        
-    },
+        flex: '0 0 auto',
+      },
     contentWrapper: {
-        flex: '1 1 auto',
-        overflowY: 'auto',
-        overflowX: 'hidden',
+    flex: '1 1 auto',
+    overflowY: 'auto',
+    overflowX: 'auto',
     },
 };
 
@@ -113,7 +111,7 @@ const AdminForms = () => {
     }
 
     const ColumnHeader = (text) =>{
-        return <Text style={{fontFamily:'roboto'}}>{text}</Text>
+        return <Text className='Header' as='b' w="100%">{text}</Text>
     }
 
     const _columns = [
@@ -146,9 +144,9 @@ const AdminForms = () => {
         },
         {
             key: 'Date Submitted',
-            name: ColumnHeader('DATE SUBMITTED'),
-            minWidth: 125,
-            maxWidth: 125,
+            name: ColumnHeader('Date Submitted'),
+            minWidth: 150,
+            maxWidth: 150,
             isResizable: true,
             onRender: (props) =>{
                 return <Text className='rowLabel'>{props.date}</Text>
@@ -156,7 +154,7 @@ const AdminForms = () => {
         },
         {
             key: 'Type',
-            name: ColumnHeader('TYPE'),
+            name: ColumnHeader('Type'),
             minWidth: 75,
             maxWidth: 75,
             isResizable: true,
@@ -166,7 +164,7 @@ const AdminForms = () => {
         },
         {
             key: 'Email',
-            name: ColumnHeader('E-MAIL'),
+            name: ColumnHeader('E-mail'),
             minWidth: 200,
             maxWidth: 200,
             isResizable: true,
@@ -176,7 +174,7 @@ const AdminForms = () => {
         },
         {
             key: 'Name',
-            name: ColumnHeader('NAME'),
+            name: ColumnHeader('Name'),
             minWidth: 175,
             maxWidth: 175,
             isResizable: true,
@@ -186,17 +184,17 @@ const AdminForms = () => {
         },
         {
             key: 'Budget Head',
-            name: ColumnHeader('BUDGET HEAD'),
+            name: ColumnHeader('Budget Head'),
             minWidth: 175,
             maxWidth: 175,
             isResizable: true,
             onRender: (props) =>{
-                return <Badge className='rowLabel'>{props.budgetHead}</Badge>
+                return <Text className='rowLabel' as='b'>{props.budgetHead}</Text>
             }
         },
         {
             key: 'Status',
-            name: ColumnHeader('STATUS'),
+            name: ColumnHeader('Status'),
             minWidth: 175,
             maxWidth: 175,
             isResizable: true,
@@ -333,8 +331,8 @@ const AdminForms = () => {
                 />
             </GridItem>
 
-            <GridItem rowStart={3} rowSpan={10} colSpan={12} m={8}>
-                <div style={{'border': '8px solid #f3f2f1' , borderRadius: '2px', boxShadow: Depths.depth4 }}>
+            <GridItem rowStart={3}  rowSpan={10} colSpan={12} m={4}>
+                <div style={{'border': '8px solid #f3f2f1' ,padding:'10px' , backgroundColor:'#f3f2f1', width:'85%', borderRadius: '2px', boxShadow: Depths.depth4 }}>
                     <DetailsList
                         items={items}
                         columns={_columns}
