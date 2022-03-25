@@ -9,7 +9,7 @@ const app = express();
 
 //middlewares
 app.use(cors({
-    origin: '*'
+    origin: ['http://localhost:3000' , 'http://65.0.131.63',]
 }))
 app.use(express.json());
 
