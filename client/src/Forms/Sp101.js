@@ -14,12 +14,11 @@ import {
     MessageBar,
     Depths
 } from '@fluentui/react';
-import axios from 'axios';
-import { useNavigate } from 'react-router';
-import {URL} from '../cred';
+import { useNavigate} from 'react-router';
 import {LoginContext} from '../Login/LoginContext'
 import { useToast } from '@chakra-ui/react'
 import {PDFHandler} from "./PDFHandler";
+import { postForm  , postDraft} from '../Requests/formRequests';
 
 initializeIcons();
 
@@ -121,22 +120,19 @@ const Sp101 = () => {
     /**
     *  does a HTTP POST REQUEST to add a new purchase form.
     */
-    const postForm = async () => {
+    const submitForm = async () => {
         try {
-            const res = await axios.post(URL+'/forms', {
-                type:"sp101",
-                email: user.email,
-                data: JSON.stringify(data),
-                status:"pending"
-            });
-            console.log(res.data.comment);
+            const res = await postForm("sp101" ,user.email , data , "pending")
+
             toast({
                 title: 'Purchase form submitted',
-                description: res.data.comment,
+                description: res.comment,
                 status: 'success',
                 duration: 9000,
                 isClosable: true,
-              })
+            })
+            
+            nav('/site')
 
         }
         catch (err) {
@@ -157,7 +153,7 @@ const Sp101 = () => {
             nav('/');
         }
         else{
-            await postForm();
+            await submitForm();
             setToggleSubmit(!toggleSubmit);
             console.log(data);
         }
@@ -243,6 +239,17 @@ const Sp101 = () => {
         )
     }
 
+    const handleDraft = async()=>{
+        const response = await postDraft(user.email , data , "sp101");
+        toast({
+            title: 'Redirected to Drafts Section',
+            description: 'Continue editing and save drafts to keep it updated. draft id = '+response.id,
+            status: 'info',
+            duration: 5000,
+            isClosable: true,
+        })
+        nav('/site/forms/sp101/draft/'+response.id);
+    }
 
 
     return (
@@ -354,12 +361,15 @@ const Sp101 = () => {
                         <DefaultButton style={{ 'marginLeft': '5%', 'width': '45%', boxShadow: Depths.depth4 }} text="Delete Selected"
                             onClick={handleDelete} />
                     </Stack>
-                    <Label/>
                     <Stack horizontal>
                         <PrimaryButton style={{ 'marginLeft': '2.5%', 'width': '45%', 'backgroundColor': '#4C4A48', boxShadow: Depths.depth4 }} text="Submit"
                             onClick={() => setToggleSubmit(!toggleSubmit)} />
                         <DefaultButton style={{ 'marginLeft': '5%', 'width': '45%', boxShadow: Depths.depth4 }} text="Preview"
                             onClick={() => PDFHandler('sp101' , data)} />
+                    </Stack>
+                    <Stack horizontal>
+                        <PrimaryButton style={{ 'marginLeft': '2.5%', 'width': '45%', 'backgroundColor': '#4C4A48', boxShadow: Depths.depth4 }} text="Save Draft"
+                            onClick={async()=> await handleDraft()} />
                     </Stack>
 
                 </Stack>

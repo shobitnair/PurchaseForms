@@ -10,7 +10,6 @@ import {
     DialogType,
     DialogFooter,
     DatePicker,
-    initializeIcons,
     MessageBar,
     Depths
 } from '@fluentui/react';
@@ -20,7 +19,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import {URL} from '../cred';
 
-initializeIcons();
 
 const formatDate = (date) => {
     console.log(date);

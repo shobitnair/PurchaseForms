@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
     ConstrainMode,
     Depths,
@@ -16,6 +16,7 @@ import axios from "axios";
 import {Badge, Button, ButtonGroup, Grid, GridItem, Text} from "@chakra-ui/react";
 import {PDFbyID, PDFHandler} from "../Forms/PDFHandler";
 import { useNavigate } from 'react-router';
+import { LoginContext } from '../Login/LoginContext';
 
 
 const formatDate = (date) => {
@@ -70,10 +71,12 @@ const statusOptions = [
     { key: 'A', text: 'All'},
     { key: 'B', text: 'Pending' },
     { key: 'C', text: 'Approved' },
-    { key: 'C', text: 'Denied' },
+    { key: 'D', text: 'Denied' },
+    { key: 'E', text: 'Resubmitted' },
 ]
 
 const AdminForms = () => {
+    const {user , role} = useContext(LoginContext)
     const nav = useNavigate();
     const [items , setItems] = useState([])
     const [forms , setForms] = useState([])
@@ -201,17 +204,22 @@ const AdminForms = () => {
             onRender: (props) =>{
                 return <div >
                 {props.status === 'approved' && 
-                    <Badge fontFamily={'roboto'} fontSize={15} align='center' w='100px' colorScheme={'green'}>
+                    <Badge fontFamily={'roboto'} fontSize={15} align='center' w='120px' colorScheme={'green'}>
                         {props.status}
                     </Badge>
                 }
                 {props.status === 'pending' && 
-                    <Badge fontFamily={'roboto'} fontSize={15} align='center' w='100px' colorScheme={'purple'}>
+                    <Badge fontFamily={'roboto'} fontSize={15} align='center' w='120px' colorScheme={'purple'}>
                         {props.status}
                     </Badge>
                 }
                 {props.status === 'denied' && 
-                    <Badge fontFamily={'roboto'} fontSize={15} align='center' w='100px' colorScheme={'red'}>
+                    <Badge fontFamily={'roboto'} fontSize={15} align='center' w='120px' colorScheme={'red'}>
+                        {props.status}
+                    </Badge>
+                }
+                {props.status === 'resubmitted' && 
+                    <Badge fontFamily={'roboto'} fontSize={15} align='center' w='120px' colorScheme={'orange'}>
                         {props.status}
                     </Badge>
                 }

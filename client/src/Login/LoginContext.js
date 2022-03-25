@@ -23,16 +23,19 @@ const getRole = async(email) =>{
     }
 }
 
-export const signIn = () => {
+export const signIn = (nav) => {
     auth.signInWithPopup(provider)
         .catch((error) => alert(error.message));
+    
+    nav('/site')
 };
 
-export const signOut = () => {
+export const signOut = (nav) => {
     auth.signOut()
         .catch((err) => {
             alert(err.message);
         });
+    nav('/site')
 }
 
 

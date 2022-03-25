@@ -13,3 +13,4 @@ INSERT INTO public.users (name, email, role) VALUES ('Sujaya prashant', 'sujapra
 INSERT INTO public.users (name, email, role) VALUES ('Shobit Nair', 'shobitnair10@gmail.com', 'FACULTY');
 INSERT INTO public.users (name, email, role) VALUES ('SHOBIT PRASHANT NAIR', '2019csb1121@iitrpr.ac.in', 'JAO');
 INSERT INTO public.users (name, email, role) VALUES ('PUNEET GOYAL', 'puneet@iitrpr.ac.in', 'JAO');
+INSERT INTO public.users (name, email, role) VALUES ('Shobit Nair', 'shobitnair@gmail.com', 'FACULTY');

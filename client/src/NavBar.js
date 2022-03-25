@@ -48,7 +48,7 @@ const NavBar = () => {
                 labelHovered:{color:(!user)?'#004b1c':'#740912'}
             },
             style:{color:'white', backgroundColor:(!user)?'#4e9668':'#d83b01'},
-            onClick:(!user)? ()=>signIn() : ()=>signOut(),
+            onClick:(!user)? ()=>signIn(nav) : ()=>signOut(nav),
         }
     ]
     
@@ -66,9 +66,18 @@ const NavBar = () => {
             text:(role==='JAO')?'All forms':'Submitted Forms',
             iconProps: { iconName : 'AllApps'},
             buttonStyles: itemStyles,
-            disabled:(user == null),
+            disabled:(user === null),
             onClick: (role==='JAO')?()=>nav('/site/admin/forms'):()=>nav('/site/forms/submitted')
         },
+        {
+            key:'drafts',
+            text:'Drafts',
+            iconProps:{iconName:'SaveTemplate'},
+            hidden:(role!=='FACULTY'),
+            buttonStyles: itemStyles,
+            disabled:(user === null),
+            onClick:()=>nav('/site/drafts')
+        }
     ]
 
     useEffect(()=>{
