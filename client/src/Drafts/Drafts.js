@@ -14,7 +14,7 @@ import {
 import {URL} from '../cred'
 import axios from "axios";
 import {Badge, Button, ButtonGroup, Grid, GridItem, Text} from "@chakra-ui/react";
-import {PDFbyID, PDFHandler} from "../Forms/PDFHandler";
+import {DraftByID, PDFbyID, PDFHandler} from "../Forms/PDFHandler";
 import { useNavigate } from 'react-router';
 import { LoginContext } from '../Login/LoginContext';
 import { deleteDraft, getDrafts } from '../Requests/formRequests';
@@ -101,7 +101,7 @@ const Drafts = () => {
                     key: 'View',
                     text: 'View the form',
                     iconProps: { iconName: 'View' },
-                    onClick: ()=> PDFbyID(props.id),
+                    onClick: ()=> DraftByID(props.id , user.email),
                 },
                 {
                     key: 'Edit',
