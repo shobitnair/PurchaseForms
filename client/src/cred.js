@@ -1,6 +1,3 @@
-//export const URL = 'http://65.0.124.177';
-
-export const URL = process.env.NODE_ENV === 'production'
-    ?'/api'
-    :'http://localhost:8000/api'
-      
+const AWS = 'http://65.0.131.63/api'
+const local = 'http://localhost:8000/api'
+export const URL = AWS
