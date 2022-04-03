@@ -17,6 +17,7 @@ app.use(cors({
         'http://localhost:3000' ,
         'http://65.0.131.63/*',
         'http://65.0.131.63',
+        'http://pf-iitrpr.eastasia.cloudapp.azure.com'
     ]
 }))
 app.use(express.json());
