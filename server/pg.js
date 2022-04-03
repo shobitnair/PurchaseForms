@@ -9,7 +9,15 @@ const pg = express();
 
 //middlewares
 pg.use(cors({
-    origin: 'http://localhost:3000'
+    origin: [
+        '*' ,
+        'http://localhost:80/*' , 
+        'http://localhost:80' , 
+        'http://localhost:3000/*' , 
+        'http://localhost:3000' ,
+        'http://65.0.131.63/*',
+        'http://65.0.131.63',
+    ]
 }))
 pg.use(express.json());
 

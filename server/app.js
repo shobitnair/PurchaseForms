@@ -74,7 +74,6 @@ app.get('/api/forms/:email' , async(req,res) =>{
     }
 })
 
-
 app.get('/api/users/:email' , async(req,res) =>{
     try{
         let query = await pool.query('select * from users where email = $1' , [req.params.email]);
@@ -83,7 +82,6 @@ app.get('/api/users/:email' , async(req,res) =>{
         res.status(404).json(error)
     }
 })
-
 
 app.post('/api/forms' , async(req,res)=>{
     try {
