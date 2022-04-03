@@ -10,9 +10,10 @@ const app = express();
 //middlewares
 app.use(cors({
     origin: [
-        '*' ,
-        'http://localhost:80/*' , 
-        'http://localhost:80' , 
+        'http://localhost:8000' ,
+        'http://localhost:8000/*', 
+        'http://localhost:80',
+        'http://localhost:80/*', , 
         'http://localhost:3000/*' , 
         'http://localhost:3000' ,
         'http://65.0.131.63/*',
