@@ -18,6 +18,7 @@ import { ChakraProvider } from '@chakra-ui/react'
 import AdminForms from "./Admin/AdminForms";
 import Response from './Forms/Response';
 import './Styles/main.css'
+import Budget from "./Admin/Budget";
 import Drafts from './Drafts/Drafts';
 initializeIcons();
 
@@ -43,6 +44,8 @@ const App = () => {
               <Route exact path="/site/forms/sp102" element={<Sp102/>} />
 
               <Route exact path="/site/admin/forms" element={<AdminForms/>} />
+              <Route exact path={"/site/admin/forms/budget/:id"} element={<Budget/>} />
+
             </Routes>
           </Router>
         </Provider>
