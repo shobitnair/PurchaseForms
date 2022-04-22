@@ -51,11 +51,23 @@ app.get('/api/admin/forms' , async(req, res) =>{
 
 app.post('/api/admin/forms/deny' , async(req,res) =>{
     try{
-        const {id , message} = req.body;
-        let query = await pool.query('update forms set status = $1 , admin_msg = $2 where id = $3' , ['denied',message,id])
-        console.log(query)
+        const {id , data} = req.body;
+        let query = await pool.query('update forms set status = $1 , "Message" = $2 where id = $3' , ['denied',data,id])
+        res.json(query)
     } catch (e) {
-        res.status(404).json(e);
+        res.status(400).json(e);
+    }
+})
+
+app.post('/api/accountant/forms/budget' , async(req,res) => {
+    try{
+        const {id , data} = req.body;
+        console.log(id,data)
+        let query = await pool.query('update forms set "Accountant" = $1 , "Budget" = $2 where id = $3',
+        [true , data , id]);
+        res.json(query)
+    } catch(err){
+        res.status(404).json(err)
     }
 })
 
@@ -181,7 +193,6 @@ app.post('/api/drafts/update' , async(req,res) =>{
     }
 })
 
-
 app.post('/api/users' , async(req,res)=>{
     try {
         console.log(req.body);
@@ -217,6 +228,7 @@ app.post('/api/users' , async(req,res)=>{
         res.status(404).json(error);
     }
 })
+
 
 
 

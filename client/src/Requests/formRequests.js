@@ -20,6 +20,11 @@ export const updateForm = async(id , data , status) =>{
     return response.data;
 }
 
+export const denyForm = async(id , data) => {
+    const response = await axios.post(URL + '/admin/forms/deny' , {id , data});
+    return response.data;
+}
+
 export const getDraftById = async(id , email) =>{
     const response = await axios.get(URL + `/draft/${email}/${id}`);
     return response.data;
@@ -45,3 +50,18 @@ export const updateDraft = async(id , email , data) => {
     return response.data;
 }
 
+
+export const updateAccountant = async(id , data) => {
+    const response = await axios.post(URL+'/accountant/forms/budget' , {id,data})
+    return response.data;
+}
+
+export const updateAO = async(id) => {
+    const response = await axios.post(URL+'/ao/forms/budget' , {id})
+    return response.data;
+}
+
+export const updateAccounts = async(id) => {
+    const response = await axios.post(URL+'/accounts/forms/budget' , {id})
+    return response.data;
+}
