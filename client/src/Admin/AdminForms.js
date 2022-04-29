@@ -17,6 +17,7 @@ import {Badge, Button, ButtonGroup, Grid, GridItem, Text} from "@chakra-ui/react
 import {PDFbyID, PDFHandler} from "../Forms/PDFHandler";
 import { useNavigate } from 'react-router';
 import { LoginContext } from '../Login/LoginContext';
+import { getAccountsForms, getAllForms, getAoForms } from '../Requests/formRequests';
 
 
 const formatDate = (date) => {
@@ -104,10 +105,24 @@ const AdminForms = () => {
                 },
                 {
                   key: 'Proceed',
-                  text: 'Proceed to Budget Section',
+                  text: 'Approve and fill the Budget Section',
                   iconProps: { iconName: 'PlanView' },
                   onClick: ()=> nav('budget/'+props.id),
-                  hidden: (props.status !== 'pending')
+                  hidden: (props.status !== 'pending') || (role !== 'JAO')
+                },
+                {
+                    key: 'Budget',
+                    text: 'View the Budget',
+                    iconProps: { iconName: 'PlanView' },
+                    onClick: ()=> console.log(props.budget),
+                    hidden: !(role === 'AO' || role === 'ACC')
+                },
+                {
+                    key: 'Approve',
+                    text: 'Approve the form',
+                    iconProps: { iconName: 'SkypeCheck'},
+                    onClick: ()=> console.log(props),
+                    hidden: !(role === 'AO' || role === 'ACC')
                 },
                 {
                     key:'Deny',
@@ -115,7 +130,7 @@ const AdminForms = () => {
                     iconProps: {iconName: 'Blocked'},
                     onClick: ()=> nav('deny/'+props.id),
                     hidden: (props.status !== 'pending')
-                }
+                } ,
               ],
         }
     }
@@ -136,7 +151,6 @@ const AdminForms = () => {
                     menuProps = {menuProps(props)}
                     title="Actions"
                     ariaLabel="Actions"
-                    styles={{icon:{color:'black'}}}
                     />
                 </div>
             },
@@ -237,8 +251,15 @@ const AdminForms = () => {
     ];
 
     const getForms = async() =>{
-        const response = await axios.get(URL+'/admin/forms')
+        let response;
+       
+        if(role === 'JAO')response = await getAllForms()
+        else if (role === 'AO') response = await getAoForms()
+        else if (role === 'ACC')response = await getAccountsForms()
+        
+        
         setForms( response.data )
+       
         setItems( response.data.map(x => {
             const data = JSON.parse(x.data)
             return {
@@ -248,7 +269,8 @@ const AdminForms = () => {
                 name:data.name,
                 budgetHead:data.budgetHead,
                 status:x.status,
-                date:data.DOP
+                date:data.DOP,
+                budget:JSON.parse(x.Budget)
             }
         }))
         setTemp( response.data.map(x => {
@@ -260,7 +282,8 @@ const AdminForms = () => {
                 name:data.name,
                 budgetHead:data.budgetHead,
                 status:x.status,
-                date:data.DOP
+                date:data.DOP,
+                budget:JSON.parse(x.Budget)
             }
         }))
 
@@ -286,14 +309,15 @@ const AdminForms = () => {
     }
 
     useEffect(async () => {
-        if(first){
-            await getForms()
-            setFirst(false)
-        } else {
-            updateForms()
-
+        if(user&&role){
+            if(first){
+                await getForms()
+                setFirst(false)
+            } else {
+                updateForms()
+            }
         }
-    } , [first , filter])
+    } , [user,role, first , filter])
 
     const [selection, setSelection] = useState(new Selection());
     const [range , setRange] = useState({

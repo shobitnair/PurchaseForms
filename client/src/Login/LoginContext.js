@@ -62,8 +62,6 @@ export const LoginProvider = ({children}) =>{
                 setRole(null)
             }
         })
-
-
     } , [])
 
     return(

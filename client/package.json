@@ -4,11 +4,12 @@
   "private": true,
   "dependencies": {
     "@chakra-ui/react": "^1.8.5",
+    "@dropzone-ui/react": "^6.7.1",
     "@fluentui/react": "^8.55.2",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
-    "axios": "^0.26.0",
+    "axios": "^0.24.0",
     "firebase": "^9.6.6",
     "jspdf": "^2.5.1",
     "react": "^17.0.2",

@@ -176,6 +176,21 @@ const Drafts = () => {
         
     ];
 
+    const getDateInfo = (x) => {
+        let d = new Date(Date.parse(x.last_updated))
+        let delta = new Date(new Date() - d).getDate() - 1;
+        let result=`${new Date(new Date() - d).getDate() - 1} days ago`;
+        if(delta === 0){
+            result = `${(new Date().getHours() - d.getHours() + 24)%24} hours ago`;
+            delta = (new Date().getHours() - d.getHours() + 24)%24;
+            if(delta === 0){
+                return 'few moments ago';
+            }
+            else return result;
+        }
+        else return result;
+    }
+
     const getForms = async() =>{
         const response = await getDrafts(user.email);
         setForms( response )
@@ -184,7 +199,7 @@ const Drafts = () => {
             return {
                 id: x.id ,
                 type:x.type ,
-                lastUpdated: x.last_updated
+                lastUpdated: getDateInfo(x)
             }
         }))
         setTemp( response.map(x => {
@@ -192,7 +207,7 @@ const Drafts = () => {
             return {
                 id: x.id ,
                 type:x.type ,
-                lastUpdated: x.last_updated
+                lastUpdated: getDateInfo(x)
             }
         }))
 
@@ -205,6 +220,7 @@ const Drafts = () => {
     const updateForms = () =>{
 
         setItems(temp.filter(x =>{
+            console.log(x);
             if(
                 exists(x.id , filter.id) &&
                 (filter.type === 'All' || exists(x.type , filter.type))
@@ -225,10 +241,7 @@ const Drafts = () => {
     } , [user , first , filter])
 
     const [selection, setSelection] = useState(new Selection());
-    const [range , setRange] = useState({
-        endDate: new Date("Mar 28 2022") ,
-        startDate: new Date("Jan 01 1900")
-    })
+
     return (<>
         <Grid templateColumns='repeat(12,1fr)' templateRows='repeat(12,1fr)' w='100%'  h='600px' gap={4} >
             <GridItem rowSpan={1} colSpan={2} ml={4}>

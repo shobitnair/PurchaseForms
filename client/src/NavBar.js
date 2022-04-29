@@ -26,10 +26,11 @@ const NavBar = () => {
 
     const _farItems = [
         {
-            key:'aboutus',
-            text:'About Us',
+            key:'profile',
+            text:'Profile',
             iconProps: { iconName : 'UserOptional'},
             buttonStyles: itemStyles,
+            onClick : ()=> nav('/site/profile')
         },
         {
             key:'help',
@@ -63,11 +64,11 @@ const NavBar = () => {
         },
         {
             key:'subform',
-            text:(role==='JAO')?'All forms':'Submitted Forms',
+            text:(role==='JAO' || role==='AO' || role ==='ACC')?'All forms':'Submitted Forms',
             iconProps: { iconName : 'AllApps'},
             buttonStyles: itemStyles,
             disabled:(user === null),
-            onClick: (role==='JAO')?()=>nav('/site/admin/forms'):()=>nav('/site/forms/submitted')
+            onClick: (role==='JAO' || role==='AO' || role ==='ACC')?()=>nav('/site/admin/forms'):()=>nav('/site/forms/submitted')
         },
         {
             key:'drafts',

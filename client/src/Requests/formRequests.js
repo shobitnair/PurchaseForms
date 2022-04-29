@@ -65,3 +65,18 @@ export const updateAccounts = async(id) => {
     const response = await axios.post(URL+'/accounts/forms/budget' , {id})
     return response.data;
 }
+
+export const getAllForms = async() => {
+    const response = await axios.get(URL+'/admin/forms')
+    return response;
+}
+
+export const getAoForms = async() => {
+    const response = await axios.get(URL+'/ao/forms')
+    return response;
+}
+
+export const getAccountsForms = async() => {
+    const response = await axios.get(URL+'/accounts/forms')
+    return response;
+}

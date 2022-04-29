@@ -21,7 +21,7 @@ import './Styles/main.css'
 import Budget from "./Admin/Budget";
 import Drafts from './Drafts/Drafts';
 import Deny from './Admin/Deny';
-import Ao from './Admin/ao';
+import { Upload } from './Forms/upload';
 initializeIcons();
 
 const App = () => {
@@ -48,9 +48,7 @@ const App = () => {
               <Route exact path="/site/admin/forms" element={<AdminForms/>} />
               <Route exact path={"/site/admin/forms/budget/:id"} element={<Budget/>} />
               <Route exact path={"/site/admin/forms/deny/:id"} element={<Deny/>} />
-
-              <Route exact path="/site/ao/forms" element = {<Ao/>} />
-
+              <Route exact path={"/upload"} element={<Upload/>} />
             </Routes>
           </Router>
         </Provider>
