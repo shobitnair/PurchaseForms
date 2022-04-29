@@ -151,11 +151,11 @@ const Sp101 = () => {
     */
     const submitForm = async () => {
         try {
-            //const res = await postForm("sp101" ,user.email , data , "pending")
+            const res = await postForm("sp101" ,user.email , data , "pending")
 
             toast({
                 title: 'Purchase form submitted',
-               // description: res.comment,
+               description: res.comment,
                 status: 'success',
                 duration: 1000,
                 isClosable: true,
