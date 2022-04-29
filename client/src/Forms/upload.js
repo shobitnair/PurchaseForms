@@ -1,5 +1,6 @@
 
 import { Dropzone, FileItem, FullScreenPreview } from "@dropzone-ui/react";
+import axios from "axios";
 import { useState } from "react";
 import { URL } from "../cred";
 
@@ -27,10 +28,12 @@ export const Upload = () => {
         <><Dropzone
             onChange={updateFiles}
             value={files}
+            maxFiles={10}
             maxFileSize={5240000}
             label="Click here to upload files"
-            uploadingMessage={"Uploading..."}
             url={URL + "/upload"}
+            accept=".png,image/*,.pdf"
+            footer={false}
         >
             {files.map((file) => (
                 <FileItem
@@ -48,7 +51,6 @@ export const Upload = () => {
                 openImage={imageSrc}
                 onClose={(e) => handleSee(undefined)} />
         </Dropzone>
-        <button onClick={()=>console.log(files)}>yoi</button>
         </>
     );
 }

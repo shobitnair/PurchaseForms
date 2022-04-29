@@ -132,7 +132,7 @@ app.post('/api/forms', async (req, res) => {
         let mx = await pool.query('select max(id) from forms');
         const id = (mx.rows[0].max) ? mx.rows[0].max + 1 : 1;
         let query = await pool.query(
-            `insert into forms (id,type,email , data , status) VALUES ($1,$2,$3,$4) returning *`,
+            `insert into forms (id,type,email , data , status) VALUES ($1,$2,$3,$4,$5) returning *`,
             [id, type, email, data, status]
         )
         res.json({ comment: 'form submitted with PurchaseForm ID ' + id });
