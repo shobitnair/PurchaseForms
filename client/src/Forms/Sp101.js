@@ -371,7 +371,7 @@ const Sp101 = () => {
                  *  COlUMN2 of the form
                  */}
                 <Stack {...column2} style={{ 'backgroundColor': '#faf9f8', boxShadow: Depths.depth16 }}>
-                    <div hidden={valid.nameError}>yoi</div>
+                    {/* <div hidden={valid.nameError}>yoi</div> */}
                     <Dropdown placeholder="Select an Option" errorMessage={ valid.GEMError? "This field is required":""} options={option1} label="GEM Purchase"
                         onChange={(e, i) => setData({ ...data, GEM: i.text })} required/>
                     <div>
