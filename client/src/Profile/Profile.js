@@ -5,11 +5,13 @@ import {DefaultButton, Depths, TextField} from "@fluentui/react";
 import {useNavigate, useParams} from "react-router-dom"
 import { LoginContext } from '../Login/LoginContext';
 import { getProfileDetails, updateProfileDetails } from '../Requests/formRequests';
+import { useToast } from '@chakra-ui/react'
 
 const Profile = () => {
     
     const nav = useNavigate();
     const {user , role} = useContext(LoginContext);
+    const toast = useToast()
 
     const[data,setData] = useState({
         name:null,
@@ -37,6 +39,12 @@ const Profile = () => {
     
     const onSubmit = async() => {
         await updateProfileDetails(data);
+        toast({
+            title: 'Profile Updated',
+            status: 'success',
+            duration: 1000,
+            isClosable: true,
+        })
     };
 
     return(
