@@ -1,4 +1,4 @@
-import React, { useState, useRef , useContext } from "react";
+import React, { useState, useRef , useContext, useEffect } from "react";
 import {
   Depths,
   Dropdown,
@@ -19,6 +19,7 @@ import axios from "axios";
 import { useNavigate } from "react-router";
 import { LoginContext } from "../Login/LoginContext";
 import { URL } from "../cred";
+import { getProfileDetails } from "../Requests/formRequests";
 /**
  * Styles for the stack and the columns
  */
@@ -148,8 +149,24 @@ const modelProps = {
 };
 
 const Sp102 = () => {
-  const {user} = useContext(LoginContext);
+  const {user, role} = useContext(LoginContext);
   const nav = useNavigate();
+
+
+  useEffect(async()=>{
+      if(user && role){
+          const response = await getProfileDetails(user.email);
+          console.log(response);
+          setData({...data,
+              name:response.name,
+              department:response.department,
+              signature:response.signature,
+              email:user.email,
+          });
+      }
+  
+  },[user,role]);
+
 
   const init = {
     name: "",
@@ -174,6 +191,8 @@ const Sp102 = () => {
     paymentMode: null,
     deliveryPeriod: null,
     items: [],
+    email: null,
+    signature:null,
   };
 
   const [data, setData] = useState(init); //contains all the data of the form
