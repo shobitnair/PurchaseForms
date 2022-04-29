@@ -1,4 +1,4 @@
-import React, { useEffect, useState , useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
     TextField,
     Stack,
@@ -111,11 +111,40 @@ const Sp101 = () => {
         Qno: null,
         RMP: null,
         DP: null,
-    };
+    };  
+
+    const initValid = {
+        nameError: false,
+        departmentError: false,
+        itemsError: [],
+        budgetHeadError: false,
+        budgetSanctionError: false,
+        itemNameError: false,
+        approxCostError: false,
+        categoryError: false,
+        BAEError: false,
+        CSRError: false,
+        GRPError: false,
+        GEMError: false,
+        GEMdetailsError: false,
+        MOEError: false,
+        ROIError: false,
+        NOQError: false,
+        PurchasedFromError: false,
+        DOPError: false,
+        QnoError: false,
+        RMPError: false,
+        DPError: false,
+    };  
+
+
+
+    const [valid, setValid] = useState(initValid)
 
     // data which manages form variable states
     const [data, setData] = useState(init);
-    const [flag, setFlag] = useState(0);
+    const [flag, setFlag] = useState(false);
+    
 
     /**
     *  does a HTTP POST REQUEST to add a new purchase form.
@@ -126,9 +155,9 @@ const Sp101 = () => {
 
             toast({
                 title: 'Purchase form submitted',
-                description: res.comment,
+               description: res.comment,
                 status: 'success',
-                duration: 9000,
+                duration: 1000,
                 isClosable: true,
             })
             
@@ -145,6 +174,28 @@ const Sp101 = () => {
     *  Manages validation of the form data
     *  Manages the pop up toggle states
     */
+     
+     const validationFunc = () =>{
+        setValid({
+            ...valid,
+            nameError: (data.name === null || data.name === ''),
+            departmentError:(data.department === null || data.department === ''),
+            itemNameError:(data.itemName === null || data.itemName === ''),
+            budgetSanctionError:(data.budgetSanction === null || data.budgetSanction === ''),
+            approxCostError:(data.approxCost === null || data.approxCost === ''),
+            categoryError:(data.category === null || data.category === ''),
+            BAEError:(data.BAE === null || data.BAE === ''),
+            CSRError:(data.CSR === null || data.CSR === ''),
+            GRPError:(data.GRP === null || data.GRP === ''),
+            GEMError:(data.GEM === null || data.GEM === ''),
+            MOEError:(data.MOE === null || data.MOE === ''),
+            RMPError:(data.RMP === null || data.RMP === ''),
+            DPError:(data.DP === null || data.DP === '')
+        })
+
+        
+        
+    }
     const onSubmit = async () => {
                 // Form validation here.
         if(user == null){
@@ -154,10 +205,13 @@ const Sp101 = () => {
         }
         else{
             await submitForm();
+            console.log(data); 
             setToggleSubmit(!toggleSubmit);
-            console.log(data);
+
         }
     };
+
+ 
 
     /**
     * Add items section
@@ -171,6 +225,7 @@ const Sp101 = () => {
     const [selection, setSelection] = useState(new Selection());
     const [toggleItem, setToggleItem] = useState(true);
     const [toggleSubmit, setToggleSubmit] = useState(true);
+    const [validFlag, setValidFlag] = useState(1);
 
     const _columns = [{ key: 'column1', name: 'Description', fieldName: 'Description', minWidth: 100, maxWidth: 200, isResizable: true },
     { key: 'column2', name: 'Quantity', fieldName: 'Quantity', minWidth: 75, maxWidth: 150, isResizable: true },
@@ -189,10 +244,24 @@ const Sp101 = () => {
         setData({ ...data, items: data.items.filter(x => !selection.getSelection().includes(x)) });
     };
 
-
+    const [firstVisit, setFirstVisit]=useState(0);
     useEffect(() => {
+
+        if(firstVisit===0){
+            setFirstVisit(1);
+        }
+        if(firstVisit===1){
+            
+            if(!(valid.nameError)&&!(valid.departmentError)&&!(valid.itemNameError)
+            &&!(valid.budgetSanctionError)&&!(valid.approxCostError)&&!(valid.categoryError)&&
+            !(valid.BAEError)&&!(valid.CSRError)&&!(valid.GRPError)&&!(valid.GEMError)&&!(valid.MOEError)&&!(valid.RMPError)&&!(valid.DPError)){
+                    
+                    setToggleSubmit(!toggleSubmit);
+                }
+        }
+       
         
-    }, []);
+    }, [valid]);
 
     const ItemPopUp = () => {
         return (
@@ -261,33 +330,35 @@ const Sp101 = () => {
                  *  COlUMN1 of the form
                  */}
                 <Stack {...column1} style={{ 'backgroundColor': '#faf9f8', boxShadow: Depths.depth16 }}>
-                    <TextField label="Name" value={data.name}
-                        onChange={(e) => setData({ ...data, name: e.target.value })} />
-                    <TextField label="Department" value={data.department}
-                        onChange={(e) => setData({ ...data, department: e.target.value })} />
+                    <TextField label="Name" value={data.name} errorMessage={ valid.nameError? "This field is required":""}
+                        onChange={(e) => setData({ ...data, name: e.target.value })} required />
+                    <TextField label="Department" value={data.department} errorMessage={ valid.departmentError? "This field is required":""}
+                        onChange={(e) => setData({ ...data, department: e.target.value })} required/>
                     <Stack horizontal tokens={stackTokens}>
                         <TextField label="Budget Head" value={data.budgetHead} styles={{ root: { width: '50%' } }}
                             onChange={(e) => setData({ ...data, budgetHead: e.target.value })} />
-                        <TextField label="Sanctioned Budget" value={data.budgetSanction} styles={{ root: { width: '50%' } }}
-                            onChange={(e) => setData({ ...data, budgetSanction: e.target.value })} />
+                        <TextField label="Sanctioned Budget" value={data.budgetSanction} errorMessage={ valid.budgetSanctionError? "This field is required":""} styles={{ root: { width: '50%' } }}
+                            onChange={(e) => setData({ ...data, budgetSanction: e.target.value })} required/>
                     </Stack>
                     <Stack horizontal tokens={stackTokens}>
                         <TextField label="Item Name"
-                            placeholder="write 'MANY' if > 1" styles={{ root: { width: '50%' } }}
-                            onChange={(e) => setData({ ...data, itemName: e.target.value })} />
-                        <TextField label="Approximate Cost" styles={{ root: { width: '50%' } }}
-                            onChange={(e) => setData({ ...data, approxCost: e.target.value })} />
+                            placeholder="write 'MANY' if > 1" errorMessage={ valid.itemNameError? "This field is required":""} styles={{ root: { width: '50%' } }}
+                            onChange={(e) => setData({ ...data, itemName: e.target.value })} required/>
+                        <TextField label="Approximate Cost" errorMessage={ valid.approxCostError? "This field is required":""} styles={{ root: { width: '50%' } }}
+                            onChange={(e) => setData({ ...data, approxCost: e.target.value })} required/>
                     </Stack>
-                    <Dropdown placeholder="Select an Option" options={option4} label="Category"
-                        onChange={(e, i) => setData({ ...data, category: i.text })} />
-                    <Dropdown placeholder="Select an Option" options={option1} label="Budgetary Approval Enclosed"
-                        onChange={(e, i) => setData({ ...data, BAE: i.text })} />
+                    <Dropdown placeholder="Select an Option" options={option4} label="Category" errorMessage={ valid.categoryError? "This field is required":""}
+                        onChange={(e, i) => setData({ ...data, category: i.text })} required/>
+                    <Dropdown placeholder="Select an Option" options={option1} label="Budgetary Approval Enclosed" errorMessage={ valid.BAEError? "This field is required":""}
+                        onChange={(e, i) => setData({ ...data, BAE: i.text })} required/>
                     <Dropdown placeholder="Select an Option" options={option2}
                         label="Certified that the space is ready for installation of the equipment in Department/Centre/Unit on its arrival"
-                        onChange={(e, i) => setData({ ...data, CSR: i.text })} />
+                        errorMessage={ valid.CSRError? "This field is required":""}
+                        onChange={(e, i) => setData({ ...data, CSR: i.text })} required/>
                     <Dropdown placeholder="Select an Option" options={option1}
                         label="Are the goods for Research Purpose "
-                        onChange={(e, i) => setData({ ...data, GRP: i.text })} />
+                        errorMessage={ valid.GRPError? "This field is required":""}
+                        onChange={(e, i) => setData({ ...data, GRP: i.text })} required/>
                     <div style={{ boxShadow: Depths.depth4 }}><MessageBar >
                         If required for Research Purpose then Certificate for claiming concessional GST under notification no. 45/2017
                         & 47/2017: Certified that purchase of above goods for which concessional GST is claimed is required for research
@@ -299,8 +370,9 @@ const Sp101 = () => {
                  *  COlUMN2 of the form
                  */}
                 <Stack {...column2} style={{ 'backgroundColor': '#faf9f8', boxShadow: Depths.depth16 }}>
-                    <Dropdown placeholder="Select an Option" options={option1} label="GEM Purchase"
-                        onChange={(e, i) => setData({ ...data, GEM: i.text })} />
+                    {/* <div hidden={valid.nameError}>yoi</div> */}
+                    <Dropdown placeholder="Select an Option" errorMessage={ valid.GEMError? "This field is required":""} options={option1} label="GEM Purchase"
+                        onChange={(e, i) => setData({ ...data, GEM: i.text })} required/>
                     <div>
                         <Label >Details of the item if available in GEM ,
                             Else mention the GeMAR & PTS ID</Label>
@@ -310,7 +382,8 @@ const Sp101 = () => {
                     <TextField label="Recommendations of the Indenter " multiline rows={4}
                         onChange={(e) => setData({ ...data, ROI: e.target.value })} />
                     <Dropdown placeholder="Select an Option" options={option3} label="Mode of Enquiry"
-                        onChange={(e, i) => setData({ ...data, MOE: i.text })} />
+                    errorMessage={ valid.MOEError? "This field is required":""}
+                        onChange={(e, i) => setData({ ...data, MOE: i.text })} required/>
                     <TextField label="Number of Quotations Received"
                         onChange={(e) => setData({ ...data, NOQ: e.target.value })} />
                     <Stack horizontal tokens={stackTokens}>
@@ -322,14 +395,16 @@ const Sp101 = () => {
                     <DatePicker
                         placeholder="Select a date"
                         label="Date of purchase"
-                        onSelectDate={(e) => setData({ ...data, DOP: formatDate(e) })} />
+                        onSelectDate={(e) => setData({ ...data, DOP: formatDate(e) })}/>
                     <Stack horizontal tokens={stackTokens} >
                         <TextField label="Required mode of payment"
+                            errorMessage={ valid.RMPError? "This field is required":""}
                             styles={{ root: { width: '50%', } }}
-                            onChange={(e) => setData({ ...data, RMP: e.target.value })} />
+                            onChange={(e) => setData({ ...data, RMP: e.target.value })} required/>
                         <TextField label="Delivery Period"
                             styles={{ root: { width: '50%' } }}
-                            onChange={(e) => setData({ ...data, DP: e.target.value })} />
+                            errorMessage={ valid.DPError? "This field is required":""}
+                            onChange={(e) => setData({ ...data, DP: e.target.value })} required/>
                     </Stack>
                 </Stack>
                 {/**
@@ -363,7 +438,7 @@ const Sp101 = () => {
                     </Stack>
                     <Stack horizontal>
                         <PrimaryButton style={{ 'marginLeft': '2.5%', 'width': '45%', 'backgroundColor': '#4C4A48', boxShadow: Depths.depth4 }} text="Submit"
-                            onClick={() => setToggleSubmit(!toggleSubmit)} />
+                            onClick = {() => validationFunc()} />
                         <DefaultButton style={{ 'marginLeft': '5%', 'width': '45%', boxShadow: Depths.depth4 }} text="Preview"
                             onClick={() => PDFHandler('sp101' , data)} />
                     </Stack>
