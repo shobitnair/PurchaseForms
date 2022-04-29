@@ -80,3 +80,14 @@ export const getAccountsForms = async() => {
     const response = await axios.get(URL+'/accounts/forms')
     return response;
 }
+
+export const getProfileDetails = async(email) => {
+    const response = await axios.post(URL+'/profile',{email});
+    return response.data;
+}
+
+export const updateProfileDetails = async(data) => {
+    const {name,department,signature, email} = data; 
+    const response = await axios.post(URL+'/profile/update',{name,department,signature,email});
+    return response.data; 
+}   

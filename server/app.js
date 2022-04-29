@@ -282,4 +282,41 @@ app.post('/api/upload',upload.array("file" , 100) ,  async (req, res) => {
     }
 })
 
+
+app.post('/api/profile', async(req,res) => {
+
+    try{
+        const {email} = req.body;
+
+        query = await pool.query( 
+            "select name,department,signature from users where email = $1",
+            [email]
+        );
+        
+        res.json(query.rows[0]);
+
+    } catch(error){
+        res.status(404).json(error);
+    }
+});
+
+
+app.post('/api/profile/update', async(req,res) => {
+
+    try{
+        
+        const {name,department,signature,email} = req.body;
+        await pool.query( 
+            "update users set name = $1, department =$2, signature = $3 where email = $4",
+            [name,department,signature,email]
+        );
+        
+        res.json({comment:"profile updated"});
+
+    } catch(error){
+        res.status(404).json(error);
+    }
+});
+
+
 module.exports = { app };
