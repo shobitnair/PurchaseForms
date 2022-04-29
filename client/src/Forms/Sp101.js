@@ -19,6 +19,7 @@ import {LoginContext} from '../Login/LoginContext'
 import { useToast } from '@chakra-ui/react'
 import {PDFHandler} from "./PDFHandler";
 import { postForm  , postDraft} from '../Requests/formRequests';
+import { Dropzone, FileItem, FullScreenPreview } from "@dropzone-ui/react";
 
 initializeIcons();
 
@@ -320,6 +321,23 @@ const Sp101 = () => {
         nav('/site/forms/sp101/draft/'+response.id);
     }
 
+    const [files, setFiles] = useState([]);
+    const [imageSrc, setImageSrc] = useState(undefined);
+
+
+    const updateFiles = (incommingFiles) => {
+        setFiles(incommingFiles);
+    };
+
+
+    const onDelete = (id) => {
+        setFiles(files.filter((x) => x.id !== id));
+    };
+
+
+    const handleSee = (imageSource) => {
+        setImageSrc(imageSource);
+    };
 
     return (
         <div >
@@ -411,6 +429,33 @@ const Sp101 = () => {
                  *  COlUMN3 of the form
                  */}
                 <Stack {...column3} style={{ 'backgroundColor': '#faf9f8', boxShadow: Depths.depth16 }}>
+                <Label>Attach proof of purchase. (PDF , JPEG , JPG , PNG)</Label>
+                <Dropzone
+                    onChange={updateFiles}
+                    value={files}
+                    maxFiles={10}
+                    maxFileSize={5240000}
+                    label="Click here to upload files"
+                    url={URL + "/upload"}
+                    accept=".png,image/*,.pdf"
+                    footer={false}
+                >
+                    {files.map((file) => (
+                        <FileItem
+                            {...file}
+                            key={file.id}
+                            onDelete={onDelete}
+                            onSee={handleSee}
+                            resultOnTooltip
+                            preview
+                            info
+                            hd />
+                    ))}
+                    <FullScreenPreview
+                        imgSource={imageSrc}
+                        openImage={imageSrc}
+                        onClose={(e) => handleSee(undefined)} />
+                </Dropzone>
                     <Label>Added Items</Label>
                     <div style={{
                         'height': '300px',
