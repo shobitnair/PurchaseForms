@@ -272,15 +272,17 @@ const upload = multer({ storage: storage })
 
 app.post('/api/upload',upload.array("file" , 100) ,  async (req, res) => {
     try {
-        console.log(req.files)
         res.json({
             status: true,
             message: "File was uploaded successfuly",
+            data:req.files[0].path
         });
     } catch (error) {
         res.status(404).json(error);
     }
 })
+
+
 
 
 app.post('/api/profile', async(req,res) => {

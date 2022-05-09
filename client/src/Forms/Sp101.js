@@ -20,7 +20,7 @@ import { useToast } from '@chakra-ui/react'
 import {PDFHandler} from "./PDFHandler";
 import { postForm  , postDraft} from '../Requests/formRequests';
 import { Dropzone, FileItem, FullScreenPreview } from "@dropzone-ui/react";
-
+import {URL} from '../cred'
 initializeIcons();
 
 const formatDate = (date) => {
@@ -112,6 +112,7 @@ const Sp101 = () => {
         Qno: null,
         RMP: null,
         DP: null,
+        files:[]
     };  
 
     const initValid = {
@@ -252,15 +253,14 @@ const Sp101 = () => {
             setFirstVisit(1);
         }
         if(firstVisit===1){
-            
-            if(!(valid.nameError)&&!(valid.departmentError)&&!(valid.itemNameError)
-            &&!(valid.budgetSanctionError)&&!(valid.approxCostError)&&!(valid.categoryError)&&
-            !(valid.BAEError)&&!(valid.CSRError)&&!(valid.GRPError)&&!(valid.GEMError)&&!(valid.MOEError)&&!(valid.RMPError)&&!(valid.DPError)){
-                    
-                    setToggleSubmit(!toggleSubmit);
-                }
+            if((!valid.nameError)&&(!valid.departmentError)&&(!valid.itemNameError)&&
+            (!valid.budgetSanctionError)&&(!valid.approxCostError)&&(!valid.categoryError)&&
+            (!valid.BAEError)&&(!valid.CSRError)&&(!valid.GRPError)&&(!valid.GEMError)&&(!valid.MOEError)&&
+            (!valid.RMPError)&&(!valid.DPError)){
+                setToggleSubmit(!toggleSubmit);
+            }
         }
-       
+        
         
     }, [valid]);
 
@@ -321,23 +321,29 @@ const Sp101 = () => {
         nav('/site/forms/sp101/draft/'+response.id);
     }
 
-    const [files, setFiles] = useState([]);
     const [imageSrc, setImageSrc] = useState(undefined);
 
-
     const updateFiles = (incommingFiles) => {
-        setFiles(incommingFiles);
+        console.log(incommingFiles[0].file)
+        setData({...data , files:incommingFiles});
     };
 
-
+    
     const onDelete = (id) => {
-        setFiles(files.filter((x) => x.id !== id));
+        setData({...data , files:data.files.filter((x) => x.id !== id)})
     };
 
 
     const handleSee = (imageSource) => {
         setImageSrc(imageSource);
     };
+
+
+    const uploader = (res) =>{
+        setData({...data , files:res.map(x => {
+            return x.serverResponse.data
+        })})
+    }
 
     return (
         <div >
@@ -430,17 +436,19 @@ const Sp101 = () => {
                  */}
                 <Stack {...column3} style={{ 'backgroundColor': '#faf9f8', boxShadow: Depths.depth16 }}>
                 <Label>Attach proof of purchase. (PDF , JPEG , JPG , PNG)</Label>
+                
                 <Dropzone
                     onChange={updateFiles}
-                    value={files}
+                    value={data.files}
                     maxFiles={10}
                     maxFileSize={5240000}
                     label="Click here to upload files"
                     url={URL + "/upload"}
                     accept=".png,image/*,.pdf"
                     footer={false}
+                    onUploadFinish={uploader}
                 >
-                    {files.map((file) => (
+                    {data.files.map((file) => (
                         <FileItem
                             {...file}
                             key={file.id}

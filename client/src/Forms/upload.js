@@ -4,16 +4,15 @@ import axios from "axios";
 import { useState } from "react";
 import { URL } from "../cred";
 
-export const Upload = () => {
+export const Upload = (props) => {
     const [files, setFiles] = useState([]);
     const [imageSrc, setImageSrc] = useState(undefined);
-
 
     const updateFiles = (incommingFiles) => {
         setFiles(incommingFiles);
     };
 
-
+    
     const onDelete = (id) => {
         setFiles(files.filter((x) => x.id !== id));
     };
@@ -23,7 +22,7 @@ export const Upload = () => {
         setImageSrc(imageSource);
     };
 
-    
+
     return (
         <><Dropzone
             onChange={updateFiles}
@@ -34,6 +33,7 @@ export const Upload = () => {
             url={URL + "/upload"}
             accept=".png,image/*,.pdf"
             footer={false}
+           
         >
             {files.map((file) => (
                 <FileItem
