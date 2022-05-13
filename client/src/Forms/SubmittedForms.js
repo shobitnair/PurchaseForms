@@ -20,7 +20,6 @@ import { LoginContext } from '../Login/LoginContext';
 
 
 const formatDate = (date) => {
-    console.log(date);
     if (!date)
         return '';
     const month = date.getMonth() + 1; // + 1 because 0 indicates the first Month of the Year.
@@ -88,7 +87,7 @@ const SubmittedForms = () => {
         type:'All' ,
         status:'All',
         startDate: new Date("Jan 01 1900"), 
-        endDate :  new Date(Date.now()),
+        endDate :  new Date("Jan 01 2200"),
         budgetHead : ''
     })
 
@@ -240,7 +239,7 @@ const SubmittedForms = () => {
                 name:data.name,
                 budgetHead:data.budgetHead,
                 status:x.status,
-                date:data.DOP,
+                date:formatDate(new Date(x.submit_date)),
                 qno:data.Qno
             }
         }))
@@ -253,7 +252,7 @@ const SubmittedForms = () => {
                 name:data.name,
                 budgetHead:data.budgetHead,
                 status:x.status,
-                date:data.DOP,
+                date:formatDate(new Date(x.submit_date)),
                 qno:data.Qno
             }
         }))
