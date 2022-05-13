@@ -159,8 +159,7 @@ const Sp101 = () => {
         PurchasedFromError: false,
         DOPError: false,
         QnoError: false,
-        RMPError: false,
-        DPError: false,
+        budgetHeadError: false,
     };  
 
 
@@ -207,6 +206,7 @@ const Sp101 = () => {
             nameError: (data.name === null || data.name === ''),
             departmentError:(data.department === null || data.department === ''),
             itemNameError:(data.itemName === null || data.itemName === ''),
+            budgetHeadError:(data.budgetHead === null || data.budgetHead ===''),
             budgetSanctionError:(data.budgetSanction === null || data.budgetSanction === ''),
             approxCostError:(data.approxCost === null || data.approxCost === ''),
             categoryError:(data.category === null || data.category === ''),
@@ -215,8 +215,9 @@ const Sp101 = () => {
             GRPError:(data.GRP === null || data.GRP === ''),
             GEMError:(data.GEM === null || data.GEM === ''),
             MOEError:(data.MOE === null || data.MOE === ''),
-            RMPError:(data.RMP === null || data.RMP === ''),
-            DPError:(data.DP === null || data.DP === '')
+            NOQError:(data.NOQ === null || data.NOQ === ''),
+            PurchasedFromError:(data.PurchasedFrom === null || data.PurchasedFrom === ''),
+            QnoError:(data.Qno === null, data.Qno === ''),
         })
 
         
@@ -393,8 +394,8 @@ const Sp101 = () => {
                         onChange={(e, i) => setData({ ...data, department: i.text })} required/>
                     
                     <Stack horizontal tokens={stackTokens}>
-                        <TextField label="Budget Head" value={data.budgetHead} styles={{ root: { width: '50%' } }}
-                            onChange={(e) => setData({ ...data, budgetHead: e.target.value })} />
+                        <TextField label="Budget Head" value={data.budgetHead} styles={{ root: { width: '50%' } }} errorMessage={valid.budgetHeadError?"This field is required":""}
+                            onChange={(e) => setData({ ...data, budgetHead: e.target.value })} required />
                         <TextField label="Sanctioned Budget" value={data.budgetSanction} errorMessage={ valid.budgetSanctionError? "This field is required":""} styles={{ root: { width: '50%' } }}
                             onChange={(e) => setData({ ...data, budgetSanction: e.target.value })} required/>
                     </Stack>
@@ -442,27 +443,28 @@ const Sp101 = () => {
                     <Dropdown placeholder="Select an Option" options={option3} label="Mode of Enquiry"
                     errorMessage={ valid.MOEError? "This field is required":""}
                         onChange={(e, i) => setData({ ...data, MOE: i.text })} required/>
-                    <TextField label="Number of Quotations Received"
-                        onChange={(e) => setData({ ...data, NOQ: e.target.value })} />
+                    <TextField label="Number of Quotations Received" errorMessage={valid.NO?"This field is required":""}
+                        onChange={(e) => setData({ ...data, NOQ: e.target.value })} required/>
                     <Stack horizontal tokens={stackTokens}>
                         <TextField label="Purchased from M/s" styles={{ root: { width: '50%' } }}
-                            onChange={(e) => setData({ ...data, PurchasedFrom: e.target.value })} />
+                            errorMessage={valid.PurchasedFromError?"This field is required":""}
+                            onChange={(e) => setData({ ...data, PurchasedFrom: e.target.value })} required />
                         <TextField label="Quotation Number" styles={{ root: { width: '50%' } }}
-                            onChange={(e) => setData({ ...data, Qno: e.target.value })} />
+                            onGetErrorMessage = {valid.QnoError?"This field is required":""}
+                            onChange={(e) => setData({ ...data, Qno: e.target.value })} required/>
                     </Stack>
                     <DatePicker
                         placeholder="Select a date"
                         label="Date of quotation"
-                        onSelectDate={(e) => setData({ ...data, DOP: formatDate(e) })}/>
-                    <Stack horizontal tokens={stackTokens} >
+                        onSelectDate={(e) => setData({ ...data, DOP: formatDate(e) })}
+                        isRequired/>
+                    <Stack horizontal tokens={stackTokens}>
                         <TextField label="Required mode of payment"
-                            errorMessage={ valid.RMPError? "This field is required":""}
                             styles={{ root: { width: '50%', } }}
-                            onChange={(e) => setData({ ...data, RMP: e.target.value })} required/>
+                            onChange={(e) => setData({ ...data, RMP: e.target.value })} />
                         <TextField label="Delivery Period"
                             styles={{ root: { width: '50%' } }}
-                            errorMessage={ valid.DPError? "This field is required":""}
-                            onChange={(e) => setData({ ...data, DP: e.target.value })} required/>
+                            onChange={(e) => setData({ ...data, DP: e.target.value })}/>
                     </Stack>
                 </Stack>
                 {/**
