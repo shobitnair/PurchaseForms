@@ -26,8 +26,8 @@ export const acceptForm = async(id , role) => {
     return response.data;
 }
 
-export const denyForm = async(id , data) => {
-    const response = await axios.post(URL + '/admin/forms/deny' , {id , data});
+export const denyForm = async(id , role , message) => {
+    const response = await axios.post(URL + '/admin/forms/deny' , {id , message , role});
     return response.data;
 }
 

@@ -97,10 +97,10 @@ app.post('/api/jao/forms/budget', async (req, res) => {
 
 app.post('/api/admin/forms/deny', async (req, res) => {
     try {
-        const { id, role , data } = req.body;
+        const { id, role , message } = req.body;
+        console.log(id , role , message);
         let query ;
-        data = 'Denied by '+role+' : '+data;
-        query = await pool.query('update forms set status = $1 , message = $2 where id = $3', ['denied', data, id])
+        query = await pool.query('update forms set status = $1 , message = $2 where id = $3', ['denied', 'Denied by '+role+' : '+message, id])
         if(role === 'HOD'){
             
         } 
@@ -115,7 +115,7 @@ app.post('/api/admin/forms/deny', async (req, res) => {
         }
         res.json({status:'success'})
     } catch (e) {
-        res.status(400).json(e);
+        console.log(e);
     }
 })
 

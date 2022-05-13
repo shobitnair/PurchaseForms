@@ -9,7 +9,7 @@ const Deny = (props) => {
     const nav = useNavigate()
 
     const onSubmit = async() =>{
-        await denyForm(param.id , message)
+        await denyForm(param.id , param.role , message)
         nav('/site/admin/forms')
     }
 

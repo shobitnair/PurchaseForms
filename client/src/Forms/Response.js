@@ -18,7 +18,7 @@ const Response = () => {
     } , [form , flag])
     return (
         <div>
-            <Text>Message : {form.Message}</Text>
+            <Text>Message : {form.message}</Text>
             <Text>Status : {form.status}</Text>
             <Button onClick={()=> nav('/site/forms/sp101/resubmit/'+params.id)}>Resubmit ?</Button>
         </div>

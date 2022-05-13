@@ -133,7 +133,7 @@ const AdminForms = () => {
                     key:'Deny',
                     text:'Deny the form',
                     iconProps: {iconName: 'Blocked'},
-                    onClick: ()=> nav('deny/'+props.id),
+                    onClick: ()=> nav('deny/'+props.id+'/'+role),
                     hidden: (props.status !== 'pending')
                 } ,
               ],

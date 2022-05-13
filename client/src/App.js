@@ -49,7 +49,7 @@ const App = () => {
 
               <Route exact path="/site/admin/forms" element={<AdminForms/>} />
               <Route exact path={"/site/admin/forms/budget/:id"} element={<Budget/>} />
-              <Route exact path={"/site/admin/forms/deny/:id"} element={<Deny/>} />
+              <Route exact path={"/site/admin/forms/deny/:id/:role"} element={<Deny/>} />
               <Route exact path={"/site/admin/forms/accept/:id/:role"} element={<Accept/>} />
               <Route exact path={"/upload"} element={<Upload/>} />
               <Route exact path={"/site/profile/"} element={<Profile/>}/>
