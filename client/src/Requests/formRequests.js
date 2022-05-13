@@ -1,3 +1,4 @@
+import { AccordionDescendantsProvider } from "@chakra-ui/react";
 import axios from "axios";
 import { URL } from "../cred";
 
@@ -17,6 +18,11 @@ export const updateForm = async(id , data , status) =>{
     const response = await axios.post(URL +'/forms/update' , {
         id , data , status
     });
+    return response.data;
+}
+
+export const acceptForm = async(id , role) => {
+    const response = await axios.post(URL + '/admin/forms/accept' , {id,role})
     return response.data;
 }
 
@@ -51,40 +57,17 @@ export const updateDraft = async(id , email , data) => {
 }
 
 
-export const updateAccountant = async(id , data) => {
-    const response = await axios.post(URL+'/accountant/forms/budget' , {id,data})
+export const updateBudget = async(id , data) => {
+    const response = await axios.post(URL+'/jao/forms/budget' , {id,data})
     return response.data;
 }
 
-export const updateAO = async(id) => {
-    const response = await axios.post(URL+'/ao/forms/budget' , {id})
-    return response.data;
-}
 
-export const updateAccounts = async(id) => {
-    const response = await axios.post(URL+'/accounts/forms/budget' , {id})
-    return response.data;
-}
-
-export const getHODForms = async() => {
-    const response = await axios.post(URL+'/hod/forms',{})
+export const getAdminForms = async(department , role) => {
+    const response = await axios.post(URL+'/admin/forms/load',{department , role})
     return response
 }
 
-export const getAccountantForms = async() => {
-    const response = await axios.post(URL+'/accountant/forms',{})
-    return response;
-}
-
-export const getAoForms = async() => {
-    const response = await axios.post(URL+'/ao/forms',{})
-    return response;
-}
-
-export const getAccountsForms = async() => {
-    const response = await axios.post(URL+'/accounts/forms',{})
-    return response;
-}
 
 export const getProfileDetails = async(email) => {
     const response = await axios.post(URL+'/profile',{email});

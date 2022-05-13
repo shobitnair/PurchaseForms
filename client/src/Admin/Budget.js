@@ -2,7 +2,7 @@ import React  , {useState}from 'react';
 import {Grid, GridItem, Stack, Text} from "@chakra-ui/react";
 import {DefaultButton, Depths, TextField} from "@fluentui/react";
 import {useNavigate, useParams} from "react-router-dom"
-import { updateAccountant } from '../Requests/formRequests';
+import { updateBudget } from '../Requests/formRequests';
 
 const Budget = (props) => {
     const [data , setData] = useState({
@@ -17,7 +17,7 @@ const Budget = (props) => {
     const nav = useNavigate()
 
     const onSubmit = async() =>{
-        await updateAccountant(param.id , data);
+        await updateBudget(param.id , data);
         nav('/site/admin/forms')
     }
 

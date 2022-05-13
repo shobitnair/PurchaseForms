@@ -9,16 +9,19 @@ import {
     SelectionMode, 
     TextField,
     DatePicker,
-    IconButton
+    IconButton,
 } from '@fluentui/react'
-import {URL} from '../cred'
-import axios from "axios";
+
 import {Badge, Button, ButtonGroup, Grid, GridItem, Text} from "@chakra-ui/react";
 import {PDFbyID, PDFHandler} from "../Forms/PDFHandler";
 import { useNavigate } from 'react-router';
 import { LoginContext } from '../Login/LoginContext';
-import { getAccountsForms, getAccountantForms, getAoForms, getHODForms } from '../Requests/formRequests';
+import { getAdminForms, getProfileDetails } from '../Requests/formRequests';
 
+const modelProps = {
+    isBlocking: false,
+    styles: { main: { maxWidth: 400 } },
+};
 
 const formatDate = (date) => {
     console.log(date);
@@ -94,6 +97,8 @@ const AdminForms = () => {
         budgetLesser:''
     })
 
+
+
     const menuProps = (props) =>{
         return {
             items: [
@@ -104,25 +109,25 @@ const AdminForms = () => {
                   onClick: ()=> PDFbyID(props.id),
                 },
                 {
-                    key: 'Proceed',
-                    text: 'Approve and fill the Budget Section',
-                    iconProps: { iconName: 'PlanView' },
-                    onClick: ()=> nav('budget/'+props.id),
-                    hidden: (props.status !== 'pending') || (role !== 'JAO')
+                  key: 'Proceed',
+                  text: 'Approve and fill the Budget Section',
+                  iconProps: { iconName: 'PlanView' },
+                  onClick: ()=> nav('budget/'+props.id),
+                  hidden: (props.status !== 'pending') || (role !== 'JAO')
                 },
                 {
                     key: 'Budget',
                     text: 'View the Budget',
                     iconProps: { iconName: 'PlanView' },
                     onClick: ()=> console.log(props.budget),
-                    hidden: !(role === 'AO' || role === 'ACC')
+                    hidden: !(role === 'AO' || role === 'AR')
                 },
                 {
                     key: 'Approve',
                     text: 'Approve the form',
                     iconProps: { iconName: 'SkypeCheck'},
-                    onClick: ()=> console.log(props),
-                    hidden: !(role === 'AO' || role === 'ACC' || role === 'HOD') || (props.status === 'approved')
+                    onClick: ()=> nav('accept/'+props.id+'/'+role),
+                    hidden: !(role === 'AO' || role === 'AR' || role === 'HOD') || (props.status === 'approved')
                 },
                 {
                     key:'Deny',
@@ -251,14 +256,10 @@ const AdminForms = () => {
     ];
 
     const getForms = async() =>{
-        let response;
-        
-        if (role === 'HOD') response = await getHODForms();
-        else if(role === 'JAO')response = await getAccountantForms()
-        else if (role === 'AO') response = await getAoForms()
-        else if (role === 'ACC')response = await getAccountsForms()
-        console.log(response.data);
-        
+
+        const profileInfo = await getProfileDetails(user.email);
+        const response = await getAdminForms(profileInfo.department , role);
+     
         setForms( response.data )
        
         setItems( response.data.map(x => {
@@ -295,7 +296,6 @@ const AdminForms = () => {
     }
 
     const updateForms = () =>{
-
         setItems(temp.filter(x =>{
             if(
                 exists(x.email , filter.email) &&
@@ -322,9 +322,13 @@ const AdminForms = () => {
 
     const [selection, setSelection] = useState(new Selection());
     const [range , setRange] = useState({
-        endDate: new Date("Mar 28 2022") ,
+        endDate: new Date("Jan 01 2200") ,
         startDate: new Date("Jan 01 1900")
     })
+
+    const [toggleSubmit, setToggleSubmit] = useState(true);
+
+
     return (<>
         <Grid templateColumns='repeat(12,1fr)' templateRows='repeat(12,1fr)' w='100%'  h='600px' gap={4} >
             <GridItem rowSpan={1} colSpan={2} ml={4}>

@@ -64,11 +64,11 @@ const NavBar = () => {
         },
         {
             key:'subform',
-            text:(role==='JAO' || role==='AO' || role ==='ACC' || role === 'HOD')?'All forms':'Submitted Forms',
+            text:(role==='JAO' || role==='AO' || role ==='AR' || role === 'HOD')?'All forms':'Submitted Forms',
             iconProps: { iconName : 'AllApps'},
             buttonStyles: itemStyles,
             disabled:(user === null),
-            onClick: (role==='JAO' || role==='AO' || role ==='ACC' || role === 'HOD')?()=>nav('/site/admin/forms'):()=>nav('/site/forms/submitted')
+            onClick: (role==='JAO' || role==='AO' || role ==='AR' || role === 'HOD')?()=>nav('/site/admin/forms'):()=>nav('/site/forms/submitted')
         },
         {
             key:'drafts',

@@ -40,66 +40,86 @@ app.get('/site*', (req, res) => {
 })
 
 
-app.post('/api/hod/forms', async (req, res) => {
-    try {
-        let query = await pool.query('select * from forms');
-        res.json(query.rows);
-    } catch (error) {
-        res.status(404).json(error);
-    }
-})
-
-app.post('/api/accountant/forms', async (req, res) => {
-    try {
-        let query = await pool.query('select * from forms where hod = true');
-        res.json(query.rows);
-    } catch (error) {
-        res.status(404).json(error);
-    }
-})
-
-app.post('/api/ao/forms', async (req, res) => {
-    try {
-        let query = await pool.query('select * from forms where accountant = true');
-        res.json(query.rows);
-    } catch (error) {
-        res.status(404).json(error);
-    }
-})
-
-app.post('/api/accounts/forms', async (req, res) => {
-    try {
-        let query = await pool.query('select * from forms where ao = true');
-        res.json(query.rows);
-    } catch (error) {
-        res.status(404).json(error);
+app.post('/api/admin/forms/load' , async(req,res) =>{
+    try{
+        const {department , role} = req.body;
+        console.log(department , role);
+        let query;
+        if(role === 'HOD'){
+            query = await pool.query('select * from forms where department = $1 and hod = false order by id desc' , [department]);
+        } 
+        if(role === 'JAO') {
+            query = await pool.query('select * from forms where hod = true  and jao = false order by id desc');
+        }
+        if(role === 'AO'){
+            query = await pool.query('select * from forms where jao = true and ao = false order by id desc');
+        }
+        if(role === 'AR'){
+            query = await pool.query('select * from forms where ao = true order by id desc')
+        }
+        res.json(query.rows)
+    } catch(err){
+        res.status(404).json(err);
     }
 })
 
 
-
-
-app.post('/api/admin/forms/deny', async (req, res) => {
-    try {
-        const { id, data } = req.body;
-        let query = await pool.query('update forms set status = $1 , "Message" = $2 where id = $3', ['denied', data, id])
-        res.json(query)
-    } catch (e) {
-        res.status(400).json(e);
+app.post('/api/admin/forms/accept' , async(req,res) =>{
+    try{
+        const {id , role} = req.body;
+        let query;
+        if(role === 'HOD'){
+            query = await pool.query('update forms set hod = true , status = $1 where id = $2' , ['pending' , id])
+        } 
+        if(role === 'AO'){
+            query = await pool.query('update forms set ao = true , status = $1 where id = $2' , ['pending' , id])
+        }
+        if(role === 'AR'){
+            query = await pool.query('update forms set ar = true , status = $1 where id = $2' , ['approved' , id])
+        }
+        res.json({status:'success'})
+    } catch(err){
+        res.status(404).json(err);
     }
 })
 
-app.post('/api/accountant/forms/budget', async (req, res) => {
+app.post('/api/jao/forms/budget', async (req, res) => {
     try {
         const { id, data } = req.body;
         console.log(id, data)
-        let query = await pool.query('update forms set accountant = $1 , budget = $2 where id = $3',
+        let query = await pool.query('update forms set jao = $1 , budget = $2 where id = $3',
             [true, data, id]);
         res.json(query)
     } catch (err) {
         res.status(404).json(err)
     }
 })
+
+app.post('/api/admin/forms/deny', async (req, res) => {
+    try {
+        const { id, role , data } = req.body;
+        let query ;
+        data = 'Denied by '+role+' : '+data;
+        query = await pool.query('update forms set status = $1 , message = $2 where id = $3', ['denied', data, id])
+        if(role === 'HOD'){
+            
+        } 
+        if(role === 'JAO') {
+
+        }
+        if(role === 'AO'){
+
+        }
+        if(role === 'AR'){
+
+        }
+        res.json({status:'success'})
+    } catch (e) {
+        res.status(400).json(e);
+    }
+})
+
+
 
 
 app.get('/api/form/:id', async (req, res) => {
