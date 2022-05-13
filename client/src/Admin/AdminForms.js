@@ -17,7 +17,7 @@ import {Badge, Button, ButtonGroup, Grid, GridItem, Text} from "@chakra-ui/react
 import {PDFbyID, PDFHandler} from "../Forms/PDFHandler";
 import { useNavigate } from 'react-router';
 import { LoginContext } from '../Login/LoginContext';
-import { getAccountsForms, getAllForms, getAoForms } from '../Requests/formRequests';
+import { getAccountsForms, getAccountantForms, getAoForms, getHODForms } from '../Requests/formRequests';
 
 
 const formatDate = (date) => {
@@ -104,11 +104,11 @@ const AdminForms = () => {
                   onClick: ()=> PDFbyID(props.id),
                 },
                 {
-                  key: 'Proceed',
-                  text: 'Approve and fill the Budget Section',
-                  iconProps: { iconName: 'PlanView' },
-                  onClick: ()=> nav('budget/'+props.id),
-                  hidden: (props.status !== 'pending') || (role !== 'JAO')
+                    key: 'Proceed',
+                    text: 'Approve and fill the Budget Section',
+                    iconProps: { iconName: 'PlanView' },
+                    onClick: ()=> nav('budget/'+props.id),
+                    hidden: (props.status !== 'pending') || (role !== 'JAO')
                 },
                 {
                     key: 'Budget',
@@ -122,7 +122,7 @@ const AdminForms = () => {
                     text: 'Approve the form',
                     iconProps: { iconName: 'SkypeCheck'},
                     onClick: ()=> console.log(props),
-                    hidden: !(role === 'AO' || role === 'ACC')
+                    hidden: !(role === 'AO' || role === 'ACC' || role === 'HOD') || (props.status === 'approved')
                 },
                 {
                     key:'Deny',
@@ -252,11 +252,12 @@ const AdminForms = () => {
 
     const getForms = async() =>{
         let response;
-       
-        if(role === 'JAO')response = await getAllForms()
+        
+        if (role === 'HOD') response = await getHODForms();
+        else if(role === 'JAO')response = await getAccountantForms()
         else if (role === 'AO') response = await getAoForms()
         else if (role === 'ACC')response = await getAccountsForms()
-        
+        console.log(response.data);
         
         setForms( response.data )
        
@@ -270,7 +271,7 @@ const AdminForms = () => {
                 budgetHead:data.budgetHead,
                 status:x.status,
                 date:data.DOP,
-                budget:JSON.parse(x.Budget)
+                budget:JSON.parse(x.budget)
             }
         }))
         setTemp( response.data.map(x => {
@@ -283,7 +284,7 @@ const AdminForms = () => {
                 budgetHead:data.budgetHead,
                 status:x.status,
                 date:data.DOP,
-                budget:JSON.parse(x.Budget)
+                budget:JSON.parse(x.budget)
             }
         }))
 

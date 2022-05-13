@@ -156,7 +156,6 @@ const Sp102 = () => {
   useEffect(async()=>{
       if(user && role){
           const response = await getProfileDetails(user.email);
-          console.log(response);
           setData({...data,
               name:response.name,
               department:response.department,

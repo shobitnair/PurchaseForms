@@ -40,14 +40,7 @@ app.get('/site*', (req, res) => {
 })
 
 
-
-app.get('/api/admin/forms', async (req, res) => {
-    /*
-    sq.all('select * from forms' , [] , (err,row)=>{
-        if(err)return res.status(404).json(err);
-        return res.json(row);
-    })
-    */
+app.post('/api/hod/forms', async (req, res) => {
     try {
         let query = await pool.query('select * from forms');
         res.json(query.rows);
@@ -56,16 +49,25 @@ app.get('/api/admin/forms', async (req, res) => {
     }
 })
 
-app.get('/api/ao/forms', async (req, res) => {
+app.post('/api/accountant/forms', async (req, res) => {
     try {
-        let query = await pool.query('select * from forms where "Accountant" = true');
+        let query = await pool.query('select * from forms where hod = true');
         res.json(query.rows);
     } catch (error) {
         res.status(404).json(error);
     }
 })
 
-app.get('/api/accounts/forms', async (req, res) => {
+app.post('/api/ao/forms', async (req, res) => {
+    try {
+        let query = await pool.query('select * from forms where accountant = true');
+        res.json(query.rows);
+    } catch (error) {
+        res.status(404).json(error);
+    }
+})
+
+app.post('/api/accounts/forms', async (req, res) => {
     try {
         let query = await pool.query('select * from forms where ao = true');
         res.json(query.rows);
@@ -91,13 +93,14 @@ app.post('/api/accountant/forms/budget', async (req, res) => {
     try {
         const { id, data } = req.body;
         console.log(id, data)
-        let query = await pool.query('update forms set "Accountant" = $1 , "Budget" = $2 where id = $3',
+        let query = await pool.query('update forms set accountant = $1 , budget = $2 where id = $3',
             [true, data, id]);
         res.json(query)
     } catch (err) {
         res.status(404).json(err)
     }
 })
+
 
 app.get('/api/form/:id', async (req, res) => {
     try {
@@ -128,12 +131,12 @@ app.get('/api/users/:email', async (req, res) => {
 
 app.post('/api/forms', async (req, res) => {
     try {
-        const { type, email, data, status } = req.body;
+        const { type, email, data, status , department } = req.body;
         let mx = await pool.query('select max(id) from forms');
         const id = (mx.rows[0].max) ? mx.rows[0].max + 1 : 1;
         let query = await pool.query(
-            `insert into forms (id,type,email , data , status) VALUES ($1,$2,$3,$4,$5) returning *`,
-            [id, type, email, data, status]
+            `insert into forms (id,type,email , data , status , department , submit_date) VALUES ($1,$2,$3,$4,$5,$6,$7) returning *`,
+            [id, type, email, data, status , department , new Date()]
         )
         res.json({ comment: 'form submitted with PurchaseForm ID ' + id });
     } catch (err) {

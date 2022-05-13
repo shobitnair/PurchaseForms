@@ -89,8 +89,7 @@ const SubmittedForms = () => {
         status:'All',
         startDate: new Date("Jan 01 1900"), 
         endDate :  new Date(Date.now()),
-        budgetGreater:'',
-        budgetLesser:''
+        budgetHead : ''
     })
 
     const menuProps = (props) =>{

@@ -6,9 +6,9 @@ export const getFormById = async(id) =>{
     return response.data;
 }
 
-export const postForm = async(type , email , data , status) =>{
+export const postForm = async(type , email , data , status , department) =>{
     const response = await axios.post(URL +'/forms' , {
-        type , email , data , status
+        type , email , data , status , department
     });
     return response.data;
 }
@@ -66,18 +66,23 @@ export const updateAccounts = async(id) => {
     return response.data;
 }
 
-export const getAllForms = async() => {
-    const response = await axios.get(URL+'/admin/forms')
+export const getHODForms = async() => {
+    const response = await axios.post(URL+'/hod/forms',{})
+    return response
+}
+
+export const getAccountantForms = async() => {
+    const response = await axios.post(URL+'/accountant/forms',{})
     return response;
 }
 
 export const getAoForms = async() => {
-    const response = await axios.get(URL+'/ao/forms')
+    const response = await axios.post(URL+'/ao/forms',{})
     return response;
 }
 
 export const getAccountsForms = async() => {
-    const response = await axios.get(URL+'/accounts/forms')
+    const response = await axios.post(URL+'/accounts/forms',{})
     return response;
 }
 

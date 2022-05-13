@@ -12,14 +12,15 @@ import {
     DatePicker,
     initializeIcons,
     MessageBar,
-    Depths
+    Depths,
+    DropdownMenuItemType
 } from '@fluentui/react';
 import { useNavigate} from 'react-router';
 import {LoginContext} from '../Login/LoginContext'
 import { useToast } from '@chakra-ui/react'
 import {PDFHandler} from "./PDFHandler";
-import { postForm  , postDraft} from '../Requests/formRequests';
-import { Dropzone, FileItem, FullScreenPreview } from "@dropzone-ui/react";
+import { postForm  , postDraft, getProfileDetails} from '../Requests/formRequests';
+import { Dropzone, FileItem, FullScreenPreview, InputButton } from "@dropzone-ui/react";
 import {URL} from '../cred'
 initializeIcons();
 
@@ -80,11 +81,34 @@ const option4 = [
     { key: 'A', text: 'Consumables' },
     { key: 'B', text: 'LTA' },
     { key: 'C', text: 'Non-Consumables' },
+    { key: 'D', text: 'Services'}
 ];
 
+const option5 = [
+    { key: 'header1' , text:'Engineering',itemType: DropdownMenuItemType.Header },
+    { key: 'A', text: 'BioMedical' },
+    { key: 'B', text: 'Chemical' },
+    { key: 'C', text: 'Civil' },
+    { key: 'D', text: 'Computer Science'},
+    { key: 'E', text: 'Electrical' },
+    { key: 'F', text: 'Mechanical' },
+    { key: 'G', text: 'Metallurigical and Materials' },
+    { key: 'divider_1', text: '-', itemType: DropdownMenuItemType.Divider },
+    { key: 'header2' , text:'Science & Humanities',itemType: DropdownMenuItemType.Header },
+    { key: 'H', text: 'Chemistry' },
+    { key: 'I', text: 'Physics' },
+    { key: 'J', text: 'Mathematics' },
+    { key:'K' , text: 'Humanities'}
+]
+
+const findKey = (options , value) =>{
+    if(value){
+        return options.filter(x => x.text === value)[0].key;
+    } else return 'NULL_KEY'
+}
 
 const Sp101 = () => {
-    const {user} = useContext(LoginContext)
+    const {user , role} = useContext(LoginContext)
     const nav = useNavigate();
     const toast = useToast()
     /**
@@ -153,13 +177,13 @@ const Sp101 = () => {
     */
     const submitForm = async () => {
         try {
-            const res = await postForm("sp101" ,user.email , data , "pending")
+            const res = await postForm("sp101" ,user.email , data , "pending" , data.department)
 
             toast({
                 title: 'Purchase form submitted',
                description: res.comment,
                 status: 'success',
-                duration: 1000,
+                duration: 5000,
                 isClosable: true,
             })
             
@@ -199,7 +223,6 @@ const Sp101 = () => {
         
     }
     const onSubmit = async () => {
-                // Form validation here.
         if(user == null){
             setToggleSubmit(!toggleSubmit);
             window.alert("Login using google before submitting a form.")
@@ -247,22 +270,29 @@ const Sp101 = () => {
     };
 
     const [firstVisit, setFirstVisit]=useState(0);
-    useEffect(() => {
-
-        if(firstVisit===0){
-            setFirstVisit(1);
-        }
-        if(firstVisit===1){
-            if((!valid.nameError)&&(!valid.departmentError)&&(!valid.itemNameError)&&
-            (!valid.budgetSanctionError)&&(!valid.approxCostError)&&(!valid.categoryError)&&
-            (!valid.BAEError)&&(!valid.CSRError)&&(!valid.GRPError)&&(!valid.GEMError)&&(!valid.MOEError)&&
-            (!valid.RMPError)&&(!valid.DPError)){
-                setToggleSubmit(!toggleSubmit);
+    useEffect(async() => {
+        if(user && role){
+            if(firstVisit===0){
+                const response = await getProfileDetails(user.email);
+                setData({...data,
+                    name:response.name,
+                    department:response.department,
+                    signature:response.signature,
+                    email:user.email,
+                });
+                setFirstVisit(1);
+            }
+            if(firstVisit===1){
+                if((!valid.nameError)&&(!valid.departmentError)&&(!valid.itemNameError)&&
+                (!valid.budgetSanctionError)&&(!valid.approxCostError)&&(!valid.categoryError)&&
+                (!valid.BAEError)&&(!valid.CSRError)&&(!valid.GRPError)&&(!valid.GEMError)&&(!valid.MOEError)&&
+                (!valid.RMPError)&&(!valid.DPError)){
+                    setToggleSubmit(!toggleSubmit);
+                }
             }
         }
         
-        
-    }, [valid]);
+    }, [valid , user , role]);
 
     const ItemPopUp = () => {
         return (
@@ -321,16 +351,16 @@ const Sp101 = () => {
         nav('/site/forms/sp101/draft/'+response.id);
     }
 
+    const [files, setFiles] = useState([]);
     const [imageSrc, setImageSrc] = useState(undefined);
 
     const updateFiles = (incommingFiles) => {
-        console.log(incommingFiles[0].file)
-        setData({...data , files:incommingFiles});
+        setFiles(incommingFiles);
     };
 
     
     const onDelete = (id) => {
-        setData({...data , files:data.files.filter((x) => x.id !== id)})
+        setFiles(files.filter((x) => x.id !== id));
     };
 
 
@@ -340,24 +370,28 @@ const Sp101 = () => {
 
 
     const uploader = (res) =>{
-        setData({...data , files:res.map(x => {
-            return x.serverResponse.data
-        })})
+        res.map(x => {
+            setData({...data , files:[...files , x.serverResponse.data]})
+        })
     }
 
     return (
         <div >
             <ItemPopUp />
             <SubmitPopUp />
-            <Stack horizontal tokens={stackTokens} styles={stackStyles} style={{marginTop:10}}>
+            {firstVisit && <Stack horizontal tokens={stackTokens} styles={stackStyles} style={{marginTop:10}}>
                 {/**
                  *  COlUMN1 of the form
                  */}
                 <Stack {...column1} style={{ 'backgroundColor': '#faf9f8', boxShadow: Depths.depth16 }}>
                     <TextField label="Name" value={data.name} errorMessage={ valid.nameError? "This field is required":""}
                         onChange={(e) => setData({ ...data, name: e.target.value })} required />
-                    <TextField label="Department" value={data.department} errorMessage={ valid.departmentError? "This field is required":""}
-                        onChange={(e) => setData({ ...data, department: e.target.value })} required/>
+            
+                    <Dropdown placeholder="Select an Option" options={option5} label="Department" 
+                        errorMessage={ valid.departmentError? "This field is required":""}
+                        defaultSelectedKey = {findKey(option5,data.department)}
+                        onChange={(e, i) => setData({ ...data, department: i.text })} required/>
+                    
                     <Stack horizontal tokens={stackTokens}>
                         <TextField label="Budget Head" value={data.budgetHead} styles={{ root: { width: '50%' } }}
                             onChange={(e) => setData({ ...data, budgetHead: e.target.value })} />
@@ -418,7 +452,7 @@ const Sp101 = () => {
                     </Stack>
                     <DatePicker
                         placeholder="Select a date"
-                        label="Date of purchase"
+                        label="Date of quotation"
                         onSelectDate={(e) => setData({ ...data, DOP: formatDate(e) })}/>
                     <Stack horizontal tokens={stackTokens} >
                         <TextField label="Required mode of payment"
@@ -435,20 +469,19 @@ const Sp101 = () => {
                  *  COlUMN3 of the form
                  */}
                 <Stack {...column3} style={{ 'backgroundColor': '#faf9f8', boxShadow: Depths.depth16 }}>
-                <Label>Attach proof of purchase. (PDF , JPEG , JPG , PNG)</Label>
+                <Label>Attach necessary files. (PDF , JPEG , JPG , PNG)</Label>
                 
                 <Dropzone
                     onChange={updateFiles}
-                    value={data.files}
-                    maxFiles={10}
-                    maxFileSize={5240000}
+                    value={files}
+                    maxFileSize={25240000}
                     label="Click here to upload files"
                     url={URL + "/upload"}
-                    accept=".png,image/*,.pdf"
+                    accept=".png,.jpeg,.jpg,image/*,.pdf"
                     footer={false}
                     onUploadFinish={uploader}
                 >
-                    {data.files.map((file) => (
+                    {files.map((file) => (
                         <FileItem
                             {...file}
                             key={file.id}
@@ -463,6 +496,7 @@ const Sp101 = () => {
                         imgSource={imageSrc}
                         openImage={imageSrc}
                         onClose={(e) => handleSee(undefined)} />
+                    
                 </Dropzone>
                     <Label>Added Items</Label>
                     <div style={{
@@ -501,7 +535,7 @@ const Sp101 = () => {
                     </Stack>
 
                 </Stack>
-            </Stack>
+            </Stack>}
         </div>
     );
 

@@ -1,11 +1,35 @@
 
 import React  , {useState, useContext, useEffect} from 'react';
 import {Grid, GridItem, Stack, Text} from "@chakra-ui/react";
-import {DefaultButton, Depths, TextField} from "@fluentui/react";
+import {DefaultButton, Depths, TextField , Dropdown , DropdownMenuItemType} from "@fluentui/react";
 import {useNavigate, useParams} from "react-router-dom"
 import { LoginContext } from '../Login/LoginContext';
 import { getProfileDetails, updateProfileDetails } from '../Requests/formRequests';
 import { useToast } from '@chakra-ui/react'
+
+const option5 = [
+    { key: 'header1' , text:'Engineering',itemType: DropdownMenuItemType.Header },
+    { key: 'A', text: 'BioMedical' },
+    { key: 'B', text: 'Chemical' },
+    { key: 'C', text: 'Civil' },
+    { key: 'D', text: 'Computer Science'},
+    { key: 'E', text: 'Electrical' },
+    { key: 'F', text: 'Mechanical' },
+    { key: 'G', text: 'Metallurigical and Materials' },
+    { key: 'divider_1', text: '-', itemType: DropdownMenuItemType.Divider },
+    { key: 'header2' , text:'Science & Humanities',itemType: DropdownMenuItemType.Header },
+    { key: 'H', text: 'Chemistry' },
+    { key: 'I', text: 'Physics' },
+    { key: 'J', text: 'Mathematics' },
+    { key:'K' , text: 'Humanities'}
+]
+
+
+const findKey = (options , value) =>{
+    if(value){
+        return options.filter(x => x.text === value)[0].key;
+    } else return 'NULL_KEY'
+}
 
 const Profile = () => {
     
@@ -21,19 +45,22 @@ const Profile = () => {
     });
 
 
-
+    const [fv , Sfv] = useState(0)
     useEffect(async()=>{
         if(user && role){
-            const response = await getProfileDetails(user.email);
-            console.log(response);
-            setData({...data,
-                name:response.name,
-                department:response.department,
-                signature:response.signature,
-                email:user.email,
-            });
+            if(fv === 0){
+                const response = await getProfileDetails(user.email);
+                setData({...data,
+                    name:response.name,
+                    department:response.department,
+                    signature:response.signature,
+                    email:user.email,
+                });
+                Sfv(1)
+            } else {
+
+            }
         }
-    
     },[user,role]);
    
     
@@ -54,12 +81,15 @@ const Profile = () => {
                     <Text className='Header' as='b' w="100%"> Manage Profile Details </Text>
                 </GridItem>
                 <GridItem colStart={1} rowSpan = {11} colSpan={3} ml={4}>
-                    <div style={{'border': '8px solid #f3f2f1' ,    padding:'10px' , backgroundColor:'#f3f2f1', borderRadius: '2px', boxShadow: Depths.depth4 }}>
+                    {fv === 1 && <div style={{'border': '8px solid #f3f2f1' ,    padding:'10px' , backgroundColor:'#f3f2f1', borderRadius: '2px', boxShadow: Depths.depth4 }}>
                         <Stack>
                             <TextField label={"Name"} value = {data.name}
                             onChange={(e) => setData({ ...data , name:e.target.value})}/ >
-                            <TextField label={"Department"} value ={data.department}
-                            onChange={(e) => setData({ ...data , department:e.target.value})}/>
+                            
+                            <Dropdown placeholder="Select an Option" options={option5} label="Department" 
+                                defaultSelectedKey = {findKey(option5,data.department)}
+                                onChange={(e, i) => setData({ ...data, department: i.text })} />
+
                             <TextField label={"Signature"} value ={data.signature}
                             onChange={(e) => setData({ ...data , signature:e.target.value})}/>                            
                         </Stack>
@@ -67,7 +97,7 @@ const Profile = () => {
                         <Stack style={{'alignItems':'center' , 'marginTop':'20px'}}>
                             <DefaultButton style={{'width':'100px'}} onClick={()=>onSubmit()}>Submit</DefaultButton>
                         </Stack>
-                    </div>
+                    </div>}
                 </GridItem>
             </Grid>
         </div>
