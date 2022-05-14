@@ -25,7 +25,7 @@ const Budget = (props) => {
         let res = await getFormById(param.id);
         await addNotifications(res.email , 'Budget has been filled by JAO on ' , 'info' , 'Form approved by JAO')
         await addActivities(user.email)
-        nav('/site/admin/forms')
+        nav('/site/admin/activity')
     }
 
     useEffect(() => {
