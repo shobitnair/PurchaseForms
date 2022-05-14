@@ -85,7 +85,17 @@ export const getActivities = async(email) => {
     return response.data
 }
 
+export const addActivities = async(email , message , type , heading) => {
+    const response = await axios.post(URL+'/activities/add' , {email , message , type , heading})
+    return response.data
+}
+
 export const getNotifications = async(email) => {
     const response = await axios.post(URL+'/notifications' , {email:email});
+    return response.data
+}
+
+export const addNotifications = async(email , message , type , heading) => {
+    const response = await axios.post(URL+'/notifications/add' , {email , message , type , heading})
     return response.data
 }

@@ -2,7 +2,10 @@ import React  , {useState}from 'react';
 import {Grid, GridItem, Stack, Text} from "@chakra-ui/react";
 import {DefaultButton, Depths, TextField} from "@fluentui/react";
 import {useNavigate, useParams} from "react-router-dom"
-import { updateBudget } from '../Requests/formRequests';
+import { addActivities, addNotifications, getFormById, updateBudget } from '../Requests/formRequests';
+import { LoginContext } from '../Login/LoginContext';
+import { useContext } from 'react';
+
 
 const Budget = (props) => {
     const [data , setData] = useState({
@@ -13,13 +16,24 @@ const Budget = (props) => {
         bh:null,
         balb:null
     })
+    const {user,role} = useContext(LoginContext)
     const param = useParams()
     const nav = useNavigate()
 
     const onSubmit = async() =>{
         await updateBudget(param.id , data);
+        let res = await getFormById(param.id);
+        await addNotifications(res.email , 'Budget has been filled by JAO on ' , 'info' , 'Form approved by JAO')
+        await addActivities(user.email)
         nav('/site/admin/forms')
     }
+
+    useEffect(() => {
+        if(user && role){
+            
+        }
+    }, [third])
+    
 
     return (
         <div>
