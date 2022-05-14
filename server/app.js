@@ -158,9 +158,10 @@ app.post('/api/forms', async (req, res) => {
         const { type, email, data, status , department } = req.body;
         let mx = await pool.query('select max(id) from forms');
         const id = (mx.rows[0].max) ? mx.rows[0].max + 1 : 1;
+        let curDate = new Date();
         let query = await pool.query(
             `insert into forms (id,type,email , data , status , department , submit_date) VALUES ($1,$2,$3,$4,$5,$6,$7) returning *`,
-            [id, type, email, data, status , department , new Date()]
+            [id, type, email, data, status , department , curDate]
         )
         res.json({ comment: 'form submitted with PurchaseForm ID ' + id });
     } catch (err) {
@@ -360,6 +361,17 @@ app.post('/api/activities', async(req,res) => {
     }
 })
 
+app.post('/api/activities/add', async(req,res) => {
+    try{
+        const {email , message , type , heading} = req.body;
+        let query = await pool.query('insert into activity (email , message , activity_time , type , heading) values ($1,$2,$3,$4,$5) returning * '
+            , [email , message , new Date() , type , heading])
+        
+    } catch(err) {
+        console.log(err);
+    }
+})
+
 app.post('/api/notifications' , async(req,res) => {
     try{
         const {email} = req.body;
@@ -369,5 +381,16 @@ app.post('/api/notifications' , async(req,res) => {
         console.log(err);
     }
 })
+
+app.post('/api/notifications/add', async(req,res) => {
+    try{
+        const {email , message , type , heading} = req.body;
+        let query = await pool.query('insert into activity (email , message , notification_time , type , heading) values ($1,$2,$3,$4,$5) returning *'
+            , [email , message , new Date() , type , heading])
+    } catch(err) {
+        console.log(err);
+    }
+})
+
 
 module.exports = { app };
