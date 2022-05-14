@@ -24,6 +24,9 @@ import Deny from './Admin/Deny';
 import { Upload } from './Forms/upload';
 import Profile from './Profile/Profile';
 import Accept from './Admin/Accept'
+import Activities from './Profile/Activities';
+import Notifications from './Profile/Notifications';
+import StatusSP101 from './Status/StatusSP101'
 initializeIcons();
 
 const App = () => {
@@ -53,6 +56,9 @@ const App = () => {
               <Route exact path={"/site/admin/forms/accept/:id/:role"} element={<Accept/>} />
               <Route exact path={"/upload"} element={<Upload/>} />
               <Route exact path={"/site/profile/"} element={<Profile/>}/>
+              <Route exact path={"/site/admin/activity"} element={<Activities/>} />
+              <Route exact path={"/site/admin/notification"} element={<Notifications/>} />
+              <Route exact path= {"site/forms/submitted/response/:id/status"} element = {<StatusSP101/>}/>
             </Routes>
           </Router>
         </Provider>

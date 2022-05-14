@@ -57,6 +57,9 @@ app.post('/api/admin/forms/load' , async(req,res) =>{
         if(role === 'AR'){
             query = await pool.query('select * from forms where ao = true order by id desc')
         }
+        if(role === 'PURCHASE'){
+            query = await pool.query('select * from forms where ar = true order by id desc')
+        }
         res.json(query.rows)
     } catch(err){
         res.status(404).json(err);
@@ -77,6 +80,7 @@ app.post('/api/admin/forms/accept' , async(req,res) =>{
         if(role === 'AR'){
             query = await pool.query('update forms set ar = true , status = $1 where id = $2' , ['approved' , id])
         }
+    
         res.json({status:'success'})
     } catch(err){
         res.status(404).json(err);
@@ -254,13 +258,13 @@ app.post('/api/users', async (req, res) => {
             "Select email from users where email = $1", [email]
         )
 
-        // If user does not exist in database then create user and draft tables.
         if (query.rowCount == 0) {
             query = await pool.query(
                 "INSERT into users (name , email , role) VALUES ($1 , $2  , $3) returning *",
                 [name, email, 'FACULTY']
             );
         }
+        /*
         const table_suffix = email.split('@')[0]
         query = await pool.query("create table if not exists draft_" + table_suffix +
             "(\n" +
@@ -272,13 +276,15 @@ app.post('/api/users', async (req, res) => {
             "\n" +
             "alter table draft_" + table_suffix +
             "    owner to postgres;")
-
+        */
         res.json({ comment: 'user data updated / added' })
     } catch (error) {
         console.log(error)
         res.status(404).json(error);
     }
 })
+
+
 
 
 const storage = multer.diskStorage({
@@ -343,5 +349,25 @@ app.post('/api/profile/update', async(req,res) => {
     }
 });
 
+
+app.post('/api/activities', async(req,res) => {
+    try{
+        const {email} = req.body;
+        let query = await pool.query('select * from activity where email = $1 order by activity_time desc' , [email])
+        res.json(query.rows);
+    } catch(err) {
+        console.log(err);
+    }
+})
+
+app.post('/api/notifications' , async(req,res) => {
+    try{
+        const {email} = req.body;
+        let query = await pool.query('select * from notifications where email = $1 order by notification_time desc' , [email])
+        res.json(query.rows);
+    }catch(err){
+        console.log(err);
+    }
+})
 
 module.exports = { app };

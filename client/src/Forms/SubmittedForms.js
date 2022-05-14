@@ -101,6 +101,12 @@ const SubmittedForms = () => {
                   onClick: ()=> PDFbyID(props.id),
                 },
                 {
+                    key:'Status' ,
+                    text:'Show Current Status',
+                    iconProps : { iconName: 'PowerBILogo'},
+                    onClick: () => nav('response/'+props.id+'/status')
+                },
+                {
                   key: 'res',
                   text: 'Response from Budget Section',
                   iconProps: { iconName: 'PlanView' },

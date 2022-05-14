@@ -75,7 +75,7 @@ const Dashboard = () => {
                 <GridItem w='100%' rowSpan={2} colSpan={2} bg='#edebe9' p={2} style={{borderRadius:5 , boxShadow:Depths.depth4}}>
                     <PersonDetails />
                 </GridItem>
-                {user && <>
+                {user && role === 'FACULTY' && <>
                     <FormItem 
                         form='sp101' 
                         body='Indent for purchases below Rs. 25000' 

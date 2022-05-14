@@ -64,20 +64,28 @@ const NavBar = () => {
         },
         {
             key:'subform',
-            text:(role==='JAO' || role==='AO' || role ==='AR' || role === 'HOD')?'All forms':'Submitted Forms',
+            text:(role==='JAO' || role==='AO' || role ==='AR' || role === 'HOD' || role === 'PURCHASE')?'Pending Actions':'Submitted Forms',
             iconProps: { iconName : 'AllApps'},
             buttonStyles: itemStyles,
             disabled:(user === null),
-            onClick: (role==='JAO' || role==='AO' || role ==='AR' || role === 'HOD')?()=>nav('/site/admin/forms'):()=>nav('/site/forms/submitted')
+            onClick: (role==='JAO' || role==='AO' || role ==='AR' || role === 'HOD' || role === 'PURCHASE')?()=>nav('/site/admin/forms'):()=>nav('/site/forms/submitted')
         },
         {
-            key:'drafts',
-            text:'Drafts',
-            iconProps:{iconName:'SaveTemplate'},
-            hidden:(role!=='FACULTY'),
-            buttonStyles: itemStyles,
+            key:'activities',
+            text:'Your Activities',
+            iconProps: {iconName : 'History'},
+            buttonStyles :itemStyles,
             disabled:(user === null),
-            onClick:()=>nav('/site/drafts')
+            onClick: ()=>nav('/site/admin/activity')
+        }
+        ,
+        {
+            key:'notification',
+            text:'Notifications',
+            iconProps: {iconName : 'Glimmer'},
+            buttonStyles :itemStyles,
+            disabled:(user === null),
+            onClick: ()=>nav('/site/admin/notification')
         }
     ]
 

@@ -79,3 +79,13 @@ export const updateProfileDetails = async(data) => {
     const response = await axios.post(URL+'/profile/update',{name,department,signature,email});
     return response.data; 
 }   
+
+export const getActivities = async(email) => {
+    const response = await axios.post(URL+'/activities' , {email:email});
+    return response.data
+}
+
+export const getNotifications = async(email) => {
+    const response = await axios.post(URL+'/notifications' , {email:email});
+    return response.data
+}

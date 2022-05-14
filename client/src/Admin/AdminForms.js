@@ -24,7 +24,6 @@ const modelProps = {
 };
 
 const formatDate = (date) => {
-    console.log(date);
     if (!date)
         return '';
     const month = date.getMonth() + 1; // + 1 because 0 indicates the first Month of the Year.
@@ -93,8 +92,7 @@ const AdminForms = () => {
         status:'All',
         startDate: new Date("Jan 01 1900"), 
         endDate :  new Date(Date.now()),
-        budgetGreater:'',
-        budgetLesser:''
+        budgetHead : ''
     })
 
 
@@ -184,8 +182,8 @@ const AdminForms = () => {
         {
             key: 'Type',
             name: ColumnHeader('Type'),
-            minWidth: 75,
-            maxWidth: 75,
+            minWidth: 100,
+            maxWidth: 100,
             isResizable: true,
             onRender: (props) =>{
                 return <Text as='b' className='rowLabel'>{props.type}</Text>
@@ -219,37 +217,6 @@ const AdminForms = () => {
             isResizable: true,
             onRender: (props) =>{
                 return <Text className='rowLabel' as='b'>{props.budgetHead}</Text>
-            }
-        },
-        {
-            key: 'Status',
-            name: ColumnHeader('Status'),
-            minWidth: 175,
-            maxWidth: 175,
-            isResizable: true,
-            onRender: (props) =>{
-                return <div >
-                {props.status === 'approved' && 
-                    <Badge fontFamily={'roboto'} fontSize={15} align='center' w='120px' colorScheme={'green'}>
-                        {props.status}
-                    </Badge>
-                }
-                {props.status === 'pending' && 
-                    <Badge fontFamily={'roboto'} fontSize={15} align='center' w='120px' colorScheme={'purple'}>
-                        {props.status}
-                    </Badge>
-                }
-                {props.status === 'denied' && 
-                    <Badge fontFamily={'roboto'} fontSize={15} align='center' w='120px' colorScheme={'red'}>
-                        {props.status}
-                    </Badge>
-                }
-                {props.status === 'resubmitted' && 
-                    <Badge fontFamily={'roboto'} fontSize={15} align='center' w='120px' colorScheme={'orange'}>
-                        {props.status}
-                    </Badge>
-                }
-                </div>
             }
         },
 
@@ -300,10 +267,9 @@ const AdminForms = () => {
             if(
                 exists(x.email , filter.email) &&
                 exists(x.id , filter.id) &&
+                exists(x.budgetHead , filter.budgetHead) &&
                 (filter.type === 'All' || exists(x.type , filter.type)) &&
-                (filter.status === 'All' || exists(x.status , filter.status))&&
-                filter.startDate <= revformatDate(x.date) &&
-                revformatDate(x.date) <= filter.endDate 
+                filter.startDate <= revformatDate(x.date) && revformatDate(x.date) <= filter.endDate 
             ) return 1
             else return 0
         }))
@@ -351,11 +317,10 @@ const AdminForms = () => {
                 />
             </GridItem>
             <GridItem  rowStart={2} rowSpan={1} colSpan={2} ml={4}>
-                <Dropdown
-                    defaultSelectedKey={'A'}
-                    options={statusOptions} label="Status type"
-                    onChange={(e, i) => setFilter({ ...filter, status: i.text })}
-                />
+                <TextField
+                    label = "Filter by Budget Head"
+                    onChange={(e)=>setFilter({...filter , budgetHead:e.target.value})}
+                    placeholder={'Enter any keyword'}></TextField>
             </GridItem>
             <GridItem rowSpan={1} colSpan={2} ml={4} > 
                 <DatePicker
