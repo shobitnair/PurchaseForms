@@ -7,7 +7,8 @@ const multer = require('multer');
 const { pool } = require('./db');
 const { fileURLToPath } = require('url');
 const fs = require("fs")
-const {promisify} = require("util")
+const {promisify} = require("util");
+const { response } = require('express');
 const pipeline = promisify(require("stream").pipeline)
 
 //const {sq}  = require('./sqlite')
@@ -364,9 +365,9 @@ app.post('/api/activities', async(req,res) => {
 app.post('/api/activities/add', async(req,res) => {
     try{
         const {email , message , type , heading} = req.body;
-        let query = await pool.query('insert into activity (email , message , activity_time , type , heading) values ($1,$2,$3,$4,$5) returning * '
+        let query = await pool.query('insert into activity (email , message , activity_time , type , heading) values ($1,$2,$3,$4,$5) returning *'
             , [email , message , new Date() , type , heading])
-        
+        res.json(query.rows[0])
     } catch(err) {
         console.log(err);
     }
@@ -385,8 +386,9 @@ app.post('/api/notifications' , async(req,res) => {
 app.post('/api/notifications/add', async(req,res) => {
     try{
         const {email , message , type , heading} = req.body;
-        let query = await pool.query('insert into activity (email , message , notification_time , type , heading) values ($1,$2,$3,$4,$5) returning *'
+        let query = await pool.query('insert into notifications (email , message , notification_time , type , heading) values ($1,$2,$3,$4,$5) returning *'
             , [email , message , new Date() , type , heading])
+        res.json(query.rows[0])
     } catch(err) {
         console.log(err);
     }
