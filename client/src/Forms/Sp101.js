@@ -136,7 +136,9 @@ const Sp101 = () => {
         Qno: null,
         RMP: null,
         DP: null,
-        files:[]
+        files:[],
+        tax: null,
+        taxDisable:false,
     };  
 
     const initValid = {
@@ -160,6 +162,9 @@ const Sp101 = () => {
         DOPError: false,
         QnoError: false,
         budgetHeadError: false,
+        taxError: false,
+        fileError: false,
+        itemError: false,
     };  
 
 
@@ -169,7 +174,7 @@ const Sp101 = () => {
     // data which manages form variable states
     const [data, setData] = useState(init);
     const [flag, setFlag] = useState(false);
-    
+        
 
     /**
     *  does a HTTP POST REQUEST to add a new purchase form.
@@ -217,8 +222,13 @@ const Sp101 = () => {
             MOEError:(data.MOE === null || data.MOE === ''),
             NOQError:(data.NOQ === null || data.NOQ === ''),
             PurchasedFromError:(data.PurchasedFrom === null || data.PurchasedFrom === ''),
-            QnoError:(data.Qno === null, data.Qno === ''),
+            QnoError:(data.Qno === null || data.Qno === ''),
+            taxError:(data.tax === null || data.tax ===''),
+            fileError:(data.files.length === 0),
+            itemError:(data.items.length === 0),
         })
+        
+        
 
         
         
@@ -287,9 +297,29 @@ const Sp101 = () => {
                 if((!valid.nameError)&&(!valid.departmentError)&&(!valid.itemNameError)&&
                 (!valid.budgetSanctionError)&&(!valid.approxCostError)&&(!valid.categoryError)&&
                 (!valid.BAEError)&&(!valid.CSRError)&&(!valid.GRPError)&&(!valid.GEMError)&&(!valid.MOEError)&&
-                (!valid.RMPError)&&(!valid.DPError)){
+                (!valid.fileError) && (!valid.QnoError) &&(!valid.PurchasedFromError) &&(!valid.taxError) &&
+                (!valid.NOQError) &&(!valid.budgetHeadError) && (!valid.itemError)){
                     setToggleSubmit(!toggleSubmit);
                 }
+                if(valid.fileError){
+                    toast({
+                        title: 'No files attached',
+                        description: 'Add files to complete the form filling process',
+                        status: 'error',
+                        duration: 5000,
+                        isClosable: true,
+                    })
+                }
+                if(valid.itemsError){
+                    toast({
+                        title: 'No items listed',
+                        description: 'Add items to complete the form filling process',
+                        status: 'error',
+                        duration: 5000,
+                        isClosable: true,
+                    })
+                }
+            
             }
         }
         
@@ -376,6 +406,26 @@ const Sp101 = () => {
         })
     }
 
+
+    const setTax = (e,i) =>{
+        if(i.text ==='Yes'){
+            setData({...data,
+                GRP: i.text,
+                tax: 5,
+                taxDisable: true,
+            });
+        }
+        else
+        {
+            setData({...data,
+                GRP: i.text,
+                taxDisable: false,
+                tax: null,
+            });
+        }
+        
+    }
+
     return (
         <div >
             <ItemPopUp />
@@ -417,12 +467,13 @@ const Sp101 = () => {
                     <Dropdown placeholder="Select an Option" options={option1}
                         label="Are the goods for Research Purpose "
                         errorMessage={ valid.GRPError? "This field is required":""}
-                        onChange={(e, i) => setData({ ...data, GRP: i.text })} required/>
+                        onChange={(e, i) => setTax(e,i)} required/>
                     <div style={{ boxShadow: Depths.depth4 }}><MessageBar >
                         If required for Research Purpose then Certificate for claiming concessional GST under notification no. 45/2017
                         & 47/2017: Certified that purchase of above goods for which concessional GST is claimed is required for research
                         purpose only
                     </MessageBar></div>
+ 
                 </Stack>
 
                 {/**
@@ -466,6 +517,11 @@ const Sp101 = () => {
                             styles={{ root: { width: '50%' } }}
                             onChange={(e) => setData({ ...data, DP: e.target.value })}/>
                     </Stack>
+                    <TextField label="Tax" errorMessage={ valid.taxError? "This field is required":""} styles={{ root: { width: '50%' } }}
+                            onChange={(e) => setData({ ...data, tax: e.target.value })} required
+                            value={data.tax}
+                            disabled={data.taxDisable}
+                            />
                 </Stack>
                 {/**
                  *  COlUMN3 of the form
