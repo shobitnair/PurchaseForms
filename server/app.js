@@ -170,6 +170,8 @@ app.post('/api/forms', async (req, res) => {
     }
 })
 
+
+
 app.post('/api/forms/update', async (req, res) => {
     try {
         const { id, data, status } = req.body;
@@ -252,7 +254,7 @@ app.post('/api/drafts/update', async (req, res) => {
 
 app.post('/api/users', async (req, res) => {
     try {
-        console.log(req.body);
+        
         const { email, name } = req.body;
 
         // find the user from the database.
@@ -403,5 +405,16 @@ app.post('/api/email' , async(req,res) => {
         console.log(err);
     }
 })
+
+
+app.post('/api/get/all/faculty',async(req,res) =>{
+    try{
+       
+        let query = await pool.query("select email from users where role='FACULTY'")
+        res.json(query.rows);
+    }catch(err){
+        console.log(err);
+    }
+});
 
 module.exports = { app };

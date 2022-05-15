@@ -19,7 +19,7 @@ import { useNavigate} from 'react-router';
 import {LoginContext} from '../Login/LoginContext'
 import { useToast } from '@chakra-ui/react'
 import {PDFHandler} from "./PDFHandler";
-import { postForm  , postDraft, getProfileDetails, addActivities} from '../Requests/formRequests';
+import { postForm  , postDraft, getProfileDetails} from '../Requests/formRequests';
 import { Dropzone, FileItem, FullScreenPreview, InputButton } from "@dropzone-ui/react";
 import {URL} from '../cred'
 initializeIcons();
@@ -141,10 +141,10 @@ const Sp101 = () => {
         taxDisable:false,
     };  
 
+
     const initValid = {
         nameError: false,
         departmentError: false,
-        itemsError: [],
         budgetHeadError: false,
         budgetSanctionError: false,
         itemNameError: false,
@@ -180,18 +180,23 @@ const Sp101 = () => {
     *  does a HTTP POST REQUEST to add a new purchase form.
     */
     const submitForm = async () => {
-        const res = await postForm("sp101" ,user.email , data , "pending" , data.department)
-        await addActivities(user.email ,
-            'Purchase form SPS-101 succesfully submitted with ID : '+res.id+' on ' , 'success' , 'FORM SUBMITTED' )
-        toast({
-            title: 'Purchase form submitted',
-            description: res.comment,
-            status: 'success',
-            duration: 5000,
-            isClosable: true,
-        })
-        
-        nav('/site')
+        try {
+            const res = await postForm("sp101" ,user.email , data , "pending" , data.department)
+
+            toast({
+                title: 'Purchase form submitted',
+               description: res.comment,
+                status: 'success',
+                duration: 5000,
+                isClosable: true,
+            })
+            
+            nav('/site')
+
+        }
+        catch (err) {
+            console.log(err);
+        }
     }
 
 
@@ -200,7 +205,7 @@ const Sp101 = () => {
     *  Manages the pop up toggle states
     */
      
-     const validationFunc = () =>{
+    const validationFunc = () =>{
         setValid({
             ...valid,
             nameError: (data.name === null || data.name === ''),
@@ -236,6 +241,7 @@ const Sp101 = () => {
         }
         else{
             await submitForm();
+            console.log(data); 
             setToggleSubmit(!toggleSubmit);
 
         }
@@ -282,8 +288,6 @@ const Sp101 = () => {
                 setData({...data,
                     name:response.name,
                     department:response.department,
-                    signature:response.signature,
-                    email:user.email,
                 });
                 setFirstVisit(1);
             }
@@ -483,7 +487,7 @@ const Sp101 = () => {
                         <TextField multiline rows={2}
                             onChange={(e) => setData({ ...data, GEMdetails: e.target.value })} />
                     </div>
-                    <TextField label="Recommendations of the Indenter (If required , seperate sheet can be attached for detailed specifications)" multiline rows={4}
+                    <TextField label="Recommendations of the Indenter " multiline rows={4}
                         onChange={(e) => setData({ ...data, ROI: e.target.value })} />
                     <Dropdown placeholder="Select an Option" options={option3} label="Mode of Enquiry"
                     errorMessage={ valid.MOEError? "This field is required":""}
