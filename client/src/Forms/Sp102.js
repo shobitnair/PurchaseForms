@@ -19,6 +19,7 @@ import axios from "axios";
 import { useNavigate } from "react-router";
 import { LoginContext } from "../Login/LoginContext";
 import { URL } from "../cred";
+import {PDFHandler} from "./PDFHandler";
 import { getProfileDetails } from "../Requests/formRequests";
 /**
  * Styles for the stack and the columns
@@ -498,7 +499,7 @@ const Sp102 = () => {
           <DefaultButton
             text="Preview"
             style={{ marginLeft: "5%", width: "45%", boxShadow: Depths.depth4 }}
-            onClick={onPreviewClicked}
+            onClick={() => PDFHandler('sp102' , data)}
           />
         </Stack>
         <SubmitPopUp />
