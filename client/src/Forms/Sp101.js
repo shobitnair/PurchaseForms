@@ -304,7 +304,7 @@ const Sp101 = () => {
                         isClosable: true,
                     })
                 }
-                if(valid.itemsError){
+                if(valid.itemError){
                     toast({
                         title: 'No items listed',
                         description: 'Add items to complete the form filling process',
