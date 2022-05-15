@@ -60,6 +60,9 @@ const Profile = () => {
             } else {
 
             }
+        } else {
+            setData({})
+            Sfv(0)
         }
     },[user,role]);
    

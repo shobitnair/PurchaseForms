@@ -14,11 +14,18 @@ const Accept = (props) => {
 
     const onSubmit = async() =>{
         const response = await acceptForm(param.id , param.role);
-        
+        const res = await getFormById(param.id);
+        if(role === 'HOD'){
+            
+        }
+        if(role === 'AO'){
+
+        }
+        if(role === '')
         toast({
             title: 'Form Approved',
             status: 'success',
-            duration: 4000,
+            duration: 3000,
             isClosable: true,
         })
         nav('/site/admin/forms')

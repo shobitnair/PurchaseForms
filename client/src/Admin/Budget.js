@@ -1,4 +1,4 @@
-import React  , {useState}from 'react';
+import React  , {useState , useEffect}from 'react';
 import {Grid, GridItem, Stack, Text} from "@chakra-ui/react";
 import {DefaultButton, Depths, TextField} from "@fluentui/react";
 import {useNavigate, useParams} from "react-router-dom"
@@ -24,7 +24,7 @@ const Budget = (props) => {
         await updateBudget(param.id , data);
         let res = await getFormById(param.id);
         await addNotifications(res.email , 'Budget has been filled by JAO on ' , 'info' , 'Form approved by JAO')
-        await addActivities(user.email)
+        await addActivities(user.email , 'You filled budget and approved purchase form '+param.id+' on ' , 'info' , 'Approved and Filled Budget')
         nav('/site/admin/activity')
     }
 

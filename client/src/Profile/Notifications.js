@@ -97,6 +97,9 @@ const Notifications = () => {
             } else {
 
             }
+        } else {
+            setItems([])
+            Sfv(0)
         }
     },[user,role]);
 

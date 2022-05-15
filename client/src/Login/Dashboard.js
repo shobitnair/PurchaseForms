@@ -67,6 +67,7 @@ const Dashboard = () => {
         }
         else {
             setPersona({ text: 'Please Login', })
+            
         }
     }, [user , role])
 

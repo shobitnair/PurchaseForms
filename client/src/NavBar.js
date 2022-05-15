@@ -78,15 +78,7 @@ const NavBar = () => {
             disabled:(user === null),
             onClick: ()=>nav('/site/admin/activity')
         }
-        ,
-        {
-            key:'notification',
-            text:'Notifications',
-            iconProps: {iconName : 'Glimmer'},
-            buttonStyles :itemStyles,
-            disabled:(user === null),
-            onClick: ()=>nav('/site/admin/notification')
-        }
+        
     ]
 
     useEffect(()=>{
