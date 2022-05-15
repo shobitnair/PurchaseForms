@@ -164,7 +164,7 @@ app.post('/api/forms', async (req, res) => {
             `insert into forms (id,type,email , data , status , department , submit_date) VALUES ($1,$2,$3,$4,$5,$6,$7) returning *`,
             [id, type, email, data, status , department , curDate]
         )
-        res.json({ comment: 'form submitted with PurchaseForm ID ' + id });
+        res.json({id:id});
     } catch (err) {
         res.status(404).json(err);
     }
@@ -394,5 +394,14 @@ app.post('/api/notifications/add', async(req,res) => {
     }
 })
 
+app.post('/api/email' , async(req,res) => {
+    try{
+        const {role} = req.body;
+        let query = await pool.query('select * from users where role=$1' , [role]);
+        res.json(query.rows[0]);
+    }catch(err){
+        console.log(err);
+    }
+})
 
 module.exports = { app };

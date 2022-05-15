@@ -38,28 +38,7 @@ const revformatDate = (date) =>{
     return dt;
 }
 
-const gridStyle = {
-    root: {
-        overflowX:'scroll',
-        selectors: {
-            '& [role=grid]': {
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'start',
-                height: '55vh',
-                width:'100%',
-            },
-        },
-    },
-    headerWrapper: {
-        flex: '0 0 auto',
-      },
-    contentWrapper: {
-    flex: '1 1 auto',
-    overflowY: 'auto',
-    overflowX: 'auto',
-    },
-};
+
 
 
 const formOptions = [
@@ -260,7 +239,7 @@ const Drafts = () => {
 
             <GridItem rowStart={2}  rowSpan={10} colSpan={12} m={4}>
                 <div style={{'border': '8px solid #f3f2f1' ,padding:'10px' , backgroundColor:'#f3f2f1', maxWidth:'100%',width:'fit-content', borderRadius: '2px', boxShadow: Depths.depth4 }}>
-                    <div >
+                    
                     <DetailsList
                         items={items}
                         columns={_columns}
@@ -270,7 +249,7 @@ const Drafts = () => {
                         layoutMode={DetailsListLayoutMode.fixedColumns}
                         constrainMode={ConstrainMode.unconstrained}
                     />
-                    </div>
+
                 </div>
             </GridItem>
         </Grid>

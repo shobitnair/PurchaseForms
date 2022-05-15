@@ -14,6 +14,7 @@ const Accept = (props) => {
 
     const onSubmit = async() =>{
         const response = await acceptForm(param.id , param.role);
+        
         toast({
             title: 'Form Approved',
             status: 'success',

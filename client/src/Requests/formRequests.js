@@ -99,3 +99,8 @@ export const addNotifications = async(email , message , type , heading) => {
     const response = await axios.post(URL+'/notifications/add' , {email , message , type , heading})
     return response.data
 }
+
+export const getEmailbyROLE = async(role) => {
+    const response = await axios.post(URL + '/email' , {role});
+    return response.data;
+}

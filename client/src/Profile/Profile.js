@@ -77,10 +77,10 @@ const Profile = () => {
     return(
         <div>
             <Grid templateColumns='repeat(12,1fr)' templateRows='repeat(12,1fr)' w='100%'  h='600px' gap={4} bg={'whiteAlpha.300'}>
-                <GridItem rowSpan={1} colSpan={3} ml={4} mt={4} style={{'alignItems':'center'}}>
+                <GridItem rowSpan={1} colSpan={12} ml={4} mt={4} style={{'alignItems':'center'}}>
                     <Text className='Header' as='b' w="100%"> Manage Profile Details </Text>
                 </GridItem>
-                <GridItem colStart={1} rowSpan = {11} colSpan={3} ml={4}>
+                <GridItem colStart={1} rowSpan = {11} colSpan={12} ml={2} mr={2}>
                     {fv === 1 && <div style={{'border': '8px solid #f3f2f1' ,    padding:'10px' , backgroundColor:'#f3f2f1', borderRadius: '2px', boxShadow: Depths.depth4 }}>
                         <Stack>
                             <TextField label={"Name"} value = {data.name}

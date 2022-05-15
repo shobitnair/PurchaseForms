@@ -32,7 +32,7 @@ const Budget = (props) => {
         if(user && role){
             
         }
-    }, [third])
+    }, [user , role])
     
 
     return (

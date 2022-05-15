@@ -2,15 +2,35 @@ import React  , {useState}from 'react';
 import {Grid, GridItem, Stack, Text} from "@chakra-ui/react";
 import {DefaultButton, Depths, TextField} from "@fluentui/react";
 import {useNavigate, useParams} from "react-router-dom"
-import { denyForm } from '../Requests/formRequests';
+import { addActivities, addNotifications, denyForm, getEmailbyROLE, getFormById } from '../Requests/formRequests';
 const Deny = (props) => {
     const [message , setMessage] = useState('')
     const param = useParams()
     const nav = useNavigate()
 
     const onSubmit = async() =>{
+        const res = await getFormById(param.id);
+        await addNotifications(res.email , 'Purchase form with ID : '+param.id+' was denied by '+role+' on ','error' , 'Your Purchase form was denied')
+        if(role === 'HOD'){
+            await addActivities(user.email , 'You denied a purchase form with ID : '+param.id+' on ' ,'info','Denied a purchase form' )
+        }   
+        if(role === 'JAO'){
+            await addActivities(user.email , 'You denied a purchase form with ID : '+param.id+' on ' ,'info','Denied a purchase form' )
+            const ao = await getEmailbyROLE('AO');
+            const ar = await getEmailbyROLE('AR');
+            await addNotifications(ao.email , 'Purchase form with ID : '+param.id +' was denied by JAO','warning','A Purchase form was denied')
+            await addNotifications(ar.email , 'Purchase form with ID : '+param.id +' was denied by JAO','warning','A Purchase form was denied')
+        } 
+        if(role === 'AO'){
+            await addActivities(user.email , 'You denied a purchase form with ID : '+param.id+' on ' ,'info','Denied a purchase form' )
+            const ar = await getEmailbyROLE('AR');
+            await addNotifications(ar.email , 'Purchase form with ID : '+param.id +' was denied by AO','warning','A Purchase form was denied')
+        }
+        if(role === 'AR'){
+            await addActivities(user.email , 'You denied a purchase form with ID : '+param.id+' on ' ,'info','Denied a purchase form' )
+        }
         await denyForm(param.id , param.role , message)
-        nav('/site/admin/forms')
+        nav('/site/admin/activity')
     }
 
     return (

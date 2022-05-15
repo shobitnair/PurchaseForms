@@ -7,14 +7,43 @@ import {
     Grid,
     GridItem,
     Stack,
-    Box
+    Box,
+    Text
 } from '@chakra-ui/react'
-import { Depths } from '@fluentui/react';
+import { ConstrainMode,
+    Depths,
+    DetailsList, 
+    DetailsListLayoutMode,
+    Selection, 
+    SelectionMode,  } from '@fluentui/react';
 import { useNavigate } from 'react-router';
 import { useContext , useState , useEffect } from 'react';
 import { LoginContext } from '../Login/LoginContext';
 import { ScrollablePane } from '@fluentui/react';
 import { getNotifications } from '../Requests/formRequests';
+
+const gridStyle = {
+    root: {
+        overflowX:'scroll',
+        selectors: {
+            '& [role=grid]': {
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'start',
+                height: '500px',
+                width:'100%',
+            },
+        },
+    },
+    headerWrapper: {
+        flex: '0 0 auto',
+      },
+    contentWrapper: {
+    flex: '1 1 auto',
+    overflowY: 'auto',
+    overflowX: 'auto',
+    },
+};
 
 const formatDate = (date) => {
     if (!date)
@@ -31,6 +60,35 @@ const Notifications = () => {
     const {user , role} = useContext(LoginContext);
     const [fv , Sfv] = useState(0)
     const [items , setItems] = useState([]);
+    
+    const ColumnHeader = (text) =>{
+        return <Text className='Header' as='b' w="100%">{text}</Text>
+    }
+    const _columns = [
+        {
+            key: 'Notif',
+            name: ColumnHeader('Notifications')  , 
+            minWidth: 480,
+            maxWidth: 480,
+            isResizable: true,
+            onRender: (props) =>{
+                return (
+                    <Box style={{boxShadow: Depths.depth4  , width:'100%'}} >
+                        <Alert status = {props.type}>
+                        <AlertIcon boxSize='30px'/>
+                        <Box>
+                            <AlertTitle fontSize={18}>{props.heading}</AlertTitle>
+                            <AlertDescription fontSize={16}>
+                            {props.message}  {formatDate(new Date(props.notification_time))}
+                            </AlertDescription>
+                        </Box>
+                    </Alert>
+                    </Box>
+                )
+            }
+        },
+    ]
+    
     useEffect(async()=>{
         if(user && role){
             if(fv === 0){
@@ -42,34 +100,21 @@ const Notifications = () => {
         }
     },[user,role]);
 
+    
 
     return (
-        <div>
-            <Grid templateColumns='repeat(12,1fr)' templateRows='repeat(12,1fr)' w='100%'  h='600px' gap={4} bg={'whiteAlpha.300'}>
-                <GridItem colStart={1} rowSpan = {12} colSpan={6} ml={4}>
-                    <ScrollablePane style={{marginLeft:'20%','height':'600px' , 'width':'60%' , marginTop:'80px' ,'border': '8px solid #f3f2f1' , padding:'10px' , backgroundColor:'#f3f2f1', borderRadius: '2px', boxShadow: Depths.depth4 }}>
-                        <Stack style={{'alignItems':'center' , 'marginTop':'20px'}}>
-                            {
-                                items.map(x => {
-                                    return(
-                                        <Box style={{boxShadow: Depths.depth4  , width:'95%'}} >
-                                            <Alert status = {x.type}>
-                                            <AlertIcon boxSize='30px'/>
-                                            <Box>
-                                                <AlertTitle fontSize={18}>{x.heading}</AlertTitle>
-                                                <AlertDescription fontSize={16}>
-                                                {x.message}  {formatDate(new Date(x.notification_time))}
-                                                </AlertDescription>
-                                            </Box>
-                                        </Alert>
-                                        </Box>
-                                    )
-                                })
-                            }   
-                        </Stack>
-                    </ScrollablePane>
-                </GridItem>
-                </Grid>
+        <div style={{ 'border': '8px solid #f3f2f1'  , backgroundColor:'#f3f2f1' , maxWidth:'100%', borderRadius: '2px', boxShadow: Depths.depth4 }}>
+                    
+            <DetailsList
+                items={items}
+                columns={_columns}
+                setKey="set"
+                selectionMode={SelectionMode.none}
+                styles = {gridStyle}
+                layoutMode={DetailsListLayoutMode.fixedColumns}
+                constrainMode={ConstrainMode.unconstrained}
+            />
+
         </div>
     )
 }
