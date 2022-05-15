@@ -192,6 +192,7 @@ const Sp102 = () => {
     items: [],
     email: null,
     signature:null,
+    partBDisable: true,
   };
 
   const [data, setData] = useState(init); //contains all the data of the form
@@ -360,6 +361,7 @@ const Sp102 = () => {
       {/**
        * Column1 of stack
        */}
+
       <Stack tokens={{ childrenGap: 10 }} styles={column1Styles}>
         <TextField
           label="Name"
@@ -458,7 +460,7 @@ const Sp102 = () => {
         />
 
         <div style={listStyles}>
-          <Label style={{ "text-align": "center" }}>Proposed Committee</Label>
+          <Label style={{ "textAlign": "center" }}>Proposed Committee</Label>
           <DetailsList
             items={data.members}
             columns={columnProposedCommittee}
@@ -503,7 +505,6 @@ const Sp102 = () => {
         </Stack>
         <SubmitPopUp />
       </Stack>
-
       {/**
        * Column3 of stack
        */}
@@ -514,23 +515,27 @@ const Sp102 = () => {
           onChange={(e) => setData({ ...data, indenterRecommendations: e.target.value })}
           multiline
           rows={3}
+          disabled={data.partBDisable}
         />
         <Dropdown
           label="Mode of Enquiry"
           placeholder="Select an Option"
           options={optionsEnquiry}
+          disabled={data.partBDisable}
           onChange={(e, item) => setData({ ...data, enquiryMode: item.text })}
         />
         <Stack horizontal tokens={{ childrenGap: 10 }}>
           <TextField
             label="Number of Quotations Received"
             value={data.numQuotations}
+            disabled={data.partBDisable}
             onChange={(e) => setData({ ...data, numQuotations: e.target.value })}
             styles={{root:{ width: "50%" }}}
           />
           <TextField
             label="Purchased from M/s"
             value={data.purchasedFrom}
+            disabled={data.partBDisable}
             onChange={(e) =>setData({ ...data, purchasedFrom: e.target.value })}
             styles={{root:{ width: "50%" }}}
           />
@@ -539,12 +544,14 @@ const Sp102 = () => {
           <TextField
               label="Quotation Number"
               value={data.quotation}
+              disabled={data.partBDisable}
               onChange={(e) => setData({ ...data, quotation: e.target.value })}
               styles={{root:{ width: "50%" }}}
             />
           <DatePicker
             label="Date of Purchase"
             placeholder="Select a Date"
+            disabled={data.partBDisable}
             onSelectDate={(e) => setData({ ...data, purchaseDate: e })}
             styles={{root:{ width: "50%" }}}
           />
@@ -553,19 +560,21 @@ const Sp102 = () => {
           <TextField
             label="Recommended mode of Payment"
             value={data.paymentMode}
+            disabled={data.partBDisable}
             onChange={(e) => setData({ ...data, paymentMode: e.target.value })}
             styles={{root:{ width: "50%" }}}
           />
           <TextField
             label="Delivery Period"
             value={data.deliveryPeriod}
+            disabled={data.partBDisable}
             onChange={(e) => setData({ ...data, deliveryPeriod: e.target.value })}
             styles={{root:{ width: "50%" }}}
           />
         </Stack>
         
         <div style={listStyles}>
-          <Label style={{ "text-align": "center" }}>Items</Label>
+          <Label style={{ "textAlign": "center" }}>Items</Label>
           <DetailsList
             items={data.items}
             columns={columnItem}
@@ -582,12 +591,14 @@ const Sp102 = () => {
               backgroundColor: "#4C4A48",
               boxShadow: Depths.depth4,
             }}
+            disabled={data.partBDisable}
             onClick={() => setHideAddItemDialog(!hideAddItemDialog)}
           />
           <DefaultButton
             text="Delete Selected"
             style={{ marginLeft: "5%", width: "45%", boxShadow: Depths.depth4 }}
             onClick={deleteItemClicked}
+            disabled={data.partBDisable}
           />
         </Stack>
         <ItemPopUp />
@@ -599,7 +610,7 @@ const Sp102 = () => {
           competent to supply the goods in question.
         </MessageBar>
       </Stack>
-    </Stack>
+    </Stack>  
   );
 };
 
