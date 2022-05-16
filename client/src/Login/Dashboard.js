@@ -57,6 +57,9 @@ const Dashboard = () => {
 
     useEffect(() => {
         if (user && role) {
+            if(role === 'PURCHASE'){
+                nav('/site/admin/forms')
+            }
             setPersona({
                 ...examplePersona,
                 imageUrl: user.photo,
@@ -78,7 +81,7 @@ const Dashboard = () => {
                 <GridItem w='100%' rowSpan={2} colSpan={3} bg='#edebe9' p={2} style={{borderRadius:5 , boxShadow:Depths.depth4}}>
                     <PersonDetails />
                 </GridItem>
-                {user && role && 
+                {user && role && (role !== 'PURCHASE') &&
                     <>
                         <GridItem rowSpan={6} colSpan={4} >
                             <Notifications/>

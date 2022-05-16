@@ -53,11 +53,12 @@ const NavBar = () => {
             text: 'DashBoard', 
             iconProps: { iconName: 'ViewDashboard' },
             buttonStyles : itemStyles,
+            hidden:(role === 'PURCHASE'),
             onClick: ()=>nav('/site')
         },
         {
             key:'subform',
-            text:(role==='JAO' || role==='AO' || role ==='AR' || role === 'HOD' || role === 'PURCHASE')?'Pending Actions':'Submitted Forms',
+            text:(role==='JAO' || role==='AO' || role ==='AR' || role === 'HOD' || role === 'PURCHASE')?'Received Forms':'Submitted Forms',
             iconProps: { iconName : 'AllApps'},
             buttonStyles: itemStyles,
             disabled:(user === null),
@@ -69,6 +70,7 @@ const NavBar = () => {
             iconProps: {iconName : 'History'},
             buttonStyles :itemStyles,
             disabled:(user === null),
+            hidden:(role === 'PURCHASE'),
             onClick: ()=>nav('/site/admin/activity')
         }
         
