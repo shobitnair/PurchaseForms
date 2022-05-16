@@ -7,8 +7,8 @@ import {
   AlertDescription,
   AlertIcon,
   AlertTitle,
-  Box ,
-  Fade , 
+  Box,
+  Fade,
   ScaleFade,
   Text
 } from "@chakra-ui/react";
@@ -53,7 +53,7 @@ const StatusSP101 = () => {
               hodHidden: false,
               hod: "error",
               hodTitle: "Denied by HOD",
-              hodMessage: 'Message for denial : '+ response.message
+              hodMessage: 'Message for denial : ' + response.message
             });
           } else {
             setCurStatus({
@@ -71,7 +71,7 @@ const StatusSP101 = () => {
               jaoHidden: false,
               jao: "error",
               jaoTitle: "Denied by JAO",
-              jaoMessage: 'Message for denial : '+ response.message
+              jaoMessage: 'Message for denial : ' + response.message
             });
           } else {
             setCurStatus({
@@ -91,7 +91,7 @@ const StatusSP101 = () => {
               aoHidden: false,
               ao: "error",
               aoTitle: "Denied by AO",
-              aoMessage: 'Message for denial : '+ response.message
+              aoMessage: 'Message for denial : ' + response.message
             });
           } else {
             setCurStatus({
@@ -113,7 +113,7 @@ const StatusSP101 = () => {
               arHidden: false,
               ar: "error",
               arTitle: "Denied by AR",
-              arMessage:'Message for denial : '+ response.message
+              arMessage: 'Message for denial : ' + response.message
             });
           } else {
             setCurStatus({
@@ -143,19 +143,19 @@ const StatusSP101 = () => {
   }, [user, role, flag]);
 
   const Node = (props) => {
-    const {status , hidden , title , description} = props;
-    return(
+    const { status, hidden, title, description } = props;
+    return (
       <ScaleFade initialScale={0.7} in={true}>
-        <Box style={{boxShadow: Depths.depth4  , width:'95%' , marginTop:'10px'}} >
-              <Alert status = {status} hidden={hidden} variant='top-accent'>
-              <AlertIcon boxSize='30px'/>
-              <Stack>
-                  <AlertTitle fontSize={18}>{title}</AlertTitle>
-                  <AlertDescription ></AlertDescription>
-                  <Text fontSize={14} as='cite' width={'90%'}>
-                  {description}
-                  </Text>
-              </Stack>
+        <Box style={{ boxShadow: Depths.depth4, marginTop: '10px' }} >
+          <Alert status={status} hidden={hidden} variant='top-accent'>
+            <AlertIcon boxSize='30px' />
+            <Stack>
+              <AlertTitle fontSize={18}>{title}</AlertTitle>
+              <AlertDescription ></AlertDescription>
+              <Text fontSize={14} as='cite' width={'90%'}>
+                {description}
+              </Text>
+            </Stack>
           </Alert>
         </Box>
       </ScaleFade>
@@ -164,15 +164,38 @@ const StatusSP101 = () => {
 
   return (
     <div>
-        {flag && <ScrollablePane style={{marginLeft:'20%','height':'600px' , 'width':'60%' , marginTop:'80px' ,'border': '8px solid #f3f2f1' , padding:'10px' , backgroundColor:'#f3f2f1', borderRadius: '2px', boxShadow: Depths.depth4 }}>
+      {flag && <ScrollablePane style={{ marginLeft: '20%', 'height': '600px', 'width': '60%', marginTop: '80px', 'border': '8px solid #f3f2f1', padding: '10px', backgroundColor: '#f3f2f1', borderRadius: '2px', boxShadow: Depths.depth4 }}>
         <Stack spacing={3}>
-          <Node status='success' hidden={false} title='Form is succesfully submitted' description=''/>
-          <Node status={curStatus.hod} hidden={curStatus.hodHidden} title={curStatus.hodTitle} description={curStatus.hodMessage} />
-          <Node status={curStatus.jao} hidden={curStatus.jaoHidden} title={curStatus.jaoTitle} description={curStatus.jaoMessage} />
-          <Node status={curStatus.ao} hidden={curStatus.aoHidden} title={curStatus.aoTitle} description={curStatus.aoMessage} />
+
+          {(!curStatus.aoHidden) && (!curStatus.jaoHidden) && (!curStatus.arHidden) && (!curStatus.hodHidden) && (curStatus.ar === 'success') &&
+            <Alert
+              status='success'
+              variant='subtle'
+              flexDirection='column'
+              alignItems='center'
+              justifyContent='center'
+              textAlign='center'
+              height='200px'
+            >
+              <AlertIcon boxSize='40px' mr={0} />
+              <AlertTitle mt={4} mb={1} fontSize='lg'>
+                Purchase Form approval complete!
+              </AlertTitle>
+              <AlertDescription maxWidth='sm' fontSize={16}>
+                Thanks for submitting your application. Purchase Section will take care of your request.
+              </AlertDescription>
+            </Alert>}
+
           <Node status={curStatus.ar} hidden={curStatus.arHidden} title={curStatus.arTitle} description={curStatus.arMessage} />
+          <Node status={curStatus.ao} hidden={curStatus.aoHidden} title={curStatus.aoTitle} description={curStatus.aoMessage} />
+
+          <Node status={curStatus.jao} hidden={curStatus.jaoHidden} title={curStatus.jaoTitle} description={curStatus.jaoMessage} />
+
+          <Node status={curStatus.hod} hidden={curStatus.hodHidden} title={curStatus.hodTitle} description={curStatus.hodMessage} />
+          <Node status='success' hidden={false} title='Form is succesfully submitted' description='' />
         </Stack>
-        </ScrollablePane>}
+      </ScrollablePane>}
+
     </div>
   );
 };
