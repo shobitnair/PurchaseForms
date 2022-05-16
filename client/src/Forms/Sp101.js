@@ -19,7 +19,7 @@ import { useNavigate} from 'react-router';
 import {LoginContext} from '../Login/LoginContext'
 import { useToast } from '@chakra-ui/react'
 import {PDFHandler} from "./PDFHandler";
-import { postForm  , postDraft, getProfileDetails, addActivities, getHOD, addNotifications} from '../Requests/formRequests';
+import { postForm  , postDraft, getProfileDetails, addActivities, getHOD, addNotifications , getFileURL} from '../Requests/formRequests';
 import { Dropzone, FileItem, FullScreenPreview, InputButton } from "@dropzone-ui/react";
 import {URL} from '../cred'
 initializeIcons();
@@ -571,7 +571,13 @@ const Sp101 = () => {
                         <PrimaryButton style={{ 'marginLeft': '2.5%', 'width': '45%', 'backgroundColor': '#4C4A48', boxShadow: Depths.depth4 }} text="Submit"
                             onClick = {() => validationFunc()} />
                         <DefaultButton style={{ 'marginLeft': '5%', 'width': '45%', boxShadow: Depths.depth4 }} text="Preview"
-                            onClick={() => PDFHandler('sp101' , data)} />
+                            onClick={async() => PDFHandler('sp101' , data , {
+                                bs:'',
+                                ba:'',
+                                bb:'',
+                                bh:'',
+                                balb:''
+                            } , {signInt:await getFileURL((await getProfileDetails(user.email)).signature) , okHOD:false , okAO:false,okAR:false , okJAO:false} )} />
                     </Stack>
 
                 </Stack>

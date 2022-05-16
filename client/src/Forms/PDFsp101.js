@@ -272,8 +272,6 @@ export const PDFsp101 = (data,budgetData , meta) => {
     doc.setFont('times','normal')
     if(data.tax!=null){
         total=total+(data.tax*total)/100;
-        total.toFixed(2)
-        tax.toFixed(2)
     }
     doc.text((data.tax ===null ? '': data.tax*total2/100)+'',170,ylinepos+3.5)
     doc.text((total===0? '':total)+'',170,ylinepos+8.5)
