@@ -16,7 +16,7 @@ import {Badge, Button, ButtonGroup, Grid, GridItem, Text} from "@chakra-ui/react
 import {PDFbyID, PDFHandler} from "../Forms/PDFHandler";
 import { useNavigate } from 'react-router';
 import { LoginContext } from '../Login/LoginContext';
-import { getAdminForms, getProfileDetails } from '../Requests/formRequests';
+import { getAdminForms, getFileURL, getFormById, getProfileDetails } from '../Requests/formRequests';
 
 const modelProps = {
     isBlocking: false,
@@ -134,6 +134,19 @@ const AdminForms = () => {
                     onClick: ()=> nav('deny/'+props.id+'/'+role),
                     hidden: (props.status !== 'pending')
                 } ,
+                {
+                    key:'Download',
+                    text:'Download all attachments',
+                    onClick: async() =>{
+                        const response = await getFormById(props.id);
+                        const filepaths = JSON.parse(response.data).files
+                        console.log(filepaths)
+                        for(let i =0 ; i<filepaths.length ; i++){
+                            const newWindow = window.open(await getFileURL(filepaths[i]), '_blank', 'noopener,noreferrer')
+                            if (newWindow) newWindow.opener = null
+                        }
+                    }
+                }
 
               ],
         }
