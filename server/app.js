@@ -309,7 +309,7 @@ app.post('/api/upload',upload.array("file" , 100) ,  async (req, res) => {
         res.json({
             status: true,
             message: "File was uploaded successfuly",
-            data:req.files[0].path
+            data:req.files[0].filename
         });
     } catch (error) {
         res.status(404).json(error);
@@ -407,9 +407,10 @@ app.post('/api/email' , async(req,res) => {
     }
 })
 
-app.post('api/getfile' , async(req,res) =>{
+app.post('/api/getfile' , async(req,res) =>{
     try{
         const {path} = req.body;
+        res.download('uploads//'+path)
         
     } catch(err){
         console.log(err);
@@ -418,7 +419,6 @@ app.post('api/getfile' , async(req,res) =>{
 
 app.post('/api/get/all/faculty',async(req,res) =>{
     try{
-       
         let query = await pool.query("select email from users where role='FACULTY'")
         res.json(query.rows);
     }catch(err){

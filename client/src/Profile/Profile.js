@@ -6,7 +6,7 @@ import {DefaultButton, Depths, TextField , Dropdown , DropdownMenuItemType , Dia
     DialogFooter,} from "@fluentui/react";
 import {useNavigate, useParams} from "react-router-dom"
 import { LoginContext } from '../Login/LoginContext';
-import { getProfileDetails, updateProfileDetails } from '../Requests/formRequests';
+import { getFile, getProfileDetails, updateProfileDetails } from '../Requests/formRequests';
 import { useToast } from '@chakra-ui/react'
 import { Dropzone, FileItem, FullScreenPreview, InputButton } from "@dropzone-ui/react";
 import { URL } from '../cred';
@@ -76,10 +76,14 @@ const Profile = () => {
     }
 
     const [fv , Sfv] = useState(0)
+    const [image , setImage] = useState()
     useEffect(async()=>{
         if(user && role){
             if(fv === 0){
                 const response = await getProfileDetails(user.email);
+                const signData = await getFile(response.signature)
+                console.log(signData)
+                setImage(signData.data)
                 setData({...data,
                     name:response.name,
                     department:response.department,
@@ -182,7 +186,9 @@ const Profile = () => {
                     <Text className='Header' as='b' w="100%"> Manage Profile Details </Text>
                 </GridItem>
                 <GridItem colStart={1} rowSpan = {11} colSpan={12} ml={2} mr={2}>
+                    
                     {fv === 1 && <div style={{'border': '8px solid #f3f2f1' ,    padding:'10px' , backgroundColor:'#f3f2f1', borderRadius: '2px', boxShadow: Depths.depth4 }}>
+                        
                         <Stack>
                             <TextField label={"Name"} value = {data.name}
                             onChange={(e) => setData({ ...data , name:e.target.value})}/ >
