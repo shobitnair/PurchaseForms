@@ -137,11 +137,7 @@ const AdminForms = () => {
                 {
                     key:'Download',
                     text:'Download all attachments',
-                    onClick: async() =>{
-                        const response = await getFormById(props.id);
-                        const filepaths = JSON.parse(response.data).files
-                        
-                    }
+                    onClick: async() =>nav('download/'+props.id)
                 }
 
               ],

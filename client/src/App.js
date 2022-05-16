@@ -27,6 +27,7 @@ import Accept from './Admin/Accept'
 import Activities from './Profile/Activities';
 import Notifications from './Profile/Notifications';
 import StatusSP101 from './Status/StatusSP101'
+import Download from './Admin/Download';
 initializeIcons();
 
 const App = () => {
@@ -55,6 +56,7 @@ const App = () => {
               <Route exact path={"/site/admin/forms/budget/:id"} element={<Budget/>} />
               <Route exact path={"/site/admin/forms/deny/:id/:role"} element={<Deny/>} />
               <Route exact path={"/site/admin/forms/accept/:id/:role"} element={<Accept/>} />
+              <Route exact path={"/site/admin/forms/download/:id"} element={<Download/>} />
               <Route exact path={"/upload"} element={<Upload/>} />
               <Route exact path={"/site/profile/"} element={<Profile/>}/>
               <Route exact path={"/site/admin/activity"} element={<Activities/>} />
