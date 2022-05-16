@@ -91,7 +91,7 @@ const AdminForms = () => {
         type:'All' ,
         status:'All',
         startDate: new Date("Jan 01 1900"), 
-        endDate :  new Date(Date.now()),
+        endDate :  new Date("Jan 01 2200"),
         budgetHead : ''
     })
 
@@ -134,6 +134,7 @@ const AdminForms = () => {
                     onClick: ()=> nav('deny/'+props.id+'/'+role),
                     hidden: (props.status !== 'pending')
                 } ,
+
               ],
         }
     }
@@ -218,7 +219,7 @@ const AdminForms = () => {
             onRender: (props) =>{
                 return <Text className='rowLabel' as='b'>{props.budgetHead}</Text>
             }
-        },
+        }
 
     ];
 

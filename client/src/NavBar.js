@@ -26,13 +26,6 @@ const NavBar = () => {
 
     const _farItems = [
         {
-            key:'profile',
-            text:'Profile',
-            iconProps: { iconName : 'UserOptional'},
-            buttonStyles: itemStyles,
-            onClick : ()=> nav('/site/profile')
-        },
-        {
             key:'help',
             text:'Help',
             iconProps: { iconName : 'Error'},

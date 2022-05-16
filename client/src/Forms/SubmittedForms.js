@@ -71,7 +71,6 @@ const statusOptions = [
     { key: 'B', text: 'Pending' },
     { key: 'C', text: 'Approved' },
     { key: 'D', text: 'Denied' },
-    { key: 'E' , text: 'ReSubmitted'}
 ]
 
 const SubmittedForms = () => {
@@ -105,13 +104,6 @@ const SubmittedForms = () => {
                     text:'Show Current Status',
                     iconProps : { iconName: 'PowerBILogo'},
                     onClick: () => nav('response/'+props.id+'/status')
-                },
-                {
-                  key: 'res',
-                  text: 'Response from Budget Section',
-                  iconProps: { iconName: 'PlanView' },
-                  onClick: ()=> nav('response/'+props.id),
-                  hidden: (props.status !== 'denied')
                 },
               ],
         }
@@ -201,7 +193,7 @@ const SubmittedForms = () => {
         },
         {
             key: 'Status',
-            name: ColumnHeader('Status'),
+            name: ColumnHeader('Form Status'),
             minWidth: 175,
             maxWidth: 175,
             isResizable: true,

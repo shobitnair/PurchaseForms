@@ -74,11 +74,11 @@ const Notifications = () => {
             onRender: (props) =>{
                 return (
                     <Box style={{boxShadow: Depths.depth4  , width:'100%'}} >
-                        <Alert status = {props.type}>
+                        <Alert status = {props.type} variant='top-accent'>
                         <AlertIcon boxSize='30px'/>
                         <Box>
                             <AlertTitle fontSize={18}>{props.heading}</AlertTitle>
-                            <AlertDescription fontSize={16}>
+                            <AlertDescription fontSize={14}>
                             {props.message}  {formatDate(new Date(props.notification_time))}
                             </AlertDescription>
                         </Box>

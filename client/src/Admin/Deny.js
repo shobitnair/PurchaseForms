@@ -1,37 +1,48 @@
-import React  , {useState}from 'react';
+import React  , {useContext, useState , useEffect}from 'react';
 import {Grid, GridItem, Stack, Text} from "@chakra-ui/react";
 import {DefaultButton, Depths, TextField} from "@fluentui/react";
 import {useNavigate, useParams} from "react-router-dom"
 import { addActivities, addNotifications, denyForm, getEmailbyROLE, getFormById } from '../Requests/formRequests';
+import { LoginContext } from '../Login/LoginContext';
+
+
 const Deny = (props) => {
     const [message , setMessage] = useState('')
     const param = useParams()
     const nav = useNavigate()
+    const {user , role} = useContext(LoginContext)
 
     const onSubmit = async() =>{
         const res = await getFormById(param.id);
-        await addNotifications(res.email , 'Purchase form with ID : '+param.id+' was denied by '+role+' on ','error' , 'Your Purchase form was denied')
+        await addNotifications(res.email , 'Purchase form with ID : '+param.id+' was denied by '+role+' on ','error' , 'Your Purchase form was denied' , param.id)
         if(role === 'HOD'){
-            await addActivities(user.email , 'You denied a purchase form with ID : '+param.id+' on ' ,'info','Denied a purchase form' )
+            await addActivities(user.email , 'You denied a purchase form with ID : '+param.id+' on ' ,'error','Denied a purchase form' , param.id)
         }   
         if(role === 'JAO'){
-            await addActivities(user.email , 'You denied a purchase form with ID : '+param.id+' on ' ,'info','Denied a purchase form' )
+            await addActivities(user.email , 'You denied a purchase form with ID : '+param.id+' on ' ,'error','Denied a purchase form' ,param.id)
             const ao = await getEmailbyROLE('AO');
             const ar = await getEmailbyROLE('AR');
-            await addNotifications(ao.email , 'Purchase form with ID : '+param.id +' was denied by JAO','warning','A Purchase form was denied')
-            await addNotifications(ar.email , 'Purchase form with ID : '+param.id +' was denied by JAO','warning','A Purchase form was denied')
+            await addNotifications(ao.email , 'Purchase form with ID : '+param.id +' was denied by JAO','warning','A Purchase form was denied' , param.id)
+            await addNotifications(ar.email , 'Purchase form with ID : '+param.id +' was denied by JAO','warning','A Purchase form was denied' , param.id)
         } 
         if(role === 'AO'){
-            await addActivities(user.email , 'You denied a purchase form with ID : '+param.id+' on ' ,'info','Denied a purchase form' )
+            await addActivities(user.email , 'You denied a purchase form with ID : '+param.id+' on ' ,'error','Denied a purchase form' , param.id)
             const ar = await getEmailbyROLE('AR');
-            await addNotifications(ar.email , 'Purchase form with ID : '+param.id +' was denied by AO','warning','A Purchase form was denied')
+            await addNotifications(ar.email , 'Purchase form with ID : '+param.id +' was denied by AO','warning','A Purchase form was denied' , param.id)
         }
         if(role === 'AR'){
-            await addActivities(user.email , 'You denied a purchase form with ID : '+param.id+' on ' ,'info','Denied a purchase form' )
+            await addActivities(user.email , 'You denied a purchase form with ID : '+param.id+' on ' ,'error','Denied a purchase form' , param.id)
         }
         await denyForm(param.id , param.role , message)
         nav('/site/admin/activity')
     }
+
+    useEffect(() => {
+        if(user && role){
+        
+        }
+    }, [user,role])
+    
 
     return (
         <div>

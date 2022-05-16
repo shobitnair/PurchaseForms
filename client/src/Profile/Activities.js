@@ -53,7 +53,7 @@ const Activities = () => {
                                 items.map(x => {
                                     return(
                                             <Box style={{boxShadow: Depths.depth4  , width:'95%' , marginTop:'10px'}} >
-                                                <Alert status = {x.type}>
+                                                <Alert status = {x.type} variant='top-accent'>
                                                 <AlertIcon boxSize='30px'/>
                                                 <Box>
                                                     <AlertTitle fontSize={18}>{x.heading}</AlertTitle>

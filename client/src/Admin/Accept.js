@@ -1,39 +1,48 @@
-import React  , {useEffect, useState}from 'react';
+import React  , {useContext, useEffect, useState}from 'react';
 import {Grid, GridItem, Stack, Text, useToast} from "@chakra-ui/react";
 import {DefaultButton, Depths, TextField} from "@fluentui/react";
 import {useNavigate, useParams} from "react-router-dom"
 import { PDFsp101 } from '../Forms/PDFsp101';
 import { PDFbyID } from '../Forms/PDFHandler';
-import { acceptForm } from '../Requests/formRequests';
+import { acceptForm, addNotifications , getFormById , addActivities } from '../Requests/formRequests';
+import { LoginContext } from '../Login/LoginContext';
 
 const Accept = (props) => {
     const [message , setMessage] = useState('')
     const param = useParams()
     const nav = useNavigate()
     const toast = useToast()
+    const {user , role} = useContext(LoginContext)
 
     const onSubmit = async() =>{
         const response = await acceptForm(param.id , param.role);
         const res = await getFormById(param.id);
         if(role === 'HOD'){
-            
+            await addActivities(user.email , 'You approved purchase form with ID : '+param.id+' on ' ,'success','Approved a purchase form' )
+            await addNotifications(res.email , 'Your Purchase form with ID : '+param.id+' has been approved by the HOD on ','info' , 'Status Update')
         }
         if(role === 'AO'){
-
+            await addActivities(user.email , 'You approved a purchase form with ID : '+param.id+' on ' ,'success','Approved a purchase form' )
+            await addNotifications(res.email , 'Your Purchase form with ID : '+param.id+' has been approved by the AO on ','info' , 'Status Update')
         }
-        if(role === '')
+        if(role === 'AR'){
+            await addActivities(user.email , 'You approved a purchase form with ID : '+param.id+' on ' ,'success','Approved a purchase form' )
+            await addNotifications(res.email , 'Your Purchase form with ID : '+param.id+' has been approved by the AR and reached the Purchase Section on ','success' , 'Purchase form approved')
+        }
         toast({
             title: 'Form Approved',
             status: 'success',
             duration: 3000,
             isClosable: true,
         })
-        nav('/site/admin/forms')
+        nav('/site/admin/activity')
     }
 
     useEffect(() => {
+        if(user && role){
 
-    } , [])
+        }
+    } , [user , role])
 
     return (
         <div>

@@ -377,7 +377,6 @@ const Sp101 = () => {
     }
 
     const [files, setFiles] = useState([]);
-    const [imageSrc, setImageSrc] = useState(undefined);
 
     const updateFiles = (incommingFiles) => {
         setFiles(incommingFiles);
@@ -386,11 +385,6 @@ const Sp101 = () => {
     
     const onDelete = (id) => {
         setFiles(files.filter((x) => x.id !== id));
-    };
-
-
-    const handleSee = (imageSource) => {
-        setImageSrc(imageSource);
     };
 
 
@@ -538,16 +532,11 @@ const Sp101 = () => {
                             {...file}
                             key={file.id}
                             onDelete={onDelete}
-                            onSee={handleSee}
                             resultOnTooltip
                             preview
                             info
-                            hd />
+                            />
                     ))}
-                    <FullScreenPreview
-                        imgSource={imageSrc}
-                        openImage={imageSrc}
-                        onClose={(e) => handleSee(undefined)} />
                     
                 </Dropzone>
                     <Label>Added Items</Label>

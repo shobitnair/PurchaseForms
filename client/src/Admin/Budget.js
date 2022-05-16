@@ -9,7 +9,6 @@ import { useContext } from 'react';
 
 const Budget = (props) => {
     const [data , setData] = useState({
-        amount:null,
         bs:null,
         ba:null,
         bb:null,
@@ -23,8 +22,8 @@ const Budget = (props) => {
     const onSubmit = async() =>{
         await updateBudget(param.id , data);
         let res = await getFormById(param.id);
-        await addNotifications(res.email , 'Budget has been filled by JAO on ' , 'info' , 'Form approved by JAO')
-        await addActivities(user.email , 'You filled budget and approved purchase form '+param.id+' on ' , 'info' , 'Approved and Filled Budget')
+        await addNotifications(res.email , 'Budget has been filled by JAO for purchase form '+param.id+' on ' , 'info' , 'Status Update' , param.id)
+        await addActivities(user.email , 'You filled budget and approved purchase form '+param.id+' on ' , 'info' , 'Approved and Filled Budget' , param.id)
         nav('/site/admin/activity')
     }
 
@@ -44,8 +43,6 @@ const Budget = (props) => {
                 <GridItem colStart={1} rowSpan = {11} colSpan={3} ml={4}>
                     <div style={{'border': '8px solid #f3f2f1' ,padding:'10px' , backgroundColor:'#f3f2f1', borderRadius: '2px', boxShadow: Depths.depth4 }}>
                         <Stack>
-                            <TextField label={"Amount in Rs."}
-                            onChange={(e) => setData({ ...data , amount:e.target.value})}/ >
                             <TextField label={"Budget Sanctioned"} 
                             onChange={(e) => setData({ ...data , bs:e.target.value})}/>
                             <TextField label={"Budget Available"} 

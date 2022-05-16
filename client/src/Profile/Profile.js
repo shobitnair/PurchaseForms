@@ -1,11 +1,21 @@
 
 import React  , {useState, useContext, useEffect} from 'react';
 import {Grid, GridItem, Stack, Text} from "@chakra-ui/react";
-import {DefaultButton, Depths, TextField , Dropdown , DropdownMenuItemType} from "@fluentui/react";
+import {DefaultButton, Depths, TextField , Dropdown , DropdownMenuItemType , Dialog,
+    DialogType,
+    DialogFooter,} from "@fluentui/react";
 import {useNavigate, useParams} from "react-router-dom"
 import { LoginContext } from '../Login/LoginContext';
 import { getProfileDetails, updateProfileDetails } from '../Requests/formRequests';
 import { useToast } from '@chakra-ui/react'
+import { Dropzone, FileItem, FullScreenPreview, InputButton } from "@dropzone-ui/react";
+import { URL } from '../cred';
+
+const modelProps = {
+    isBlocking: false,
+    styles: { main: { maxWidth: 600 } },
+};
+
 
 const option5 = [
     { key: 'header1' , text:'Engineering',itemType: DropdownMenuItemType.Header },
@@ -44,6 +54,26 @@ const Profile = () => {
         email:null,
     });
 
+    const [files, setFiles] = useState([]);
+    const [temp , setTemp] = useState(null)
+
+    const updateFiles = (incommingFiles) => {
+        setFiles(incommingFiles);
+    };
+
+    
+    const onDelete = (id) => {
+        setFiles(files.filter((x) => x.id !== id));
+    };
+
+
+
+    const uploader = async(res) =>{
+        res.map(x => {
+            setData({...data , signature:x.serverResponse.data})
+            setTemp(x.serverResponse.data)
+        })
+    }
 
     const [fv , Sfv] = useState(0)
     useEffect(async()=>{
@@ -63,22 +93,90 @@ const Profile = () => {
         } else {
             setData({})
             Sfv(0)
+
         }
     },[user,role]);
-   
+    const onUpload = async() => {
+        if(temp){
+            await updateProfileDetails(data);
+            toast({
+                title: 'Profile Updated',
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+            })
+            setToggle(true);
+        } else {
+            toast({
+                title: 'Please click "upload files" before updating signature',
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
+            })
+        }
+    }
     
     const onSubmit = async() => {
         await updateProfileDetails(data);
         toast({
             title: 'Profile Updated',
             status: 'success',
-            duration: 1000,
+            duration: 3000,
             isClosable: true,
         })
+        setToggle(true);
     };
+    const [toggle , setToggle] = useState(true);
+    const UploadPopUp = () => {
+        return (
+            <Dialog
+                minWidth={600}
+                hidden={toggle}
+                onDismiss={() => setToggleSubmit(false)}
+                dialogContentProps={{
+                    type: DialogType.largeHeader,
+                    title: 'Update Signature'
+                }}
+                modalProps={modelProps}
+            >
+                <Dropzone
+                    onChange={updateFiles}
+                    maxFiles={1}
+                    header={true}
+                    value={files}
+                    label="Upload your signature here"
+                    url={URL + "/upload"}
+                    accept=".png,.jpeg,.jpg,image/*"
+                    footer={false}
+                    onUploadFinish={uploader}
+                >
+                    {files.map((file) => (
+                        <FileItem
+                            {...file}
+                            key={file.id}
+                            onDelete={onDelete}
+                            resultOnTooltip
+                            preview
+                            info
+                            />
+                    ))}
+                    
+                </Dropzone>
+                <DialogFooter>
+                    <DefaultButton onClick={async()=>onUpload()}>Update Info</DefaultButton>
+                    <DefaultButton onClick={() => setToggle(true)} text="Cancel" />
+                </DialogFooter>
+            </Dialog>
+        )
+    }
+
+
+
+
 
     return(
         <div>
+            <UploadPopUp/>
             <Grid templateColumns='repeat(12,1fr)' templateRows='repeat(12,1fr)' w='100%'  h='600px' gap={4} bg={'whiteAlpha.300'}>
                 <GridItem rowSpan={1} colSpan={12} ml={4} mt={4} style={{'alignItems':'center'}}>
                     <Text className='Header' as='b' w="100%"> Manage Profile Details </Text>
@@ -89,17 +187,20 @@ const Profile = () => {
                             <TextField label={"Name"} value = {data.name}
                             onChange={(e) => setData({ ...data , name:e.target.value})}/ >
                             
-                            <Dropdown placeholder="Select an Option" options={option5} label="Department" 
+                            {role==='FACULTY' && <Dropdown placeholder="Select an Option" options={option5} label="Department" 
                                 defaultSelectedKey = {findKey(option5,data.department)}
-                                onChange={(e, i) => setData({ ...data, department: i.text })} />
-
-                            <TextField label={"Signature"} value ={data.signature}
-                            onChange={(e) => setData({ ...data , signature:e.target.value})}/>                            
-                        </Stack>
-
+                                onChange={(e, i) => setData({ ...data, department: i.text })} />}
                         <Stack style={{'alignItems':'center' , 'marginTop':'20px'}}>
-                            <DefaultButton style={{'width':'100px'}} onClick={()=>onSubmit()}>Submit</DefaultButton>
+                            <DefaultButton style={{'width':'200px'}} onClick={async()=>onSubmit()}>Update Info</DefaultButton>
+                            <DefaultButton style={{'width':'200px'}}  onClick={()=>{
+                            setToggle(!toggle);
+                            setFiles([])
+                        }}>Update Signature</DefaultButton> 
                         </Stack>
+                        
+                            
+                        </Stack>
+                        
                     </div>}
                 </GridItem>
             </Grid>

@@ -47,16 +47,16 @@ app.post('/api/admin/forms/load' , async(req,res) =>{
         console.log(department , role);
         let query;
         if(role === 'HOD'){
-            query = await pool.query('select * from forms where department = $1 and hod = false order by id desc' , [department]);
+            query = await pool.query('select * from forms where department = $1 and hod = false and status = $2 order by id desc' , [department,'pending']);
         } 
         if(role === 'JAO') {
-            query = await pool.query('select * from forms where hod = true  and jao = false order by id desc');
+            query = await pool.query('select * from forms where hod = true  and jao = false and status = $1 order by id desc',['pending']);
         }
         if(role === 'AO'){
-            query = await pool.query('select * from forms where jao = true and ao = false order by id desc');
+            query = await pool.query('select * from forms where jao = true and ao = false and status = $1 order by id desc',['pending']);
         }
         if(role === 'AR'){
-            query = await pool.query('select * from forms where ao = true order by id desc')
+            query = await pool.query('select * from forms where ao = true and status = $1 order by id desc' , ['pending'])
         }
         if(role === 'PURCHASE'){
             query = await pool.query('select * from forms where ar = true order by id desc')
@@ -298,6 +298,7 @@ const storage = multer.diskStorage({
         cb(null, uniqueSuffix + file.originalname)
     }
 })
+
   
 const upload = multer({ storage: storage })
 
@@ -364,9 +365,9 @@ app.post('/api/activities', async(req,res) => {
 
 app.post('/api/activities/add', async(req,res) => {
     try{
-        const {email , message , type , heading} = req.body;
-        let query = await pool.query('insert into activity (email , message , activity_time , type , heading) values ($1,$2,$3,$4,$5) returning *'
-            , [email , message , new Date() , type , heading])
+        const {email , message , type , heading , id} = req.body;
+        let query = await pool.query('insert into activity (email , message , activity_time , type , heading , id) values ($1,$2,$3,$4,$5,$6) returning *'
+            , [email , message , new Date() , type , heading , parseInt(id)])
         res.json(query.rows[0])
     } catch(err) {
         console.log(err);
@@ -385,9 +386,9 @@ app.post('/api/notifications' , async(req,res) => {
 
 app.post('/api/notifications/add', async(req,res) => {
     try{
-        const {email , message , type , heading} = req.body;
-        let query = await pool.query('insert into notifications (email , message , notification_time , type , heading) values ($1,$2,$3,$4,$5) returning *'
-            , [email , message , new Date() , type , heading])
+        const {email , message , type , heading , id} = req.body;
+        let query = await pool.query('insert into notifications (email , message , notification_time , type , heading , id) values ($1,$2,$3,$4,$5,$6) returning *'
+            , [email , message , new Date() , type , heading , parseInt(id)])
         res.json(query.rows[0])
     } catch(err) {
         console.log(err);
@@ -400,6 +401,15 @@ app.post('/api/email' , async(req,res) => {
         let query = await pool.query('select * from users where role=$1' , [role]);
         res.json(query.rows[0]);
     }catch(err){
+        console.log(err);
+    }
+})
+
+app.post('api/getfile' , async(req,res) =>{
+    try{
+        const {path} = req.body;
+        
+    } catch(err){
         console.log(err);
     }
 })

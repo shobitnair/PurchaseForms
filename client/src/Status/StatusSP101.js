@@ -142,7 +142,7 @@ const StatusSP101 = () => {
     return(
       <ScaleFade initialScale={0.7} in={true}>
         <Box style={{boxShadow: Depths.depth4  , width:'95%' , marginTop:'10px'}} >
-              <Alert status = {status} hidden={hidden}>
+              <Alert status = {status} hidden={hidden} variant='top-accent'>
               <AlertIcon boxSize='30px'/>
               <Box>
                   <AlertTitle fontSize={18}>{title}</AlertTitle>
