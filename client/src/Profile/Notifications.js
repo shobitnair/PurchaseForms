@@ -8,7 +8,8 @@ import {
     GridItem,
     Stack,
     Box,
-    Text
+    Text,
+    Button
 } from '@chakra-ui/react'
 import { ConstrainMode,
     Depths,
@@ -21,6 +22,7 @@ import { useContext , useState , useEffect } from 'react';
 import { LoginContext } from '../Login/LoginContext';
 import { ScrollablePane } from '@fluentui/react';
 import { getNotifications } from '../Requests/formRequests';
+import { PDFbyID } from '../Forms/PDFHandler';
 
 const gridStyle = {
     root: {
@@ -76,12 +78,14 @@ const Notifications = () => {
                     <Box style={{boxShadow: Depths.depth4  , width:'100%'}} >
                         <Alert status = {props.type} variant='top-accent'>
                         <AlertIcon boxSize='30px'/>
-                        <Box>
+                        <Stack>
                             <AlertTitle fontSize={18}>{props.heading}</AlertTitle>
-                            <AlertDescription fontSize={14}>
+                            <AlertDescription fontSize={13}>
                             {props.message}  {formatDate(new Date(props.notification_time))}
                             </AlertDescription>
-                        </Box>
+                            <Button onClick={()=>PDFbyID(props.id)}>View Form</Button>
+                        </Stack>
+                        
                     </Alert>
                     </Box>
                 )

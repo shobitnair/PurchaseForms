@@ -19,7 +19,7 @@ import { useNavigate} from 'react-router';
 import {LoginContext} from '../Login/LoginContext'
 import { useToast } from '@chakra-ui/react'
 import {PDFHandler} from "./PDFHandler";
-import { postForm  , postDraft, getProfileDetails, addActivities} from '../Requests/formRequests';
+import { postForm  , postDraft, getProfileDetails, addActivities, getHOD, addNotifications} from '../Requests/formRequests';
 import { Dropzone, FileItem, FullScreenPreview, InputButton } from "@dropzone-ui/react";
 import {URL} from '../cred'
 initializeIcons();
@@ -182,7 +182,9 @@ const Sp101 = () => {
     const submitForm = async () => {
         const res = await postForm("sp101" ,user.email , data , "pending" , data.department)
         await addActivities(user.email ,
-            'Purchase form SPS-101 succesfully submitted with ID : '+res.id+' on ' , 'success' , 'FORM SUBMITTED', res.id)
+            'Purchase form SPS-101 succesfully submitted with ID : '+res.id+' on ' , 'success' , 'Form Submitted', res.id)
+        const hodMAIL = await getHOD(data.department);
+        await addNotifications(hodMAIL.email , 'Take action on new form added with ID : '+res.id , 'warning' , 'New Form Added' , res.id)
         toast({
             title: 'Purchase form submitted',
             description: res.comment,
@@ -297,8 +299,7 @@ const Sp101 = () => {
                 }
                 if(valid.fileError){
                     toast({
-                        title: 'No files attached',
-                        description: 'Add files to complete the form filling process',
+                        title: 'Please attach documents and click update files',
                         status: 'error',
                         duration: 5000,
                         isClosable: true,
@@ -569,10 +570,6 @@ const Sp101 = () => {
                             onClick = {() => validationFunc()} />
                         <DefaultButton style={{ 'marginLeft': '5%', 'width': '45%', boxShadow: Depths.depth4 }} text="Preview"
                             onClick={() => PDFHandler('sp101' , data)} />
-                    </Stack>
-                    <Stack horizontal>
-                        <PrimaryButton style={{ 'marginLeft': '2.5%', 'width': '45%', 'backgroundColor': '#4C4A48', boxShadow: Depths.depth4 }} text="Save Draft"
-                            onClick={async()=> await handleDraft()} />
                     </Stack>
 
                 </Stack>

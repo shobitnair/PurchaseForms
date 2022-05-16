@@ -199,7 +199,7 @@ const Profile = () => {
                                 onChange={(e, i) => setData({ ...data, department: i.text })} />}
                         <Stack style={{'alignItems':'center' }}>
                             <DefaultButton style={{'width':'200px'}} onClick={async()=>onSubmit()}>Update Info</DefaultButton>
-                            <img src={image}/>
+                            <img src={image} height={"150px"} width={'150px'}/>
                             <DefaultButton style={{'width':'200px'}}  onClick={()=>{
                                 setToggle(!toggle);
                                 setFiles([])

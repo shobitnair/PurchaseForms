@@ -114,13 +114,6 @@ const AdminForms = () => {
                   hidden: (props.status !== 'pending') || (role !== 'JAO')
                 },
                 {
-                    key: 'Budget',
-                    text: 'View the Budget',
-                    iconProps: { iconName: 'PlanView' },
-                    onClick: ()=> console.log(props.budget),
-                    hidden: !(role === 'AO' || role === 'AR')
-                },
-                {
                     key: 'Approve',
                     text: 'Approve the form',
                     iconProps: { iconName: 'SkypeCheck'},
@@ -137,7 +130,8 @@ const AdminForms = () => {
                 {
                     key:'Download',
                     text:'Download all attachments',
-                    onClick: async() =>nav('download/'+props.id)
+                    onClick: async() =>nav('download/'+props.id),
+                    iconProps: {iconName: 'Download'},
                 }
 
               ],

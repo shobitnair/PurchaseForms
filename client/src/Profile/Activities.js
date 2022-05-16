@@ -55,12 +55,13 @@ const Activities = () => {
                                             <Box style={{boxShadow: Depths.depth4  , width:'95%' , marginTop:'10px'}} >
                                                 <Alert status = {x.type} variant='top-accent'>
                                                 <AlertIcon boxSize='30px'/>
-                                                <Box>
+                                                <Stack>
                                                     <AlertTitle fontSize={18}>{x.heading}</AlertTitle>
                                                     <AlertDescription fontSize={16}>
                                                     {x.message}  {formatDate(new Date(x.activity_time))}
                                                     </AlertDescription>
-                                                </Box>
+                                                    
+                                                </Stack>
                                             </Alert>
                                             </Box>
                                     )

@@ -2,7 +2,7 @@ import React  , {useState , useEffect}from 'react';
 import {Grid, GridItem, Stack, Text} from "@chakra-ui/react";
 import {DefaultButton, Depths, TextField} from "@fluentui/react";
 import {useNavigate, useParams} from "react-router-dom"
-import { addActivities, addNotifications, getFormById, updateBudget } from '../Requests/formRequests';
+import { addActivities, addNotifications, getFormById, updateBudget , getEmailbyROLE} from '../Requests/formRequests';
 import { LoginContext } from '../Login/LoginContext';
 import { useContext } from 'react';
 
@@ -24,6 +24,8 @@ const Budget = (props) => {
         let res = await getFormById(param.id);
         await addNotifications(res.email , 'Budget has been filled by JAO for purchase form '+param.id+' on ' , 'info' , 'Status Update' , param.id)
         await addActivities(user.email , 'You filled budget and approved purchase form '+param.id+' on ' , 'info' , 'Approved and Filled Budget' , param.id)
+        const ao= await getEmailbyROLE('AO');
+        await addNotifications(ao.email,'A new form with ID: '+param.id+' received on', 'info', 'New form was added', param.id);
         nav('/site/admin/activity')
     }
 

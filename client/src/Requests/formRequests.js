@@ -113,3 +113,8 @@ export const getFile = async(path) => {
 export const getFileURL = async(path) => {
     return (URL + '/uploads/'+path)
 }
+
+export const getHOD = async(department) => {
+    const response = await axios.post(URL + '/get/hod' , {department});
+    return response.data
+}

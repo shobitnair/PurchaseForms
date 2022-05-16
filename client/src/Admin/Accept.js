@@ -4,7 +4,7 @@ import {DefaultButton, Depths, TextField} from "@fluentui/react";
 import {useNavigate, useParams} from "react-router-dom"
 import { PDFsp101 } from '../Forms/PDFsp101';
 import { PDFbyID } from '../Forms/PDFHandler';
-import { acceptForm, addNotifications , getFormById , addActivities } from '../Requests/formRequests';
+import { acceptForm, addNotifications , getFormById , addActivities, getEmailbyROLE } from '../Requests/formRequests';
 import { LoginContext } from '../Login/LoginContext';
 
 const Accept = (props) => {
@@ -18,16 +18,21 @@ const Accept = (props) => {
         const response = await acceptForm(param.id , param.role);
         const res = await getFormById(param.id);
         if(role === 'HOD'){
-            await addActivities(user.email , 'You approved purchase form with ID : '+param.id+' on ' ,'success','Approved a purchase form' )
-            await addNotifications(res.email , 'Your Purchase form with ID : '+param.id+' has been approved by the HOD on ','info' , 'Status Update')
+            await addActivities(user.email , 'You approved purchase form with ID : '+param.id+' on ' ,'success','Approved a purchase form',param.id )
+            await addNotifications(res.email , 'Your Purchase form with ID : '+param.id+' has been approved by the HOD on ','info' , 'Status Update',param.id)
+            const jao= await getEmailbyROLE('JAO');
+            await addNotifications(jao.email,'A new form with ID: '+param.id+' received on', 'info', 'New form was added', param.id);
         }
         if(role === 'AO'){
-            await addActivities(user.email , 'You approved a purchase form with ID : '+param.id+' on ' ,'success','Approved a purchase form' )
-            await addNotifications(res.email , 'Your Purchase form with ID : '+param.id+' has been approved by the AO on ','info' , 'Status Update')
+            await addActivities(user.email , 'You approved a purchase form with ID : '+param.id+' on ' ,'success','Approved a purchase form',param.id )
+            await addNotifications(res.email , 'Your Purchase form with ID : '+param.id+' has been approved by the AO on ','info' , 'Status Update',param.id)
+            const ar= await getEmailbyROLE('AR');
+            await addNotifications(ar.email,'A new form with ID: '+param.id+' received on', 'info', 'New form was added', param.id);
+
         }
         if(role === 'AR'){
-            await addActivities(user.email , 'You approved a purchase form with ID : '+param.id+' on ' ,'success','Approved a purchase form' )
-            await addNotifications(res.email , 'Your Purchase form with ID : '+param.id+' has been approved by the AR and reached the Purchase Section on ','success' , 'Purchase form approved')
+            await addActivities(user.email , 'You approved a purchase form with ID : '+param.id+' on ' ,'success','Approved a purchase form',param.id )
+            await addNotifications(res.email , 'Your Purchase form with ID : '+param.id+' has been approved by the AR and reached the Purchase Section on ','success' , 'Purchase form approved',param.id)
         }
         toast({
             title: 'Form Approved',
