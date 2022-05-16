@@ -502,7 +502,7 @@ const Sp101 = () => {
                         onSelectDate={(e) => setData({ ...data, DOP: formatDate(e) })}
                         isRequired/>
                     <Stack horizontal tokens={stackTokens}>
-                        <TextField label="Required mode of payment"
+                        <TextField label="Recommended mode of payment"
                             styles={{ root: { width: '50%', } }}
                             onChange={(e) => setData({ ...data, RMP: e.target.value })} />
                         <TextField label="Delivery Period"

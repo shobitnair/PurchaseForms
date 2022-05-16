@@ -1,7 +1,8 @@
 import React from 'react'
 import jsPDF from 'jspdf';
+import { DatePicker } from '@fluentui/react';
 
-export const PDFsp101 = (data,budgetData) => {
+export const PDFsp102 = (data,budgetData) => {
     
     var doc = new jsPDF({orientation: "p", lineHeight: 1});
     var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight();
@@ -19,7 +20,7 @@ export const PDFsp101 = (data,budgetData) => {
     // console.log(doc.getFontList());
     doc.setFont('times','bold')
     doc.setFontSize(9);
-    doc.text('SPS-101',pageWidth-31,5)
+    doc.text('SPS-102',pageWidth-31,5)
     doc.line(pageWidth-20, 5.5, pageWidth-31, 5.5)
     doc.setFontSize(10);
 
@@ -44,180 +45,218 @@ export const PDFsp101 = (data,budgetData) => {
     doc.line(pageWidth-20, 16, pageWidth-29, 16);
     
     doc.setFont('times','bold')
-    doc.text('Indent for Purchases below Rs.25000',pageWidth/2,18,{align:'center'})
-    doc.line(pageWidth/2+28, 18.5, pageWidth/2-28, 18.5)
+    doc.text('Indent for Purchases from Rs.25000 to Rs.1.00 Lac',pageWidth/2,19,{align:'center'})
+    doc.line(pageWidth/2+38.2, 19.5, pageWidth/2-38.2, 19.5)
+    doc.text("Part-A",pageWidth/2,23,{align:'center'})
     //top horizontal line
-    doc.line(pageWidth-19, 19, 19, 19)
+    doc.line(pageWidth-19, 26, 19, 26)
     //leftmost vertical line
-    doc.line(19, 19, 19, 134.8)
+    doc.line(19, 26, 19, 104.5)
     //rightmost vertical line
-    doc.line(pageWidth-19, 19, pageWidth-19, 134.8)
+    doc.line(pageWidth-19, 26, pageWidth-19, 104.5)
     //Middle vertical line
-    doc.line(94, 19, 94, 70.5)
+    doc.line(94, 26, 94, 77.5)
 
-    doc.text(`Indenter's Name and Deptt.: `,21,22.5,{align:'left'})
+    doc.text(`Indenter's Name and Deptt.: `,21,29.5,{align:'left'})
     doc.setFont('times','normal')
-    doc.text((data.name ===null ? '': data.name) +`, `+(data.department ===null ? '': data.department),97,23,{align:'left'})
-    doc.line(pageWidth-19, 24, 19, 24)
+    doc.text((data.name ===null ? '': data.name) +`, `+(data.department ===null ? '': data.department),97,30,{align:'left'})
+    doc.line(pageWidth-19, 31, 19, 31)
     
     doc.setFont('times','bold')
-    doc.text(`Budget Head & Sanctioned Budget: `,21,27.5,{align:'left'})
+    doc.text(`Budget Head & Sanctioned Budget: `,21,34.5,{align:'left'})
     doc.setFont('times','normal')
     doc.text((data.budgetHead ===null ? '': data.budgetHead+', ')+ 
-    (data.budgetSanction ===null ? '': data.budgetSanction),97,27.5,{align:'left'})
-    doc.line(pageWidth-19, 29, 19, 29)
+    (data.budgetSanction ===null ? '': data.budgetSanction),97,34.5,{align:'left'})
+    doc.line(pageWidth-19, 36, 19, 36)
 
     doc.setFont('times','bold')
-    doc.text(`Name of the Item(Attach list in case the no of) `,21,33,{align:'left'})
-    doc.text(`items are more): `,21,36,{align:'left'})
+    doc.text(`Name of the Item(Attach list in case the no of) `,21,40,{align:'left'})
+    doc.text(`items are more): `,21,43,{align:'left'})
     doc.setFont('times','normal')
-    doc.text((data.itemName ===null ? '': data.itemName)+'',97,33,{align:'left'})
-    doc.line(pageWidth-19, 37.5, 19, 37.5)
+    doc.text((data.itemName ===null ? '': data.itemName)+'',97,40,{align:'left'})
+    doc.line(pageWidth-19, 44.5, 19, 44.5)
 
     doc.setFont('times','bold')
-    doc.text(`Approx cost: `,21,41,{align:'left'})
+    doc.text(`Approx cost: `,21,48,{align:'left'})
     doc.setFont('times','normal')
-    doc.text((data.approxCost ===null ? '': data.approxCost)+'',97,41,{align:'left'})
-    doc.line(pageWidth-19, 42.5, 19, 42.5)
+    doc.text((data.approxCost ===null ? '': data.approxCost)+'',97,48,{align:'left'})
+    doc.line(pageWidth-19, 49.5, 19, 49.5)
 
     doc.setFont('times','bold')
-    doc.text(`Category: `,21,46,{align:'left'})
+    doc.text(`Category: `,21,53,{align:'left'})
     doc.setFont('times','normal')
-    doc.text((data.category ===null ? '': data.category)+'',97,46,{align:'left'})
-    doc.line(pageWidth-19, 47.5, 19, 47.5)
+    doc.text((data.category ===null ? '': data.category)+'',97,53,{align:'left'})
+    doc.line(pageWidth-19, 54.5, 19, 54.5)
 
     doc.setFont('times','bold')
-    doc.text(`Budgetary Approval Enclosed: `,21,51,{align:'left'})
+    doc.text(`Budgetary Approval Enclosed: `,21,58,{align:'left'})
     doc.setFont('times','normal')
-    doc.text((data.BAE ===null ? '': data.BAE)+'',97,51,{align:'left'})
-    doc.line(pageWidth-19, 52.5, 19, 52.5)
+    doc.text((data.BAE ===null ? '': data.BAE)+'',97,58,{align:'left'})
+    doc.line(pageWidth-19, 59.5, 19, 59.5)
 
     doc.setFont('times','bold')
-    doc.text(`Certified that the space is ready for`,21,56,{align:'left'}) 
-    doc.text(`installation of the equipment in`,21,60,{align:'left'})
-    doc.text(`Deptt/Centre/Unit on its arrival:-`,21,64,{align:'left'})             
+    doc.text(`Certified that the space is ready for`,21,63,{align:'left'}) 
+    doc.text(`installation of the equipment in`,21,67,{align:'left'})
+    doc.text(`Deptt/Centre/Unit on its arrival:-`,21,71,{align:'left'})             
     doc.setFont('times','normal')
-    doc.text(``+(data.CSR ===null ? '': data.CSR),97,56,{align:'left'})
-    doc.line(pageWidth-19, 65.5, 19, 65.5)
+    doc.text(``+(data.CSR ===null ? '': data.CSR),97,63,{align:'left'})
+    doc.line(pageWidth-19, 72.5, 19, 72.5)
 
     doc.setFont('times','bold')
-    doc.text(`Is Goods are required for Research Purpose: `,21,69,{align:'left'})
+    doc.text(`Is Goods are required for Research Purpose: `,21,76,{align:'left'})
     doc.setFont('times','normal')
-    doc.text((data.GRP ===null ? '': data.GRP)+'',97,69,{align:'left'})
-    doc.line(pageWidth-19, 70.5, 19, 70.5)
+    doc.text((data.GRP ===null ? '': data.GRP)+'',97,76,{align:'left'})
+    doc.line(pageWidth-19, 77.5, 19, 77.5)
 
     doc.setFont('times','bold')
-    doc.text("If required for Research Purpose then Certificate for claiming concessional GST under notification no. 45/2017",21,74,{align: 'left'})
-    doc.text("& 47/2017: ",21,78,{align:'left'})
+    doc.text("If required for Research Purpose then Certificate for claiming concessional GST under notification no. 45/2017",21,81,{align: 'left'})
+    doc.text("& 47/2017: ",21,85,{align:'left'})
     doc.setFont('times','normal')
-    doc.text("Certified that purchase of above goods for which concessional GST is claimed is required for research", 40,78,{align: 'left'})
-    doc.text("purpose only.",21,82,{align: 'left'})
-    doc.line(pageWidth-19, 83.5, 19, 83.5)
+    doc.text("Certified that purchase of above goods for which concessional GST is claimed is required for research", 40,85,{align: 'left'})
+    doc.text("purpose only.",21,89,{align: 'left'})
+    doc.line(pageWidth-19, 90.5, 19, 90.5)
 
     doc.setFont('times','bold')
-    doc.text(`GeM Purchase: `,21,87,{align:'left'})
+    doc.text(`GeM Purchase: `,21,94,{align:'left'})
     doc.setFont('times','normal')
-    doc.text((data.GEM ===null ? '': data.GEM)+'',97,87,{align:'left'})
-    doc.line(pageWidth-19, 88.5, 19, 88.5)
-    doc.line(94, 83.5, 94, 88.5)
+    doc.text((data.GEM ===null ? '': data.GEM)+'',97,94,{align:'left'})
+    doc.line(pageWidth-19, 95.5, 19, 95.5)
+    doc.line(94, 90.5, 94, 95.5)
 
-    doc.text("*",21,92)
-    doc.text("If available on GeM, specifications of the item as available on the GeM are attached. In case of non-availability of",27,92,{align:'left'})
-    doc.text("the items on the GeM, GeMAR&PTS ID attached.",27,96,{align:'left'})
-    doc.line(pageWidth-19, 97.5, 19, 97.5)
+    doc.text("*",21,99)
+    doc.text("If available on GeM, specifications of the item as available on the GeM are attached. In case of non-availability of",27,99,{align:'left'})
+    doc.text("the items on the GeM, GeMAR&PTS ID attached.",27,103,{align:'left'})
+    doc.line(pageWidth-19, 104.5, 19, 104.5)
 
-    // doc.setFont('times','bold')
-    // doc.text(`Details of the item if available in GEM , Else mention the GeMAR & PTS ID:- `,20,98,{align:'left'})
-    // doc.setFont('times','normal')
-    // doc.text(data.GEMdetails+'',20,102,{align:'left', maxWidth:pageWidth - 30})
+
+    doc.line(pageWidth-19, 110, 19, 110)
+    //leftmost vertical line
+    doc.line(19, 110, 19, 135)
+    //rightmost vertical line
+    doc.line(pageWidth-19, 110, pageWidth-19, 135)
+    //Middle vertical line
+    // doc.line(94, 26, 94, 77.5)
+    doc.setFont('times','bold')
+    doc.text("Proposed Committee:",21,113.5)
+    doc.line(pageWidth-19,115,19,115)
+    doc.setFont('times','normal')
+    doc.text('S. No.',21,118.5)
+    doc.text('Member of the Committee',45,118.5)
+    doc.text('Name of the Faculty/Group A Officer',110,118.5)
+    doc.line(19,120,pageWidth-19,120)
+    doc.line(43,115,43, 135)
+    doc.line(108,115,108,135)
+
+    doc.text('01.',21,123.5)
+    doc.text('Member-1 (Faculty/Group A Officers):',45,123.5)
+    doc.line(19,125,pageWidth-19,125)
+
+    doc.text('02.',21,128.5)
+    doc.text('Member-2 (Faculty/Group A Officers):',45,128.5)
+    doc.line(19,130,pageWidth-19,130)
+
+    doc.text('03.',21,133.5)
+    doc.text('Member-3 (Faculty/Group A Officers):',45,133.5)
+    doc.line(19,135,pageWidth-19,135)
+
+    doc.setFont('times','bold')
+    doc.text("INDENTER",21,155)
+    doc.text("HOD",pageWidth-27,155)
+
+    doc.text("Part-B (To be filled by Indenter only after approval of Part-A)",pageWidth/2+5,165,{align:'center'})
+    
+    doc.line(19,168,pageWidth-19,168)
+    doc.line(19,168,19, 205)
+    doc.line(pageWidth-19,168,pageWidth-19,205)
     
     doc.setFont('times','bold')
-    doc.text(`Recommendations of the Indenter (If required,seperate sheet can be attached for detailed specifications): `,21,101,{align:'left'})
-    doc.line(pageWidth-19, 102.5, 19, 102.5)
+    doc.text(`Recommendations of the Indenter (If required,seperate sheet can be attached for detailed specifications): `,21,171.5,{align:'left'})
+    doc.line(pageWidth-19, 173, 19, 173)
 
 
-    // doc.setFont('times','normal')
-    // doc.text(data.ROI+'',20,117,{align:'left' , maxWidth:pageWidth - 30})
-
-    doc.setFont('times','bold')
-    doc.text(`Mode of Enquiry: `,21,106,{align:'left'})
-    doc.setFont('times','normal')
-    doc.text((data.MOE ===null ? '': data.MOE)+'',97,106,{align:'left'})
-    doc.line(pageWidth-19, 107.5, 19, 107.5)
-    doc.line(94, 102.5, 94, 107.5)
+    // // doc.setFont('times','normal')
+    // // doc.text(data.ROI+'',20,117,{align:'left' , maxWidth:pageWidth - 30})
 
     doc.setFont('times','bold')
-    doc.text(`Number of Quotation(s) recieved: `,21,111,{align:'left'})
+    doc.text(`Mode of Enquiry: `,21,176.5,{align:'left'})
     doc.setFont('times','normal')
-    doc.text((data.NOQ ===null ? '': data.NOQ)+'',97,111,{align:'left'})
-    doc.line(pageWidth-19, 112.5, 19, 112.5)
-    doc.line(94, 107.5, 94, 112.5)
+    doc.text((data.MOE ===null ? '': data.MOE)+'',97,176.5,{align:'left'})
+    doc.line(pageWidth-19, 178, 19, 178)
+    doc.line(94, 173, 94, 178)
 
-    doc.text("The indenter recommends the purchase of the following items from",21,116)
     doc.setFont('times','bold')
-    doc.text("M/s",117.5,116)
-    doc.line(124, 117.5, 172, 117.5)
+    doc.text(`Number of Quotation(s) recieved: `,21,181.5,{align:'left'})
     doc.setFont('times','normal')
-    doc.text((data.PurchasedFrom ===null ? '': data.PurchasedFrom)+'',126,116,{align:'left'})
+    doc.text((data.NOQ ===null ? '': data.NOQ)+'',97,181.5,{align:'left'})
+    doc.line(pageWidth-19, 183, 19, 183)
+    doc.line(94, 178, 94, 183)
+
+    doc.text("The indenter recommends the purchase of the following items from",21,186.5)
+    doc.setFont('times','bold')
+    doc.text("M/s",117.5,186.5)
+    doc.line(124, 188, 172, 188)
+    doc.setFont('times','normal')
+    doc.text((data.PurchasedFrom ===null ? '': data.PurchasedFrom)+'',126,186.5,{align:'left'})
     
-    doc.text('against',174,116)
-    doc.text("quotation no: ",21,121.5)
-    doc.line(42, 122.5, 77, 122.5)
-    doc.text((data.Qno ===null ? '': data.Qno)+'',44,121.5)
+    doc.text('against',174,186.5)
+    doc.text("quotation no: ",21,192)
+    doc.line(42, 193, 77, 193)
+    doc.text((data.Qno ===null ? '': data.Qno)+'',44,192)
 
     doc.setFont('times','bold')
-    doc.text("dated",79,121.5)
-    doc.line(89,122.5,117,122.5)
+    doc.text("dated",79,192)
+    doc.line(89,193,117,193)
     doc.setFont('times','normal')
-    doc.text((data.DOP ===null ? '': data.DOP)+'',91,121.5)
-    doc.text(".   Quotation(s) has have been signed by the", 119,121.5)
-    doc.text("committee members.",21,127)
-    doc.line(pageWidth-19, 128.5, 19, 128.5)
-    // doc.text("")
-    // doc.setFont('times','bold')
-    // doc.text(`Purchased from M/s: `,20,147,{align:'left'})
-    // doc.setFont('times','normal')
-    // doc.text(data.PurchasedFrom+'',53,147,{align:'left'})
+    doc.text((data.DOP ===null ? '': data.DOP)+'',91,192)
+    doc.text(".   Quotation(s) has have been signed by the", 119,192)
+    doc.text("committee members.",21,197.5)
+    doc.line(pageWidth-19, 199, 19, 199)
 
-    // doc.setFont('times','bold')
-    // doc.text(`Quotation No.: `,20,154,{align:'left'})
-    // doc.setFont('times','normal')
-    // doc.text(data.Qno+'',44,154,{align:'left'})
+    // // doc.text("")
+    // // doc.setFont('times','bold')
+    // // doc.text(`Purchased from M/s: `,20,147,{align:'left'})
+    // // doc.setFont('times','normal')
+    // // doc.text(data.PurchasedFrom+'',53,147,{align:'left'})
 
-    // doc.setFont('times','bold')
-    // doc.text(`Date of Purchase: `,20,161,{align:'left'})
-    // doc.setFont('times','normal')
-    // doc.text(data.DOP+'',48,161,{align:'left'})
+    // // doc.setFont('times','bold')
+    // // doc.text(`Quotation No.: `,20,154,{align:'left'})
+    // // doc.setFont('times','normal')
+    // // doc.text(data.Qno+'',44,154,{align:'left'})
 
-    // doc.setFont('times','bold')
-    // doc.text(`Required mode of payment: `,20,168,{align:'left'})
-    // doc.setFont('times','normal')
-    // doc.text(data.RMP+'',64,168,{align:'left'})
+    // // doc.setFont('times','bold')
+    // // doc.text(`Date of Purchase: `,20,161,{align:'left'})
+    // // doc.setFont('times','normal')
+    // // doc.text(data.DOP+'',48,161,{align:'left'})
 
-    // doc.setFont('times','bold')
-    // doc.text(`Delivery Period: `,20,175,{align:'left'})
-    // doc.setFont('times','normal')
-    // doc.text(data.DP+'',46,175,{align:'left'})
+    // // doc.setFont('times','bold')
+    // // doc.text(`Required mode of payment: `,20,168,{align:'left'})
+    // // doc.setFont('times','normal')
+    // // doc.text(data.RMP+'',64,168,{align:'left'})
 
-    // doc.setFont('times','bold')
-    // doc.text(`List of items:- `,pageWidth/2-10,182,{align:'left'})
+    // // doc.setFont('times','bold')
+    // // doc.text(`Delivery Period: `,20,175,{align:'left'})
+    // // doc.setFont('times','normal')
+    // // doc.text(data.DP+'',46,175,{align:'left'})
+
+    // // doc.setFont('times','bold')
+    // // doc.text(`List of items:- `,pageWidth/2-10,182,{align:'left'})
     
     doc.setFont('times','bold')
-    doc.text(`S.no`,21,133,{align:'left'})
+    doc.text(`S.no`,21,203.5,{align:'left'})
 
-    doc.text(`Description`,65,133,{align:'left'})
-    doc.text(`Qty.`,120,133,{align:'left'})
-    doc.text(`Rate(Rs.)`,135,133,{align:'left'})
-    doc.text('Amt(Rs.)',165,133,{align:'left'})
+    doc.text(`Description`,65,203.5,{align:'left'})
+    doc.text(`Qty.`,120,203.5,{align:'left'})
+    doc.text(`Rate(Rs.)`,135,203.5,{align:'left'})
+    doc.text('Amt(Rs.)',165,203.5,{align:'left'})
     doc.setFont('times','normal')
-    doc.line(pageWidth-19, 134.5, 19, 134.5)
-    doc.line(30, 128.5, 30, 134.5)
-    doc.line(115, 128.5, 115, 134.5)
-    doc.line(130, 128.5, 130, 134.5)
-    doc.line(155, 128.5, 155, 134.5)
+    doc.line(pageWidth-19, 205, 19, 205)
+    doc.line(30, 199, 30, 205)
+    doc.line(115, 199, 115, 205)
+    doc.line(130, 199, 130, 205)
+    doc.line(155, 199, 155, 205)
 
-    var ypos = 139;
-    var ylinepos=134.5
+    var ypos = 209.5;
+    var ylinepos=205;
     var flag=0
     var total=0
     data.items.forEach((element,index,array)=>{
@@ -269,6 +308,7 @@ export const PDFsp101 = (data,budgetData) => {
     doc.setFont('times','bold')
     doc.text('Total',144,ylinepos+9)
     doc.setFont('times','normal')
+    
     if(data.tax!=null){
         total=total+(data.tax*total)/100;
     }
@@ -278,42 +318,50 @@ export const PDFsp101 = (data,budgetData) => {
     doc.setFontSize(8);
     doc.text((data.tax ===null ? '': data.tax)+'%',149,ylinepos+3.5)
     
-    
     ypos=ylinepos+15
     doc.setFontSize(10);
     if(pageHeight-ypos<60){
         doc.addPage();
         ypos=15
-        doc.text(`"I, am personally satisfied that these goods purchased are of the requisite quality and specification and have`,22,ypos)
+        doc.text(`"It is certified that we the undersigned purchase committee members are jointly and individually satisfied that the`,22,ypos)
         ypos+=5
-        doc.text(`been purchased from a reliable supplier at a reasonable price."`,22,ypos)
-        ypos+=15
+        doc.text(`recommended items are of requisite specifications and quality, prices are according to the prevailing market rates and`,22,ypos)
+        ypos+=5
+        doc.text(`the supplier recommended is reliable and competent to supply the goods in question".`,22,ypos)
+        ypos+=4
     }
     else if(pageHeight-ypos<30){
-        doc.text(`"I, am personally satisfied that these goods purchased are of the requisite quality and specification and have`,22,ypos)
+        doc.text(`"It is certified that we the undersigned purchase committee members are jointly and individually satisfied that the`,22,ypos)
         ypos+=5
-        doc.text(`been purchased from a reliable supplier at a reasonable price."`,22,ypos)
+        doc.text(`recommended items are of requisite specifications and quality, prices are according to the prevailing market rates and`,22,ypos)
+        ypos+=5
+        doc.text(`the supplier recommended is reliable and competent to supply the goods in question".`,22,ypos)
         doc.addPage();
         ypos=15
     }
     else{
-        doc.text(`"I, am personally satisfied that these goods purchased are of the requisite quality and specification and have been`,22,ypos)
+        doc.text(`"It is certified that we the undersigned purchase committee members are jointly and individually satisfied that the`,22,ypos)
         ypos+=5
-        doc.text(`purchased from a reliable supplier at a reasonable price."`,22,ypos)
-        ypos+=15
+        doc.text(`recommended items are of requisite specifications and quality, prices are according to the prevailing market rates and`,22,ypos)
+        ypos+=5
+        doc.text(`the supplier recommended is reliable and competent to supply the goods in question".`,22,ypos)
+        ypos+=5
     }
     doc.setFont("times",'bold')
     doc.text("Recommended Mode of Payment:",21,ypos,{align:'left'})
     doc.setFont("times",'normal')
     doc.text((data.RMP ===null ? '': data.RMP)+'',73,ypos,{align:'left'})
-    ypos+=15
+    ypos+=13
     doc.setFont("times",'bold')
     doc.text("Delivery Period:",21,ypos,{align:'left'})
     doc.setFont("times",'normal')
     doc.text((data.DP ===null ? '': data.DP)+'',47,ypos,{align:'left'})
-    ypos+=15
     doc.setFont("times",'bold')
     doc.text("Signature of the Indenter",pageWidth-51,ypos,{align:'left'})
+    ypos+=17
+    doc.text("(Member)",21,ypos)
+    doc.text("(Member)",pageWidth/2,ypos)
+    doc.text("(Member)",pageWidth-30,ypos)
     ypos+=15
     doc.text("HOD/PI (for external projects only)",21,ypos,{align:'left'})
 
@@ -340,14 +388,12 @@ export const PDFsp101 = (data,budgetData) => {
     doc.line(19,ypos+5,pageWidth-19,ypos+5)
     doc.line(75,ypos,75,ypos+40)
     ypos+=5
-    doc.setFont('times','bold')
     doc.text("Budget Available",21,ypos+4)
     doc.setFont('times','normal')
     // doc.text((budgetData.ba===null? '' :budgetData.ba)+'lol',80,ypos+4)
     doc.text('lol',80,ypos+4)
     doc.line(19,ypos+5,pageWidth-19,ypos+5)
     ypos+=5
-    doc.setFont('times','bold')
     doc.text("Budget Booked",21,ypos+4)
     doc.setFont('times','normal')
     // doc.text((budgetData.bb===null? '' :budgetData.bb)+'lol',80,ypos+4)
@@ -355,7 +401,6 @@ export const PDFsp101 = (data,budgetData) => {
     doc.line(19,ypos+5,pageWidth-19,ypos+5)
     doc.line(130,ypos,130,ypos+5)
     doc.line(153,ypos,153,ypos+5)
-    doc.setFont('times','bold')
     doc.text("Budget Head",132,ypos+4)
     doc.setFont('times','normal')
     doc.setFontSize(8)
@@ -363,7 +408,6 @@ export const PDFsp101 = (data,budgetData) => {
     doc.text('lol',155,ypos+4)
     doc.setFontSize(10)
     ypos+=5
-    doc.setFont('times','bold')
     doc.text("Balance Budget",21,ypos+4)
     doc.setFont('times','normal')
     // doc.text((budgetData.balb===null? '' :budgetData.balb)+'lol',80,ypos+4)
@@ -438,13 +482,6 @@ export const PDFsp101 = (data,budgetData) => {
     doc.setFont('times','normal')
     doc.text((data.GEMdetails===null?'':data.GEMdetails)+'',21,30,{maxWidth:pageWidth-40})
 
-    doc.setFont('times','bold')
-    doc.setFontSize(16)
-    doc.text("Recommendations of the Indenter",pageWidth/2-40,pageHeight/2)
-    doc.line(pageWidth/2-40,pageHeight/2+0.7,pageWidth/2+43,pageHeight/2+0.7)
-    doc.setFontSize(12)
-    doc.setFont('times','normal')
-    doc.text((data.ROI===null?'':data.ROI)+'',21,pageHeight/2+15,{maxWidth:pageWidth-40})
 
     window.open(doc.output('bloburl'))
 }
