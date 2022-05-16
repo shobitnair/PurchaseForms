@@ -32,7 +32,7 @@ const Accept = (props) => {
         }
         if(role === 'AR'){
             await addActivities(user.email , 'You approved a purchase form with ID : '+param.id+' on ' ,'success','Approved a purchase form',param.id )
-            await addNotifications(res.email , 'Your Purchase form with ID : '+param.id+' has been approved by the AR and reached the Purchase Section on ','success' , 'Purchase form approved',param.id)
+            await addNotifications(res.email , 'Your Purchase form with ID : '+param.id+' has been approved by the AR on ','success' , 'Purchase form approved',param.id)
         }
         toast({
             title: 'Form Approved',

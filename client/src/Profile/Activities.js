@@ -7,7 +7,8 @@ import {
     Grid,
     GridItem,
     Stack,
-    Box
+    Box,
+    Button
 } from '@chakra-ui/react'
 import { Depths } from '@fluentui/react';
 import { useNavigate } from 'react-router';
@@ -15,6 +16,7 @@ import { useContext , useState , useEffect } from 'react';
 import { LoginContext } from '../Login/LoginContext';
 import { ScrollablePane } from '@fluentui/react';
 import { getActivities } from '../Requests/formRequests';
+import { PDFbyID } from '../Forms/PDFHandler';
 
 const formatDate = (date) => {
     if (!date)
@@ -54,13 +56,13 @@ const Activities = () => {
                                     return(
                                             <Box style={{boxShadow: Depths.depth4  , width:'95%' , marginTop:'10px'}} >
                                                 <Alert status = {x.type} variant='top-accent'>
-                                                <AlertIcon boxSize='30px'/>
+                                                <AlertIcon boxSize='40px'/>
                                                 <Stack>
                                                     <AlertTitle fontSize={18}>{x.heading}</AlertTitle>
                                                     <AlertDescription fontSize={16}>
                                                     {x.message}  {formatDate(new Date(x.activity_time))}
                                                     </AlertDescription>
-                                                    
+                                                    <Button w={'150px'} onClick={()=>PDFbyID(x.id)}>View Form</Button>
                                                 </Stack>
                                             </Alert>
                                             </Box>

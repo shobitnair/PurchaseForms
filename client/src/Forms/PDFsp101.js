@@ -1,8 +1,7 @@
 import React from 'react'
 import jsPDF from 'jspdf';
 
-export const PDFsp101 = (data,budgetData) => {
-    
+export const PDFsp101 = (data,budgetData , meta) => {
     var doc = new jsPDF({orientation: "p", lineHeight: 1});
     var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight();
     var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth();
