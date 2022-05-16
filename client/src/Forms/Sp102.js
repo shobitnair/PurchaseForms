@@ -550,11 +550,11 @@ const Sp102 = () => {
     setImageSrc(imageSource);
   };
 
-  const uploader = (res) => {
-    res.map((x) => {
-      setData({ ...data, files: [...files, x.serverResponse.data] });
-    });
-  };
+  const uploader = (res) =>{
+    setData({...data , files:res.map(x => {
+        return x.serverResponse.data
+    })})
+  }
 
 
   const getFacultyNames = async() =>{
