@@ -72,7 +72,7 @@ const Dashboard = () => {
     }, [user , role])
 
     return (<>
-            <Grid mt = '10px' ml='2%' w='96%' h='700px' 
+            <Grid mt = '10px' ml='2%' w='96%' h='100%' 
             templateRows='repeat(8,1fr)' templateColumns='repeat(10,1fr)' 
             gap={4}>    
                 <GridItem w='100%' rowSpan={2} colSpan={3} bg='#edebe9' p={2} style={{borderRadius:5 , boxShadow:Depths.depth4}}>

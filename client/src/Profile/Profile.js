@@ -6,7 +6,7 @@ import {DefaultButton, Depths, TextField , Dropdown , DropdownMenuItemType , Dia
     DialogFooter,} from "@fluentui/react";
 import {useNavigate, useParams} from "react-router-dom"
 import { LoginContext } from '../Login/LoginContext';
-import { getFile, getProfileDetails, updateProfileDetails } from '../Requests/formRequests';
+import { getFile, getFileURL, getProfileDetails, updateProfileDetails } from '../Requests/formRequests';
 import { useToast } from '@chakra-ui/react'
 import { Dropzone, FileItem, FullScreenPreview, InputButton } from "@dropzone-ui/react";
 import { URL } from '../cred';
@@ -81,9 +81,7 @@ const Profile = () => {
         if(user && role){
             if(fv === 0){
                 const response = await getProfileDetails(user.email);
-                const signData = await getFile(response.signature)
-                console.log(signData)
-                setImage(signData.data)
+                setImage(await getFileURL(response.signature))
                 setData({...data,
                     name:response.name,
                     department:response.department,
@@ -92,7 +90,7 @@ const Profile = () => {
                 });
                 Sfv(1)
             } else {
-
+                
             }
         } else {
             setData({})
@@ -103,12 +101,15 @@ const Profile = () => {
     const onUpload = async() => {
         if(temp){
             await updateProfileDetails(data);
+            const response = await getProfileDetails(user.email);
+            setImage(await getFileURL(response.signature))
             toast({
                 title: 'Profile Updated',
                 status: 'success',
                 duration: 3000,
                 isClosable: true,
             })
+            
             setToggle(true);
         } else {
             toast({
@@ -181,7 +182,7 @@ const Profile = () => {
     return(
         <div>
             <UploadPopUp/>
-            <Grid templateColumns='repeat(12,1fr)' templateRows='repeat(12,1fr)' w='100%'  h='600px' gap={4} bg={'whiteAlpha.300'}>
+            <Grid templateColumns='repeat(12,1fr)' templateRows='repeat(12,1fr)' w='100%'  h='600px' gap={4} bg={'whiteAlpha.300'} >
                 <GridItem rowSpan={1} colSpan={12} ml={4} mt={4} style={{'alignItems':'center'}}>
                     <Text className='Header' as='b' w="100%"> Manage Profile Details </Text>
                 </GridItem>
@@ -196,12 +197,13 @@ const Profile = () => {
                             {role==='FACULTY' && <Dropdown placeholder="Select an Option" options={option5} label="Department" 
                                 defaultSelectedKey = {findKey(option5,data.department)}
                                 onChange={(e, i) => setData({ ...data, department: i.text })} />}
-                        <Stack style={{'alignItems':'center' , 'marginTop':'20px'}}>
+                        <Stack style={{'alignItems':'center' }}>
                             <DefaultButton style={{'width':'200px'}} onClick={async()=>onSubmit()}>Update Info</DefaultButton>
+                            <img src={image}/>
                             <DefaultButton style={{'width':'200px'}}  onClick={()=>{
-                            setToggle(!toggle);
-                            setFiles([])
-                        }}>Update Signature</DefaultButton> 
+                                setToggle(!toggle);
+                                setFiles([])
+                            }}>Update Signature</DefaultButton> 
                         </Stack>
                         
                             

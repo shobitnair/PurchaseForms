@@ -30,7 +30,7 @@ const gridStyle = {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'start',
-                height: '500px',
+                height: '600px',
                 width:'100%',
             },
         },
@@ -106,7 +106,7 @@ const Notifications = () => {
     
 
     return (
-        <div style={{ 'border': '8px solid #f3f2f1'  , backgroundColor:'#f3f2f1' , maxWidth:'100%', borderRadius: '2px', boxShadow: Depths.depth4 }}>
+        <div style={{ 'border': '8px solid #f3f2f1'  ,height:'100%', backgroundColor:'#f3f2f1' , maxWidth:'100%', borderRadius: '2px', boxShadow: Depths.depth4 }}>
                     
             <DetailsList
                 items={items}

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import jsPDF from 'jspdf';
 import { DatePicker } from '@fluentui/react';
 
@@ -136,6 +136,8 @@ export const PDFsp102 = (data,budgetData) => {
     doc.line(pageWidth-19, 110, pageWidth-19, 135)
     //Middle vertical line
     // doc.line(94, 26, 94, 77.5)
+
+    
     doc.setFont('times','bold')
     doc.text("Proposed Committee:",21,113.5)
     doc.line(pageWidth-19,115,19,115)
@@ -149,14 +151,17 @@ export const PDFsp102 = (data,budgetData) => {
 
     doc.text('01.',21,123.5)
     doc.text('Member-1 (Faculty/Group A Officers):',45,123.5)
+    doc.text(data.member1name,110,123.5)
     doc.line(19,125,pageWidth-19,125)
 
     doc.text('02.',21,128.5)
     doc.text('Member-2 (Faculty/Group A Officers):',45,128.5)
+    doc.text(data.member2name,110,128.5)
     doc.line(19,130,pageWidth-19,130)
 
     doc.text('03.',21,133.5)
     doc.text('Member-3 (Faculty/Group A Officers):',45,133.5)
+    doc.text(data.member3name,110,133.5)
     doc.line(19,135,pageWidth-19,135)
 
     doc.setFont('times','bold')

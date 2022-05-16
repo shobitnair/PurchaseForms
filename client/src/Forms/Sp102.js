@@ -18,6 +18,8 @@ import {
   DropdownMenuItemType,
   HighContrastSelectorWhite,
 } from "@fluentui/react";
+import { PDFHandler } from "./PDFHandler";
+import { useCallback } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router";
 import { LoginContext } from "../Login/LoginContext";
@@ -233,101 +235,6 @@ const Sp102 = () => {
     return faculties.data;
   };
 
-  useEffect(async () => {
-    if (user && role && param.id) {
-      if (firstVisit === 0) {
-        const tempData = await getFormById(param.id); //PartA->tempData.data
-        const curData = JSON.parse(tempData.data);
-        if (curData.GRP === "Yes") {
-          setData({ ...curData, partA: false, tax: 5, taxDisable: true });
-        } else {
-          setData({ ...curData, partA: false, tax: null, taxDisable: false });
-        }
-        setFirstVisit(1);
-      } else if (firstVisit === 1) {
-        //
-        if (
-          !valid.MOEError &&
-          !valid.NOQError &&
-          !valid.PurchasedFromError &&
-          !valid.DOPError &&
-          !valid.QnoError &&
-          !valid.itemError &&
-          !valid.fileError
-        ) {
-          setHideSubmitDialog(false);
-        } else setHideSubmitDialog(true);
-        if (valid.fileError) {
-          toast({
-            title: "No files attached",
-            description: "Add files to complete the form filling process",
-            status: "error",
-            duration: 5000,
-            isClosable: true,
-          });
-        }
-        if (valid.itemError) {
-          toast({
-            title: "No items listed",
-            description: "Add items to complete the form filling process",
-            status: "error",
-            duration: 5000,
-            isClosable: true,
-          });
-        }
-      }
-    } else if (user && role) {
-      if (firstVisit === 0) {
-        const response = await getProfileDetails(user.email);
-        const faculties = await getFaculties();
-        setFacultyOptions(
-          faculties.map((x) => {
-            return x.email;
-          })
-        );
-
-        setData({
-          ...data,
-          name: response.name,
-          department: response.department,
-          partA: true,
-        });
-        setFirstVisit(1);
-      } else if (firstVisit === 1) {
-        // console.log(data);
-        // console.log(valid);
-        if (
-          !valid.nameError &&
-          !valid.departmentError &&
-          !valid.itemNameError &&
-          !valid.budgetSanctionError &&
-          !valid.approxCostError &&
-          !valid.categoryError &&
-          !valid.BAEError &&
-          !valid.CSRError &&
-          !valid.GRPError &&
-          !valid.GEMError &&
-          !valid.budgetHeadError &&
-          !valid.memberError &&
-          !valid.member1Error &&
-          !valid.member2Error &&
-          !valid.member3Error
-        ) {
-          setHideSubmitDialog(!hideSubmitDialog);
-        }
-        if(valid.memberError || valid.member1Error || valid.member2Error || valid.member3Error) {
-          toast({
-            title: "Error in Proposed Committee",
-            description:
-              "Mention 3(different) members for committee. Check emails for spelling mistakes",
-            status: "error",
-            duration: 5000,
-            isClosable: true,
-          });
-        }
-      }
-    }
-  }, [user, role, valid]);
 
   const init = {
     name: null,
@@ -359,6 +266,9 @@ const Sp102 = () => {
     member1: null,
     member2: null,
     member3: null,
+    member1name: null,
+    member2name: null,
+    member3name: null,
   };
 
   const toast = useToast();
@@ -486,7 +396,17 @@ const Sp102 = () => {
   };
 
   //Make PDF of the form
-  const onPreviewClicked = () => {};
+  const onPreviewClicked = useCallback(async() => {
+    const response = await getFacultyNames();
+    console.log(response)  
+    const value={...data , 
+      member1name:response.a,
+      member2name:response.b,
+      member3name:response.c,}
+    setData(value);
+    PDFHandler('sp102',value)
+
+  },[data]);
 
   const MemberPopUp = () => {
     return (
@@ -635,6 +555,122 @@ const Sp102 = () => {
       setData({ ...data, files: [...files, x.serverResponse.data] });
     });
   };
+
+
+  const getFacultyNames = async() =>{
+    const facultyName1 = await axios.post(URL + '/get/faculty/name',{email: data.member1});
+    const facultyName2 = await axios.post(URL + '/get/faculty/name',{email: data.member2});
+    const facultyName3 = await axios.post(URL + '/get/faculty/name',{email: data.member3});
+    //console.log(facultyName1.data['name']);
+    
+    return {a:facultyName1.data.name,b:facultyName2.data.name,c:facultyName3.data.name}
+  }
+
+
+  useEffect(async () => {
+    if (user && role && param.id) {
+      if (firstVisit === 0) {
+        const tempData = await getFormById(param.id); //PartA->tempData.data
+        const curData = JSON.parse(tempData.data);
+        if (curData.GRP === "Yes") {
+          setData({ ...curData, partA: false, tax: 5, taxDisable: true });
+        } else {
+          setData({ ...curData, partA: false, tax: null, taxDisable: false });
+        }
+        setFirstVisit(1);
+      } else if (firstVisit === 1) {
+        //
+        if (
+          !valid.MOEError &&
+          !valid.NOQError &&
+          !valid.PurchasedFromError &&
+          !valid.DOPError &&
+          !valid.QnoError &&
+          !valid.itemError &&
+          !valid.fileError
+        ) {
+          setHideSubmitDialog(false);
+        } else setHideSubmitDialog(true);
+        if (valid.fileError) {
+          toast({
+            title: "No files attached",
+            description: "Add files to complete the form filling process",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+        }
+        if (valid.itemError) {
+          toast({
+            title: "No items listed",
+            description: "Add items to complete the form filling process",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+        }
+      }
+    } else if (user && role) {
+      if (firstVisit === 0) {
+        const response = await getProfileDetails(user.email);
+        const faculties = await getFaculties();
+        setFacultyOptions(
+          faculties.map((x) => {
+            return x.email;
+          })
+        );
+        
+        setData({
+          ...data,
+          name: response.name,
+          department: response.department,
+          partA: true,
+        });
+        setFirstVisit(1);
+      } else if (firstVisit === 1) {
+        //console.log(data);
+        //console.log(valid);
+        
+        if (
+          !valid.nameError &&
+          !valid.departmentError &&
+          !valid.itemNameError &&
+          !valid.budgetSanctionError &&
+          !valid.approxCostError &&
+          !valid.categoryError &&
+          !valid.BAEError &&
+          !valid.CSRError &&
+          !valid.GRPError &&
+          !valid.GEMError &&
+          !valid.budgetHeadError &&
+          !valid.memberError &&
+          !valid.member1Error &&
+          !valid.member2Error &&
+          !valid.member3Error
+        ) {
+          const response = await getFacultyNames();
+          //console.log(response)  
+          setData({
+            ...data , 
+            member1name:response.a,
+            member2name:response.b,
+            member3name:response.c,
+          })
+          setHideSubmitDialog(!hideSubmitDialog);
+        }
+        if(valid.memberError || valid.member1Error || valid.member2Error || valid.member3Error) {
+          toast({
+            title: "Error in Proposed Committee",
+            description:
+              "Mention 3(different) members for committee. Check emails for spelling mistakes",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+        }
+      }
+    }
+  }, [user, role, valid ]);
 
   return (
     <Stack horizontal tokens={{ childrenGap: 20 }} styles={stackStyles}>
@@ -812,7 +848,7 @@ const Sp102 = () => {
                 width: "45%",
                 boxShadow: Depths.depth4,
               }}
-              onClick={onPreviewClicked}
+              onClick={() => onPreviewClicked()}
             />
           </Stack>
           <SubmitPopUp />

@@ -106,6 +106,10 @@ export const getEmailbyROLE = async(role) => {
 }
 
 export const getFile = async(path) => {
-    const response = await axios.post(URL + '/getfile' , {path});
-    return response;
+    const response = await axios.get(URL + '/uploads/'+path);
+    return response.data;
+}
+
+export const getFileURL = async(path) => {
+    return (URL + '/uploads/'+path)
 }

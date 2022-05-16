@@ -35,10 +35,13 @@ app.use(express.json());
 
 
 //Build 
-app.use(express.static("../client/build"));
+app.use(express.static("../client/build"))
+app.use(express.static("/uploads"))
+
 app.get('/site*', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'client', 'build', 'index.html'))
 })
+
 
 
 app.post('/api/admin/forms/load' , async(req,res) =>{
@@ -407,15 +410,17 @@ app.post('/api/email' , async(req,res) => {
     }
 })
 
-app.post('/api/getfile' , async(req,res) =>{
+app.get('/api/uploads/:file' , async(req,res) =>{
     try{
-        const {path} = req.body;
-        res.download('uploads//'+path)
+        const {file} = req.params;
+        console.log(file);
+        res.sendFile(path.join(__dirname , 'uploads' , file))
         
     } catch(err){
         console.log(err);
     }
 })
+
 
 app.post('/api/get/all/faculty',async(req,res) =>{
     try{
@@ -425,5 +430,16 @@ app.post('/api/get/all/faculty',async(req,res) =>{
         console.log(err);
     }
 });
+
+app.post('/api/get/faculty/name',async(req,res)=>{
+    try{
+        const {email}=req.body;
+        let query = await pool.query("select name from users where email = $1",[email]);
+        res.json(query.rows[0]);
+    }catch(err){
+        console.log(err);
+    }
+});
+
 
 module.exports = { app };
