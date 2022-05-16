@@ -23,7 +23,7 @@ const Budget = (props) => {
         await updateBudget(param.id , data);
         let res = await getFormById(param.id);
         await addNotifications(res.email , 'Budget has been filled by JAO for purchase form '+param.id+' on ' , 'info' , 'Status Update' , param.id)
-        await addActivities(user.email , 'You filled budget and approved purchase form '+param.id+' on ' , 'info' , 'Approved and Filled Budget' , param.id)
+        await addActivities(user.email , 'You filled budget and approved purchase form '+param.id+' on ' , 'success' , 'Approved and Filled Budget' , param.id)
         const ao= await getEmailbyROLE('AO');
         await addNotifications(ao.email,'A new form with ID: '+param.id+' received on', 'info', 'New form was added', param.id);
         nav('/site/admin/activity')
