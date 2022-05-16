@@ -49,6 +49,7 @@ const App = () => {
               <Route exact path="/site/forms/sp101/:type/:id" element={<Sp101Draft/>} />
 
               <Route exact path="/site/forms/sp102" element={<Sp102/>} />
+              <Route exact path="/site/forms/sp102/:id" element={<Sp102/>} />
 
               <Route exact path="/site/admin/forms" element={<AdminForms/>} />
               <Route exact path={"/site/admin/forms/budget/:id"} element={<Budget/>} />
@@ -59,6 +60,7 @@ const App = () => {
               <Route exact path={"/site/admin/activity"} element={<Activities/>} />
               <Route exact path={"/site/admin/notification"} element={<Notifications/>} />
               <Route exact path= {"site/forms/submitted/response/:id/status"} element = {<StatusSP101/>}/>
+
             </Routes>
           </Router>
         </Provider>
