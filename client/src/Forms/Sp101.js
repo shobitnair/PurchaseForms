@@ -183,7 +183,9 @@ const Sp101 = () => {
         const res = await postForm("sp101" ,user.email , data , "pending" , data.department)
         await addActivities(user.email ,
             'Purchase form SPS-101 succesfully submitted with ID : '+res.id+' on ' , 'success' , 'Form Submitted', res.id)
+        
         const hodMAIL = await getHOD(data.department);
+        console.log(hodMAIL);
         await addNotifications(hodMAIL.email , 'Take action on new form added with ID : '+res.id , 'warning' , 'New Form Added' , res.id)
         toast({
             title: 'Purchase form submitted',

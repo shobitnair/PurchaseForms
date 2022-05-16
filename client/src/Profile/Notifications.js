@@ -77,13 +77,12 @@ const Notifications = () => {
                 return (
                     <Box style={{boxShadow: Depths.depth4  , width:'100%'}} >
                         <Alert status = {props.type} variant='top-accent'>
-                        <AlertIcon boxSize='30px'/>
                         <Stack>
                             <AlertTitle fontSize={18}>{props.heading}</AlertTitle>
                             <AlertDescription fontSize={13}>
                             {props.message}  {formatDate(new Date(props.notification_time))}
                             </AlertDescription>
-                            <Button onClick={()=>PDFbyID(props.id)}>View Form</Button>
+                            <Button w={'150px'} onClick={()=>PDFbyID(props.id)}>View Form</Button>
                         </Stack>
                         
                     </Alert>

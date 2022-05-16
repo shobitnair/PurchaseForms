@@ -9,7 +9,6 @@ import {
 import { initializeIcons } from '@fluentui/react';
 import Sp101 from './Forms/Sp101';
 import Sp102 from './Forms/Sp102';
-import Sp101Draft from './Drafts/sp101Draft';
 import NavBar from './NavBar';
 import Dashboard from './Login/Dashboard'
 import { LoginProvider } from './Login/LoginContext';
@@ -19,7 +18,6 @@ import AdminForms from "./Admin/AdminForms";
 import Response from './Forms/Response';
 import './Styles/main.css'
 import Budget from "./Admin/Budget";
-import Drafts from './Drafts/Drafts';
 import Deny from './Admin/Deny';
 import { Upload } from './Forms/upload';
 import Profile from './Profile/Profile';
@@ -42,12 +40,10 @@ const App = () => {
               <Route index element={<Dashboard/>}/>
               <Route exact path="/site/" element={<Dashboard/>} />
 
-              <Route exact path="/site/drafts" element={<Drafts/>} />
               <Route exact path="/site/forms/submitted" element={<SubmittedForms/>} />
               <Route exact path="/site/forms/submitted/response/:id" element={<Response/>} />
               
               <Route exact path="/site/forms/sp101" element={<Sp101/>} />
-              <Route exact path="/site/forms/sp101/:type/:id" element={<Sp101Draft/>} />
 
               <Route exact path="/site/forms/sp102" element={<Sp102/>} />
               <Route exact path="/site/forms/sp102/:id" element={<Sp102/>} />

@@ -441,11 +441,11 @@ app.post('/api/get/faculty/name',async(req,res)=>{
     }
 });
 
-app.post('api/get/hod' , async(req,res)=>{
+app.post('/api/get/hod' , async(req,res)=>{
     try{
         const {department}  = req.body;
         let query = await pool.query("select * from users where department = $1 and role = $2",[department , 'HOD'])
-        rres.json(query.rows[0]);
+        res.json(query.rows[0]);
     } catch(err){
         console.log(err);
     }

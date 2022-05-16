@@ -1,17 +1,25 @@
 import React from 'react';
 import {PDFsp101} from "./PDFsp101";
-import { getDraftById, getFormById } from '../Requests/formRequests';
+import { PDFsp102 } from './PDFsp102';
+import {getFormById, getProfileDetails } from '../Requests/formRequests';
 
 export const PDFHandler = (form , data) =>{
     if(form === 'sp101')PDFsp101(data)
+    if(form === 'sp102')PDFsp102(data)
 }
 
 export const PDFbyID = async (id) => {
     const response = await getFormById(id)
+    const signJAO = await getProfileDetails()
+    if(response.type === 'sp101'){
+        let budget = (response.budget)?response.budget : {
+            bs:'',
+            ba:'',
+            bb:'',
+            bh:'',
+            balb:''
+        }
+    }
     PDFHandler(response.type , JSON.parse(response.data))
 }
 
-export const DraftByID = async(id , email) =>{
-    const response = await getDraftById(id , email)
-    PDFHandler(response.type , JSON.parse(response.data))
-}

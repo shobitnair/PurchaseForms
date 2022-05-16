@@ -11,8 +11,6 @@ import {
     DatePicker,
     IconButton,
 } from '@fluentui/react'
-import Modal from "smart-react-components/modal"
-import ModalHeader from "smart-react-components/modal/Header"
 import {Badge, Button, ButtonGroup, Grid, GridItem, Text} from "@chakra-ui/react";
 import {PDFbyID, PDFHandler} from "../Forms/PDFHandler";
 import { useNavigate } from 'react-router';
