@@ -236,7 +236,7 @@ const AdminForms = () => {
                 name:data.name,
                 budgetHead:data.budgetHead,
                 status:x.status,
-                date:data.DOP,
+                date:formatDate(new Date(x.submit_date)),
                 budget:JSON.parse(x.budget)
             }
         }))
@@ -249,7 +249,7 @@ const AdminForms = () => {
                 name:data.name,
                 budgetHead:data.budgetHead,
                 status:x.status,
-                date:data.DOP,
+                date:formatDate(new Date(x.submit_date)),
                 budget:JSON.parse(x.budget)
             }
         }))

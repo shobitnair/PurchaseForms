@@ -2,6 +2,7 @@ import React from 'react'
 import jsPDF from 'jspdf';
 
 export const PDFsp101 = (data,budgetData , meta) => {
+    console.log(meta)
     var doc = new jsPDF({orientation: "p", lineHeight: 1});
     var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight();
     var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth();
@@ -218,7 +219,7 @@ export const PDFsp101 = (data,budgetData , meta) => {
     var ypos = 139;
     var ylinepos=134.5
     var flag=0
-    var total=0
+    var total=0,total2=0
     data.items.forEach((element,index,array)=>{
         flag=1
         doc.text(index+1+'',23,ypos,{align:'left'})
@@ -228,6 +229,7 @@ export const PDFsp101 = (data,budgetData , meta) => {
         doc.text(element.Rate+'',141,ypos,{align:'center'})
         var amtTotal=element.Quantity*element.Rate;
         total+=amtTotal
+        total2+=amtTotal
         doc.text(amtTotal+'',170,ypos,{align:'center'})
         ypos+=10;
         doc.line(19, ylinepos, 19 , Math.min(ylinepos+10,pageHeight-23))
@@ -270,8 +272,10 @@ export const PDFsp101 = (data,budgetData , meta) => {
     doc.setFont('times','normal')
     if(data.tax!=null){
         total=total+(data.tax*total)/100;
+        total.toFixed(2)
+        tax.toFixed(2)
     }
-    doc.text((data.tax ===null ? '': data.tax*total/100)+'',170,ylinepos+3.5)
+    doc.text((data.tax ===null ? '': data.tax*total2/100)+'',170,ylinepos+3.5)
     doc.text((total===0? '':total)+'',170,ylinepos+8.5)
     
     doc.setFontSize(8);
@@ -313,8 +317,25 @@ export const PDFsp101 = (data,budgetData , meta) => {
     ypos+=15
     doc.setFont("times",'bold')
     doc.text("Signature of the Indenter",pageWidth-51,ypos,{align:'left'})
+    // console.log(meta.signInt)
+    doc.addImage(meta.signInt,'JPEG',pageWidth-51,ypos-20,40,10)
     ypos+=15
     doc.text("HOD/PI (for external projects only)",21,ypos,{align:'left'})
+    console.log(meta.okHOD)
+    if(meta.okHOD)
+    {
+        var text=meta.signHOD+''
+        if(text.endsWith('.png'))
+        {
+            doc.addImage(meta.signHOD,'PNG',21,ypos-20,40,10)
+        }
+        else if(text.endsWith('.jpg')){
+            doc.addImage(meta.signHOD,'JPG',21,ypos-20,40,10)
+        }
+        else if(text.endsWith('.jpeg')){
+            doc.addImage(meta.signHOD,'JPEG',21,ypos-20,40,10)
+        }
+    }   
 
     if(pageHeight-ypos<=60){
         doc.addPage();
@@ -334,23 +355,23 @@ export const PDFsp101 = (data,budgetData , meta) => {
     ypos+=5
     doc.text("Budget Sanctioned",21,ypos+4)
     doc.setFont('times','normal')
-    // doc.text((budgetData.bs===null? '' :budgetData.bs)+'lol',80,ypos+4)
-    doc.text('lol',80,ypos+4)
+    doc.text((budgetData.bs===null? '' :budgetData.bs)+'',80,ypos+4)
+    // doc.text('lol',80,ypos+4)
     doc.line(19,ypos+5,pageWidth-19,ypos+5)
     doc.line(75,ypos,75,ypos+40)
     ypos+=5
     doc.setFont('times','bold')
     doc.text("Budget Available",21,ypos+4)
     doc.setFont('times','normal')
-    // doc.text((budgetData.ba===null? '' :budgetData.ba)+'lol',80,ypos+4)
-    doc.text('lol',80,ypos+4)
+    doc.text((budgetData.ba===null? '' :budgetData.ba)+'',80,ypos+4)
+    // doc.text('lol',80,ypos+4)
     doc.line(19,ypos+5,pageWidth-19,ypos+5)
     ypos+=5
     doc.setFont('times','bold')
     doc.text("Budget Booked",21,ypos+4)
     doc.setFont('times','normal')
-    // doc.text((budgetData.bb===null? '' :budgetData.bb)+'lol',80,ypos+4)
-    doc.text('lol',80,ypos+4)
+    doc.text((budgetData.bb===null? '' :budgetData.bb)+'',80,ypos+4)
+    // doc.text('lol',80,ypos+4)
     doc.line(19,ypos+5,pageWidth-19,ypos+5)
     doc.line(130,ypos,130,ypos+5)
     doc.line(153,ypos,153,ypos+5)
@@ -358,23 +379,67 @@ export const PDFsp101 = (data,budgetData , meta) => {
     doc.text("Budget Head",132,ypos+4)
     doc.setFont('times','normal')
     doc.setFontSize(8)
-    // doc.text((budgetData.bs===null? '' :budgetData.bs)+'lol',153,ypos+4)
-    doc.text('lol',155,ypos+4)
+    doc.text((budgetData.bh===null? '' :budgetData.bh)+'',155,ypos+4)
+    // doc.text('lol',155,ypos+4)
     doc.setFontSize(10)
     ypos+=5
     doc.setFont('times','bold')
     doc.text("Balance Budget",21,ypos+4)
     doc.setFont('times','normal')
-    // doc.text((budgetData.balb===null? '' :budgetData.balb)+'lol',80,ypos+4)
-    doc.text('lol',80,ypos+4)
+    doc.text((budgetData.balb===null? '' :budgetData.balb)+'',80,ypos+4)
+    // doc.text('lol',80,ypos+4)
     doc.line(19,ypos+5,pageWidth-19,ypos+5)
     doc.line(130,ypos+5,130,ypos+25)
     ypos+=5
     doc.line(19,ypos+20,pageWidth-19,ypos+20)
     doc.setFont('times','bold')
     doc.text("Accountant/JAO",21,ypos+19)
+    if(meta.okJAO){
+        var text=meta.signJAO+''
+        if(text.endsWith('.png'))
+        {
+            doc.addImage(meta.signJAO,'PNG',21,ypos+3,40,10)
+        }
+        else if(text.endsWith('.jpg')){
+            doc.addImage(meta.signJAO,'JPG',21,ypos+3,40,10)
+        }
+        else if(text.endsWith('.jpeg')){
+            doc.addImage(meta.signJAO,'JPEG',21,ypos+3,40,10)
+        }
+        
+    }
     doc.text("AO",100,ypos+19)
+
+    if(meta.okAO)
+    {
+        var text=meta.signAO+''
+        if(text.endsWith('.png'))
+        {
+            doc.addImage(meta.signAO,'PNG',80,ypos+3,40,10)
+        }
+        else if(text.endsWith('.jpg')){
+            doc.addImage(meta.signAO,'JPG',80,ypos+3,40,10)
+        }
+        else if(text.endsWith('.jpeg')){
+            doc.addImage(meta.signAO,'JPEG',80,ypos+3,40,10)
+        }
+    }
+
     doc.text("AR/JR/DR, Accounts",pageWidth-55,ypos+19)
+    if(meta.okAR)
+    {
+        var text=meta.signAR+''
+        if(text.endsWith('.png'))
+        {
+            doc.addImage(meta.signAR,'PNG',pageWidth-70,ypos+3,40,10)
+        }
+        else if(text.endsWith('.jpg')){
+            doc.addImage(meta.signAR,'JPG',pageWidth-70,ypos+3,40,10)
+        }
+        else if(text.endsWith('.jpeg')){
+            doc.addImage(meta.signAR,'JPEG',pageWidth-70,ypos+3,40,10)
+        }
+    }
 
     doc.addPage()
 

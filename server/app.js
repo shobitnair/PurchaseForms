@@ -9,6 +9,7 @@ const { fileURLToPath } = require('url');
 const fs = require("fs")
 const {promisify} = require("util");
 const { response } = require('express');
+const { FabricSlots } = require('@fluentui/react');
 const pipeline = promisify(require("stream").pipeline)
 
 //const {sq}  = require('./sqlite')
@@ -50,7 +51,7 @@ app.post('/api/admin/forms/load' , async(req,res) =>{
         console.log(department , role);
         let query;
         if(role === 'HOD'){
-            query = await pool.query('select * from forms where department = $1 and hod = false and status = $2 order by id desc' , [department,'pending']);
+            query = await pool.query('select * from forms where department = $1 and (hod = false or hod_com = false) and status = $2 order by id desc' , [department,'pending']);
         } 
         if(role === 'JAO') {
             query = await pool.query('select * from forms where hod = true  and jao = false and status = $1 order by id desc',['pending']);
@@ -74,9 +75,21 @@ app.post('/api/admin/forms/load' , async(req,res) =>{
 app.post('/api/admin/forms/accept' , async(req,res) =>{
     try{
         const {id , role} = req.body;
-        let query;
+        let query,query1;
         if(role === 'HOD'){
+            query1 = await pool.query('select * from forms where id = $1',[id]);
+            if(query1.rows[0].type==='sp101'){
             query = await pool.query('update forms set hod = true , status = $1 where id = $2' , ['pending' , id])
+            }
+            else
+            {
+                if(query1.rows[0].hod_com === false){
+                    query = await pool.query('update forms set hod_com = true , status = $1 where id = $2' , ['pending' , id])
+                }
+                else{
+                    query = await pool.query('update forms set hod = true , status = $1 where id = $2' , ['pending' , id])
+                }
+            }
         } 
         if(role === 'AO'){
             query = await pool.query('update forms set ao = true , status = $1 where id = $2' , ['pending' , id])

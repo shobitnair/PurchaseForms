@@ -336,6 +336,7 @@ const Sp102 = () => {
       email: user.email,
       data: JSON.stringify(data),
       status: "pending",
+      department: data.department,
     });
   };
 
