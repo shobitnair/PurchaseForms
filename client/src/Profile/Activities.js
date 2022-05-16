@@ -8,7 +8,8 @@ import {
     GridItem,
     Stack,
     Box,
-    Button
+    Button,
+    Text
 } from '@chakra-ui/react'
 import { Depths } from '@fluentui/react';
 import { useNavigate } from 'react-router';
@@ -59,9 +60,9 @@ const Activities = () => {
                                                 <AlertIcon boxSize='40px'/>
                                                 <Stack>
                                                     <AlertTitle fontSize={18}>{x.heading}</AlertTitle>
-                                                    <AlertDescription fontSize={16}>
+                                                    <Text as={'cite'} fontSize={16}>
                                                     {x.message}  {formatDate(new Date(x.activity_time))}
-                                                    </AlertDescription>
+                                                    </Text>
                                                     <Button w={'150px'} onClick={()=>PDFbyID(x.id)}>View Form</Button>
                                                 </Stack>
                                             </Alert>

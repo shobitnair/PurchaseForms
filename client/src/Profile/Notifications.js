@@ -79,9 +79,9 @@ const Notifications = () => {
                         <Alert status = {props.type} variant='top-accent'>
                         <Stack>
                             <AlertTitle fontSize={18}>{props.heading}</AlertTitle>
-                            <AlertDescription fontSize={13}>
+                            <Text as='cite' fontSize={13} >
                             {props.message}  {formatDate(new Date(props.notification_time))}
-                            </AlertDescription>
+                            </Text>
                             <Button w={'150px'} onClick={()=>PDFbyID(props.id)}>View Form</Button>
                         </Stack>
                         

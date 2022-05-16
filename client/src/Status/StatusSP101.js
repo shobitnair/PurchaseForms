@@ -9,7 +9,8 @@ import {
   AlertTitle,
   Box ,
   Fade , 
-  ScaleFade
+  ScaleFade,
+  Text
 } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getFormById } from "../Requests/formRequests";
@@ -52,6 +53,7 @@ const StatusSP101 = () => {
               hodHidden: false,
               hod: "error",
               hodTitle: "Denied by HOD",
+              hodMessage: 'Message for denial : '+ response.message
             });
           } else {
             setCurStatus({
@@ -69,6 +71,7 @@ const StatusSP101 = () => {
               jaoHidden: false,
               jao: "error",
               jaoTitle: "Denied by JAO",
+              jaoMessage: 'Message for denial : '+ response.message
             });
           } else {
             setCurStatus({
@@ -88,6 +91,7 @@ const StatusSP101 = () => {
               aoHidden: false,
               ao: "error",
               aoTitle: "Denied by AO",
+              aoMessage: 'Message for denial : '+ response.message
             });
           } else {
             setCurStatus({
@@ -109,6 +113,7 @@ const StatusSP101 = () => {
               arHidden: false,
               ar: "error",
               arTitle: "Denied by AR",
+              arMessage:'Message for denial : '+ response.message
             });
           } else {
             setCurStatus({
@@ -144,10 +149,13 @@ const StatusSP101 = () => {
         <Box style={{boxShadow: Depths.depth4  , width:'95%' , marginTop:'10px'}} >
               <Alert status = {status} hidden={hidden} variant='top-accent'>
               <AlertIcon boxSize='30px'/>
-              <Box>
+              <Stack>
                   <AlertTitle fontSize={18}>{title}</AlertTitle>
-                  <AlertDescription fontSize={16}>{description}</AlertDescription>
-              </Box>
+                  <AlertDescription ></AlertDescription>
+                  <Text fontSize={14} as='cite' width={'90%'}>
+                  {description}
+                  </Text>
+              </Stack>
           </Alert>
         </Box>
       </ScaleFade>
@@ -162,7 +170,7 @@ const StatusSP101 = () => {
           <Node status={curStatus.hod} hidden={curStatus.hodHidden} title={curStatus.hodTitle} description={curStatus.hodMessage} />
           <Node status={curStatus.jao} hidden={curStatus.jaoHidden} title={curStatus.jaoTitle} description={curStatus.jaoMessage} />
           <Node status={curStatus.ao} hidden={curStatus.aoHidden} title={curStatus.aoTitle} description={curStatus.aoMessage} />
-          <Node status={curStatus.ar} hidden={curStatus.arHidden} title={curStatus.arTitle} description={curStatus.ardMessage} />
+          <Node status={curStatus.ar} hidden={curStatus.arHidden} title={curStatus.arTitle} description={curStatus.arMessage} />
         </Stack>
         </ScrollablePane>}
     </div>

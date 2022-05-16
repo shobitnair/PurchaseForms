@@ -108,7 +108,7 @@ app.post('/api/admin/forms/deny', async (req, res) => {
         const { id, role , message } = req.body;
         console.log(id , role , message);
         let query ;
-        query = await pool.query('update forms set status = $1 , message = $2 where id = $3', ['denied', 'Denied by '+role+' : '+message, id])
+        query = await pool.query('update forms set status = $1 , message = $2 where id = $3', ['denied', message, id])
         if(role === 'HOD'){
             
         } 
