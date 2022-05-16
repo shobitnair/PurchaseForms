@@ -255,7 +255,7 @@ const Sp102 = () => {
     NOQ: null,
     PurchasedFrom: null,
     DOP: null,
-    Qno: null,
+    Qno: '',
     RMP: null,
     DP: null,
     files: [],

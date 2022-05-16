@@ -31,9 +31,8 @@ const gridStyle = {
             '& [role=grid]': {
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: 'start',
+                alignItems: 'center',
                 height: '600px',
-                width:'100%',
             },
         },
     },
@@ -74,6 +73,25 @@ const Notifications = () => {
             maxWidth: 480,
             isResizable: true,
             onRender: (props) =>{
+                if(props.type === 'partA'){
+                    return (
+                        <Box style={{boxShadow: Depths.depth4  , width:'100%'}} >
+                            <Alert status = {props.type} variant='top-accent'>
+                            <Stack>
+                                <AlertTitle fontSize={18}>{props.heading}</AlertTitle>
+                                <Text as='cite' fontSize={13} >
+                                {props.message}  {formatDate(new Date(props.notification_time))}
+                                </Text>
+                                <Text>Fill part B of the form.</Text>
+                                <Button w={'150px'} onClick={()=>PDFbyID(props.id)}>Proceed</Button>
+                            </Stack>
+                            
+                        </Alert>
+                        </Box>
+                    )
+
+                }
+                else{
                 return (
                     <Box style={{boxShadow: Depths.depth4  , width:'100%'}} >
                         <Alert status = {props.type} variant='top-accent'>
@@ -88,6 +106,7 @@ const Notifications = () => {
                     </Alert>
                     </Box>
                 )
+                }
             }
         },
     ]

@@ -19,28 +19,28 @@ const Accept = (props) => {
         const res = await getFormById(param.id);
         if(role === 'HOD'){
             if(res.type==='sp101' || (res.hod_com === true && res.committee===3)){
-            await addActivities(user.email , 'You approved purchase form with ID : '+param.id+' on ' ,'success','Approved a purchase form',param.id )
-            await addNotifications(res.email , 'Your Purchase form with ID : '+param.id+' has been approved by the HOD on ','info' , 'Status Update',param.id)
+            await addActivities(user.email , 'You approved purchase form : '+param.id+' on ' ,'success','Approved a purchase form',param.id )
+            await addNotifications(res.email , 'Your Purchase form : '+param.id+' has been approved by the HOD on ','info' , 'Status Update',param.id)
             const jao= await getEmailbyROLE('JAO');
-            await addNotifications(jao.email,'A new form with ID: '+param.id+' received on', 'info', 'New form was added', param.id);
+            await addNotifications(jao.email,'A new form: '+param.id+' received on', 'info', 'New form was added', param.id);
             }
             else{
                 
-                await addActivities(user.email , 'You approved purchase form with ID : '+param.id+' on ' ,'success','Approved a purchase form',param.id )
-                await addNotifications(res.email , 'Your Purchase form with ID : '+param.id+' has been approved by the HOD on ','partA' , 'Status Update',param.id)
+                await addActivities(user.email , 'You approved purchase form : '+param.id+' on ' ,'success','Approved a purchase form',param.id )
+                await addNotifications(res.email , 'Part A of form : '+param.id+' has been approved by the HOD on ','partA' , 'Status Update',param.id)
                 
             }
         }
         if(role === 'AO'){
-            await addActivities(user.email , 'You approved a purchase form with ID : '+param.id+' on ' ,'success','Approved a purchase form',param.id )
-            await addNotifications(res.email , 'Your Purchase form with ID : '+param.id+' has been approved by the AO on ','info' , 'Status Update',param.id)
+            await addActivities(user.email , 'You approved a purchase form : '+param.id+' on ' ,'success','Approved a purchase form',param.id )
+            await addNotifications(res.email , 'Your Purchase form : '+param.id+' has been approved by the AO on ','info' , 'Status Update',param.id)
             const ar= await getEmailbyROLE('AR');
-            await addNotifications(ar.email,'A new form with ID: '+param.id+' received on', 'info', 'New form was added', param.id);
+            await addNotifications(ar.email,'A new form: '+param.id+' received on', 'info', 'New form was added', param.id);
 
         }
         if(role === 'AR'){
-            await addActivities(user.email , 'You approved a purchase form with ID : '+param.id+' on ' ,'success','Approved a purchase form',param.id )
-            await addNotifications(res.email , 'Your Purchase form with ID : '+param.id+' has been approved by the AR on ','success' , 'Purchase form approved',param.id)
+            await addActivities(user.email , 'You approved a purchase form : '+param.id+' on ' ,'success','Approved a purchase form',param.id )
+            await addNotifications(res.email , 'Your Purchase form : '+param.id+' has been approved by the AR on ','success' , 'Purchase form approved',param.id)
         }
         const response = await acceptForm(param.id , param.role);
         toast({
