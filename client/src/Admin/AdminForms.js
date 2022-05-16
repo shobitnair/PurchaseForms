@@ -11,7 +11,8 @@ import {
     DatePicker,
     IconButton,
 } from '@fluentui/react'
-
+import Modal from "smart-react-components/modal"
+import ModalHeader from "smart-react-components/modal/Header"
 import {Badge, Button, ButtonGroup, Grid, GridItem, Text} from "@chakra-ui/react";
 import {PDFbyID, PDFHandler} from "../Forms/PDFHandler";
 import { useNavigate } from 'react-router';
@@ -94,8 +95,7 @@ const AdminForms = () => {
         endDate :  new Date("Jan 01 2200"),
         budgetHead : ''
     })
-
-
+    
 
     const menuProps = (props) =>{
         return {
@@ -140,11 +140,7 @@ const AdminForms = () => {
                     onClick: async() =>{
                         const response = await getFormById(props.id);
                         const filepaths = JSON.parse(response.data).files
-                        console.log(filepaths)
-                        for(let i =0 ; i<filepaths.length ; i++){
-                            const newWindow = window.open(await getFileURL(filepaths[i]), '_blank', 'noopener,noreferrer')
-                            if (newWindow) newWindow.opener = null
-                        }
+                        
                     }
                 }
 
