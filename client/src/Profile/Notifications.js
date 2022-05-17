@@ -21,7 +21,7 @@ import { useNavigate } from 'react-router';
 import { useContext , useState , useEffect } from 'react';
 import { LoginContext } from '../Login/LoginContext';
 import { ScrollablePane } from '@fluentui/react';
-import { addNotifications, committee, getFormById, getHOD, getNotifications } from '../Requests/formRequests';
+import { addActivities, addNotifications, committee, getFormById, getHOD, getNotifications } from '../Requests/formRequests';
 import { PDFbyID } from '../Forms/PDFHandler';
 
 const gridStyle = {
@@ -78,6 +78,7 @@ const Notifications = () => {
             await addNotifications(hod.email , 'Take action on new form : '+id , 'warning' , 'New Form Added' , id)
         }
         
+        
     }
 
 
@@ -118,7 +119,9 @@ const Notifications = () => {
                                 {props.message}
                                 </Text>
                                 <Button w={'150px'} onClick={()=>PDFbyID(props.id)}>View Form</Button>
-                                <Button w={'150px'} onClick={async()=>acceptComm(props.id , props.type , props.email)}>Approve</Button>
+                                <Button w={'150px'} onClick={()=>{acceptComm(props.id , props.type , props.email);
+                                    addActivities(props.email,'You accepted the request for being committee member','warning','Accepted Committee Request', props.id);
+                                    nav('/site/admin/activity');}}>Approve</Button>
                             </Stack>
                             
                         </Alert>
