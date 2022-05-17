@@ -24,7 +24,7 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router";
 import { LoginContext } from "../Login/LoginContext";
 import { URL } from "../cred";
-import { getFormById, getProfileDetails } from "../Requests/formRequests";
+import { getFormById, getProfileDetails,getHOD, addActivities, addNotifications , postForm } from "../Requests/formRequests";
 import { useToast } from "@chakra-ui/react";
 import {
   Dropzone,
@@ -32,6 +32,8 @@ import {
   FullScreenPreview,
   InputButton,
 } from "@dropzone-ui/react";
+
+
 /**
  * Styles for the stack and the columns
  */
@@ -255,7 +257,7 @@ const Sp102 = () => {
     NOQ: null,
     PurchasedFrom: null,
     DOP: null,
-    Qno: '',
+    Qno: 'To be filled',
     RMP: null,
     DP: null,
     files: [],
@@ -330,22 +332,13 @@ const Sp102 = () => {
     });
   };
 
-  const postForm = async () => {
-    const res = await axios.post(URL + "/forms", {
-      type: "sp102",
-      email: user.email,
-      data: JSON.stringify(data),
-      status: "pending",
-      department: data.department,
-    });
-  };
-
   const updateFormById = async () => {
     const res = await axios.post(URL + "/forms/update", {
       id: param.id,
       data: JSON.stringify(data),
       status: "pending",
     });
+    return res.data;
   };
 
   const submitForm = async () => {
@@ -358,7 +351,11 @@ const Sp102 = () => {
           "pending",
           data.department
         );
-
+        await addActivities(user.email ,'Part A of SPS-102 submitted with ID : '+res.id+' on ' , 'success' , 'Form Submitted', res.id);
+        const hodMAIL = await getHOD(data.department);
+        console.log(hodMAIL);
+        await addNotifications(hodMAIL.email , 'Take action on new form added with ID : '+res.id , 'warning' , 'New Form Added' , res.id)
+          
         toast({
           title: "Purchase form part A submitted",
           status: "success",
@@ -366,10 +363,14 @@ const Sp102 = () => {
           isClosable: true,
         });
 
-        nav("/site");
+        nav("/site/admin/activity");
       } else {
         const res = await updateFormById();
-
+        console.log(data.member1);
+        await addNotifications(data.member1,'You are requested to approve for the committee for form : '+res.id,'committee','New Request for committee' , res.id);
+        await addNotifications(data.member2,'You are requested to approve for the committee for form : '+res.id,'committee','New Request for committee' , res.id);
+        await addNotifications(data.member3,'You are requested to approve for the committee for form : '+res.id,'committee','New Request for committee' , res.id);
+        await addActivities(user.email ,'Part B of SPS-102 submitted with ID : '+res.id+' on ' , 'success' , 'Form Submitted', res.id);
         toast({
           title: "Purchase form part B submitted",
           status: "success",
@@ -558,14 +559,14 @@ const Sp102 = () => {
   }
 
 
-  const getFacultyNames = async() =>{
+  const getFacultyNames = useCallback(async() =>{
     const facultyName1 = await axios.post(URL + '/get/faculty/name',{email: data.member1});
     const facultyName2 = await axios.post(URL + '/get/faculty/name',{email: data.member2});
     const facultyName3 = await axios.post(URL + '/get/faculty/name',{email: data.member3});
-    //console.log(facultyName1.data['name']);
     
-    return {a:facultyName1.data.name,b:facultyName2.data.name,c:facultyName3.data.name}
-  }
+    const value = {...data, member1name: facultyName1.data.name, member2name: facultyName2.data.name, member3name: facultyName3.data.name};
+    setData(value);
+  },[data])
 
 
   useEffect(async () => {
@@ -574,9 +575,9 @@ const Sp102 = () => {
         const tempData = await getFormById(param.id); //PartA->tempData.data
         const curData = JSON.parse(tempData.data);
         if (curData.GRP === "Yes") {
-          setData({ ...curData, partA: false, tax: 5, taxDisable: true });
+          setData({ ...curData, partA: false, tax: 5, taxDisable: true, Qno:''});
         } else {
-          setData({ ...curData, partA: false, tax: null, taxDisable: false });
+          setData({ ...curData, partA: false, tax: null, taxDisable: false, Qno:'' });
         }
         setFirstVisit(1);
       } else if (firstVisit === 1) {
@@ -631,7 +632,6 @@ const Sp102 = () => {
       } else if (firstVisit === 1) {
         //console.log(data);
         //console.log(valid);
-        
         if (
           !valid.nameError &&
           !valid.departmentError &&
@@ -649,14 +649,7 @@ const Sp102 = () => {
           !valid.member2Error &&
           !valid.member3Error
         ) {
-          const response = await getFacultyNames();
-          //console.log(response)  
-          setData({
-            ...data , 
-            member1name:response.a,
-            member2name:response.b,
-            member3name:response.c,
-          })
+          await getFacultyNames();
           setHideSubmitDialog(!hideSubmitDialog);
         }
         if(valid.memberError || valid.member1Error || valid.member2Error || valid.member3Error) {

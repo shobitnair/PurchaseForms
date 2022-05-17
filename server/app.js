@@ -194,7 +194,7 @@ app.post('/api/forms/update', async (req, res) => {
             "update forms set status = $1 , data = $2 where id = $3 returning *"
             , [status, data, id]
         )
-        res.json({ comment: 'form submitted with PurchaseForm ID ' + query.rows[0].id });
+        res.json({ id:query.rows[0].id });
     } catch (err) {
         res.status(400).json(err);
     }
@@ -462,6 +462,21 @@ app.post('/api/get/hod' , async(req,res)=>{
         console.log(err);
     }
 })
+
+app.post('/api/comm/add' , async(req,res)=>{
+    try{
+        const {email , type , id} = req.body;
+        console.log(email);
+        await pool.query("update notifications set type=$1 where email=$2 and type=$3 and id=$4" , ['committee_done' , email , type , id])
+        let count = await pool.query("select * from forms where id = $1",[id]);
+        let query = await pool.query("update forms set committee = $1 where id = $2" , [count.rows[0].committee + 1 , id]);
+        return {count:count.rows[0].committee + 1}
+    } catch(err){
+        console.log(err);
+    }
+})
+
+
 
 
 module.exports = { app };

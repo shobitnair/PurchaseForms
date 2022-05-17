@@ -21,7 +21,7 @@ import { useNavigate } from 'react-router';
 import { useContext , useState , useEffect } from 'react';
 import { LoginContext } from '../Login/LoginContext';
 import { ScrollablePane } from '@fluentui/react';
-import { getNotifications } from '../Requests/formRequests';
+import { addNotifications, committee, getFormById, getHOD, getNotifications } from '../Requests/formRequests';
 import { PDFbyID } from '../Forms/PDFHandler';
 
 const gridStyle = {
@@ -56,6 +56,7 @@ const formatDate = (date) => {
     return `${day}/${month}/${year}`;
 };
 
+
 const Notifications = () => {
     const nav = useNavigate();
     const {user , role} = useContext(LoginContext);
@@ -65,6 +66,21 @@ const Notifications = () => {
     const ColumnHeader = (text) =>{
         return <Text className='Header' as='b' w="100%">{text}</Text>
     }
+
+
+    const acceptComm = async(id , type , email)=>{
+                                    
+        const res=await committee(id,type,email)
+        console.log(res);
+        if(res.count===3){
+            const response = await getFormById(id);
+            const hod = await getHOD(response.department);
+            await addNotifications(hod.email , 'Take action on new form : '+id , 'warning' , 'New Form Added' , id)
+        }
+        
+    }
+
+
     const _columns = [
         {
             key: 'Notif',
@@ -76,20 +92,58 @@ const Notifications = () => {
                 if(props.type === 'partA'){
                     return (
                         <Box style={{boxShadow: Depths.depth4  , width:'100%'}} >
-                            <Alert status = {props.type} variant='top-accent'>
+                            <Alert status = 'info' variant='top-accent'>
                             <Stack>
                                 <AlertTitle fontSize={18}>{props.heading}</AlertTitle>
                                 <Text as='cite' fontSize={13} >
                                 {props.message}  {formatDate(new Date(props.notification_time))}
                                 </Text>
                                 <Text>Fill part B of the form.</Text>
-                                <Button w={'150px'} onClick={()=>PDFbyID(props.id)}>Proceed</Button>
+                                <Button w={'150px'} onClick={()=>nav('/site/forms/sp102/'+props.id)}>Proceed</Button>
                             </Stack>
                             
                         </Alert>
                         </Box>
                     )
 
+                }
+                else if(props.type === 'committee'){
+                    console.log(props);
+                    return (
+                        <Box style={{boxShadow: Depths.depth4  , width:'100%'}} >
+                            <Alert status = 'info' variant='top-accent'>
+                            <Stack>
+                                <AlertTitle fontSize={18}>{props.heading}</AlertTitle>
+                                <Text as='cite' fontSize={13} >
+                                {props.message}
+                                </Text>
+                                <Button w={'150px'} onClick={()=>PDFbyID(props.id)}>View Form</Button>
+                                <Button w={'150px'} onClick={async()=>acceptComm(props.id , props.type , props.email)}>Approve</Button>
+                            </Stack>
+                            
+                        </Alert>
+                        </Box>
+                    )
+                }
+                else if(props.type === 'committee_done'){
+                    return (
+                        <Box style={{boxShadow: Depths.depth4  , width:'100%'}} >
+                            <Alert status = 'info' variant='top-accent'>
+                            <Stack>
+                                <AlertTitle fontSize={18}>{props.heading}</AlertTitle>
+                                <Text as='cite' fontSize={13} >
+                                {props.message}
+                                </Text>
+                                <Button w={'150px'} onClick={()=>PDFbyID(props.id)}>View Form</Button>
+                                <Button w={'150px'} disabled={true} onClick={async()=>{
+                                    await committee(props.id,props.type,props.email)
+                                }}>Approve</Button>
+                            </Stack>
+                            
+                        </Alert>
+                        </Box>
+                    )
+      
                 }
                 else{
                 return (
@@ -117,7 +171,6 @@ const Notifications = () => {
                 setItems(await getNotifications(user.email));
                 Sfv(1)
             } else {
-
             }
         } else {
             setItems([])

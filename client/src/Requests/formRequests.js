@@ -118,3 +118,8 @@ export const getHOD = async(department) => {
     const response = await axios.post(URL + '/get/hod' , {department});
     return response.data
 }
+
+export const committee = async(id,type,email)=>{
+    const response = await axios.post(URL + '/comm/add',{id,type,email});
+    return response.data;
+}

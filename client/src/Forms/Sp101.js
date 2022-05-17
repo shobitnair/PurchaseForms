@@ -195,7 +195,7 @@ const Sp101 = () => {
             isClosable: true,
         })
         
-        nav('/site')
+        nav('/site/admin/activity')
     }
 
 
