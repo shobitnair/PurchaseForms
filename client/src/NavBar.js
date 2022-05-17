@@ -30,6 +30,7 @@ const NavBar = () => {
             text:'Help',
             iconProps: { iconName : 'Error'},
             buttonStyles: itemStyles,
+            hidden:true
         },
         {
             key:'log',

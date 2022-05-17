@@ -230,7 +230,7 @@ export const PDFsp101 = (data,budgetData , meta) => {
         var amtTotal=element.Quantity*element.Rate;
         total+=amtTotal
         total2+=amtTotal
-        doc.text(amtTotal+'',170,ypos,{align:'center'})
+        doc.text(amtTotal.toFixed(2)+'',170,ypos,{align:'center'})
         ypos+=10;
         doc.line(19, ylinepos, 19 , Math.min(ylinepos+10,pageHeight-23))
         doc.line(30, ylinepos, 30, Math.min(ylinepos+10,pageHeight-23))
@@ -273,11 +273,11 @@ export const PDFsp101 = (data,budgetData , meta) => {
     if(data.tax!=null){
         total=total+(data.tax*total)/100;
     }
-    doc.text((data.tax ===null ? '': data.tax*total2/100)+'',170,ylinepos+3.5)
-    doc.text((total===0? '':total)+'',170,ylinepos+8.5)
+    doc.text((data.tax ===null ? '': (data.tax*total2/100).toFixed(2))+'',170,ylinepos+3.5)
+    doc.text((total===0? '':total.toFixed(2))+'',170,ylinepos+8.5)
     
     doc.setFontSize(8);
-    doc.text((data.tax ===null ? '': data.tax)+'%',149,ylinepos+3.5)
+    doc.text((data.tax ===null ? '': data.tax.toFixed(2))+'%',149,ylinepos+3.5)
     
     
     ypos=ylinepos+15

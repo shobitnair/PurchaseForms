@@ -702,7 +702,7 @@ const Sp102 = () => {
               }
             />
             <TextField
-              label="Sanctioned Head"
+              label="Sanctioned Budget"
               value={data.budgetSanction}
               onChange={(e) =>
                 setData({ ...data, budgetSanction: e.target.value })

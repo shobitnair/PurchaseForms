@@ -47,10 +47,10 @@ app.get('/site*', (req, res) => {
 app.post('/api/admin/forms/load' , async(req,res) =>{
     try{
         const {department , role} = req.body;
-        console.log(department , role);
         let query;
         if(role === 'HOD'){
-            query = await pool.query('select * from forms where department = $1 and (hod = false or hod_com = false) and status = $2 order by id desc' , [department,'pending']);
+
+            query = await pool.query('select * from forms where department = $1 and ( (hod = false and type = $2) or ( (hod = false or hod_com = false ) and type=$3) ) and status = $4 order by id desc' , [department,'sp101','sp102','pending',]);
         } 
         if(role === 'JAO') {
             query = await pool.query('select * from forms where hod = true  and jao = false and status = $1 order by id desc',['pending']);
