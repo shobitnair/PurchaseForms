@@ -1,6 +1,4 @@
 import React from 'react'
-import {Provider} from 'react-redux'
-import {store} from './Store/store'
 import { 
   BrowserRouter as Router,
   Routes,
@@ -15,11 +13,9 @@ import { LoginProvider } from './Login/LoginContext';
 import SubmittedForms from './Forms/SubmittedForms';
 import { ChakraProvider } from '@chakra-ui/react'
 import AdminForms from "./Admin/AdminForms";
-import Response from './Forms/Response';
 import './Styles/main.css'
 import Budget from "./Admin/Budget";
 import Deny from './Admin/Deny';
-import { Upload } from './Forms/upload';
 import Profile from './Profile/Profile';
 import Accept from './Admin/Accept'
 import Activities from './Profile/Activities';
@@ -33,7 +29,6 @@ const App = () => {
     <div className='mainApp'>
       <ChakraProvider>
         <LoginProvider>
-        <Provider store={store}>
           <Router>  
           <NavBar/>
             <Routes>
@@ -53,7 +48,6 @@ const App = () => {
               <Route exact path={"/site/admin/forms/deny/:id/:role"} element={<Deny/>} />
               <Route exact path={"/site/admin/forms/accept/:id/:role"} element={<Accept/>} />
               <Route exact path={"/site/admin/forms/download/:id"} element={<Download/>} />
-              <Route exact path={"/upload"} element={<Upload/>} />
               <Route exact path={"/site/profile/"} element={<Profile/>}/>
               <Route exact path={"/site/admin/activity"} element={<Activities/>} />
               <Route exact path={"/site/admin/notification"} element={<Notifications/>} />
@@ -61,7 +55,6 @@ const App = () => {
 
             </Routes>
           </Router>
-        </Provider>
         </LoginProvider>
       </ChakraProvider>
     </div>

@@ -1,5 +1,4 @@
 const http = require('http');
-const {pg} = require('./pg')
 const {app} = require('./app')
 const{ pool} = require('./db')
 
