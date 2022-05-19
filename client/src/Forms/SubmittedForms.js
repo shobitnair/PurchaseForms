@@ -162,16 +162,6 @@ const SubmittedForms = () => {
             }
         },
         {
-            key: 'Email',
-            name: ColumnHeader('E-mail'),
-            minWidth: 200,
-            maxWidth: 200,
-            isResizable: true,
-            onRender: (props) =>{
-                return <Text className='rowLabel'>{props.email}</Text>
-            }
-        },
-        {
             key: 'Quotation',
             name: ColumnHeader('Quotation Number'),
             minWidth: 175,

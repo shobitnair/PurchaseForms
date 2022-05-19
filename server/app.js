@@ -2,16 +2,8 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const morgan = require('morgan');
-const knex = require('knex');
 const multer = require('multer');
 const { pool } = require('./db');
-const { fileURLToPath } = require('url');
-const fs = require("fs")
-const {promisify} = require("util");
-const { response } = require('express');
-const pipeline = promisify(require("stream").pipeline)
-
-//const {sq}  = require('./sqlite')
 
 const app = express();
 
@@ -31,7 +23,7 @@ app.use(cors({
     ]
 }))
 app.use(express.json());
-
+app.use(morgan('tiny'))
 
 
 //Build 
@@ -106,7 +98,6 @@ app.post('/api/admin/forms/accept' , async(req,res) =>{
 app.post('/api/jao/forms/budget', async (req, res) => {
     try {
         const { id, data } = req.body;
-        console.log(id, data)
         let query = await pool.query('update forms set jao = $1 , budget = $2 where id = $3',
             [true, data, id]);
         res.json(query)
@@ -118,7 +109,6 @@ app.post('/api/jao/forms/budget', async (req, res) => {
 app.post('/api/admin/forms/deny', async (req, res) => {
     try {
         const { id, role , message } = req.body;
-        console.log(id , role , message);
         let query ;
         query = await pool.query('update forms set status = $1 , message = $2 where id = $3', ['denied', message, id])
         if(role === 'HOD'){
@@ -466,7 +456,6 @@ app.post('/api/get/hod' , async(req,res)=>{
 app.post('/api/comm/add' , async(req,res)=>{
     try{
         const {email , type , id} = req.body;
-        console.log(email);
         await pool.query("update notifications set type=$1 where email=$2 and type=$3 and id=$4" , ['committee_done' , email , type , id])
         let count = await pool.query("select * from forms where id = $1",[id]);
         let query = await pool.query("update forms set committee = $1 where id = $2" , [count.rows[0].committee + 1 , id]);
