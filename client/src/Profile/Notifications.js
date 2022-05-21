@@ -76,7 +76,7 @@ const Notifications = () => {
                 else if(props.type === 'committee'){
                     return (
                             <Alert status = 'info' variant='top-accent' width={'100%'}>
-                            <Stack>
+                            <Stack width={'100%'}>
                                 <AlertTitle fontSize={18}>{props.heading}</AlertTitle>
                                 <Text as={'cite'} fontSize={13} >
                                     {props.message}
@@ -96,7 +96,7 @@ const Notifications = () => {
                 else if(props.type === 'committee_done'){
                     return (
                             <Alert status = 'info' variant='top-accent' width={'100%'}>
-                            <Stack>
+                            <Stack width={'100%'}>
                                 <AlertTitle fontSize={18}>{props.heading}</AlertTitle>
                                 <Text as={'cite'} fontSize={13} >
                                     {props.message}

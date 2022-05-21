@@ -188,13 +188,14 @@ const Profile = () => {
                 </GridItem>
                 <GridItem colStart={1} rowSpan = {11} colSpan={12} ml={2} mr={2}>
                     
-                    {fv === 1 && <div style={{'border': '8px solid #f3f2f1' ,    padding:'10px' , backgroundColor:'#f3f2f1', borderRadius: '2px', boxShadow: Depths.depth4 }}>
+                    {(fv === 1) &&
+                        <div style={{'border': '8px solid #f3f2f1' ,    padding:'10px' , backgroundColor:'#f3f2f1', borderRadius: '2px', boxShadow: Depths.depth4 }}>
                         
                         <Stack>
                             <TextField label={"Name"} value = {data.name}
                             onChange={(e) => setData({ ...data , name:e.target.value})}/ >
-                            
-                            {role==='FACULTY' && <Dropdown placeholder="Select an Option" options={option5} label="Department" 
+
+                            {role==='FACULTY' && <Dropdown placeholder="Select an Option" options={option5} label="Department"
                                 defaultSelectedKey = {findKey(option5,data.department)}
                                 onChange={(e, i) => setData({ ...data, department: i.text })} />}
                         <Stack style={{'alignItems':'center' }}>
@@ -203,12 +204,12 @@ const Profile = () => {
                             <DefaultButton style={{'width':'200px'}}  onClick={()=>{
                                 setToggle(!toggle);
                                 setFiles([])
-                            }}>Update Signature</DefaultButton> 
+                            }}>Update Signature</DefaultButton>
                         </Stack>
-                        
-                            
+
+
                         </Stack>
-                        
+
                     </div>}
                 </GridItem>
             </Grid>
